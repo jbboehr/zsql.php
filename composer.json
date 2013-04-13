@@ -20,5 +20,6 @@
     "phpunit/phpunit": "3.7.*",
     "phpunit/php-text-template" : "1.1.*",
     "apigen/apigen" : "2.8.*"
-  }
+  },
+  "version" : "0.1.0"
 }
