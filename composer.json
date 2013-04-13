@@ -1,0 +1,24 @@
+{
+  "authors": [
+    {
+      "email": "jbboehr@gmail.com",
+      "name": "John Boehr"
+    }
+  ],
+  "autoload": {
+    "psr-0": {
+      "zsql\\": ""
+    }
+  },
+  "description": " ",
+  "name": "jbboehr/zsql",
+  "keywords": [
+    "db",
+    "sql"
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "3.7.*",
+    "phpunit/php-text-template" : "1.1.*",
+    "apigen/apigen" : "2.8.*"
+  }
+}
