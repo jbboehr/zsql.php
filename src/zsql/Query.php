@@ -128,9 +128,6 @@ abstract class Query
       } else if( !is_int($key) ) {
         $this->_parts[] = '?';
         $this->_params[] = $value;
-      } else {
-        // ignore because it will just be ? by itself
-        continue;
       }
       $this->_parts[] = ',';
     }

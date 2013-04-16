@@ -74,7 +74,7 @@ class Update extends ExtendedQuery
    */
   public function value($key, $value = null)
   {
-    if( null === $value ) {
+    if( null === $value && $key instanceof Expression ) {
       $this->_values[] = $key;
     } else {
       $this->_values[$key] = $value;

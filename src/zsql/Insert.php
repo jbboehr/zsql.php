@@ -98,10 +98,6 @@ class Insert extends Query
    */
   public function toString()
   {
-    if( empty($this->_values) ) {
-      throw new \zsql\Exception('No values specified');
-    }
-    
     $this->_parts = array();
     $this->_params = array();
     
@@ -109,7 +105,7 @@ class Insert extends Query
          ->_pushIgnoreDelayed()
          ->_push('INTO')
          ->_pushTable()
-         ->_push('VALUES')
+         ->_push('SET')
          ->_pushValues();
     
     return join(' ', $this->_parts);
@@ -124,7 +120,7 @@ class Insert extends Query
    */
   public function value($key, $value = null)
   {
-    if( null === $value ) {
+    if( null === $value && $key instanceof Expression ) {
       $this->_values[] = $key;
     } else {
       $this->_values[$key] = $value;
