@@ -89,7 +89,7 @@ class Select extends ExtendedQuery
   public function hint($columns, $mode = null)
   {
     $this->_hint = $columns;
-    $this->_mode = $mode;
+    $this->_hintMode = $mode;
     return $this;
   }
   
@@ -175,7 +175,11 @@ class Select extends ExtendedQuery
     if( $this->_hint ) {
       $this->_parts[] = $this->_hintMode ?: 'USE';
       $this->_parts[] = 'INDEX';
-      $this->_parts[] = '(' . $this->_quoteIdentifierIfNotExpression($this->_hint) . ')';
+      if( is_array($this->_hint) ) {
+        $this->_parts[] = '(' . join(', ', array_map(array($this, '_quoteIdentifierIfNotExpression'), $this->_hint)) . ')';
+      } else {
+        $this->_parts[] = '(' . $this->_quoteIdentifierIfNotExpression($this->_hint) . ')';
+      }
     }
     return $this;
   }
