@@ -37,4 +37,20 @@ class Common_Test extends PHPUnit_Framework_TestCase
   {
     return new $this->_className();
   }
+  
+  protected function _getQuoteCallback()
+  {
+    // This is not a real quote function, just for testing
+    return function($string) {
+      if( is_int($string) || is_double($string) ) {
+        return $string;
+      } else if( is_null($string) ) {
+        return 'NULL';
+      } else if( is_bool($string) ) {
+        return $string ? 'TRUE' : 'FALSE';
+      } else {
+        return "'" . addslashes($string) . "'";
+      }
+    };
+  }
 }

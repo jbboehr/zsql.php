@@ -5,6 +5,13 @@ namespace zsql;
 abstract class Query
 {
   /**
+   * Toggle whether to interpolate parameters into the query
+   * 
+   * @var boolean
+   */
+  protected $_interpolation = false;
+  
+  /**
    * The table
    * 
    * @var string
@@ -26,6 +33,20 @@ abstract class Query
   protected $_parts;
   
   /**
+   * Callback to quote a string
+   * 
+   * @var callback
+   */
+  protected $_quoteCallback;
+  
+  /**
+   * The current query
+   * 
+   * @var string
+   */
+  protected $_query;
+  
+  /**
    * The character to use to quote strings
    * 
    * @var string
@@ -38,6 +59,17 @@ abstract class Query
    * @var string
    */
   protected $_quoteIdentifierChar = '`';
+  
+  /**
+   * Toggle whether to interpolate parameters into the query
+   * 
+   * @return \zsql\Query
+   */
+  public function interpolation($interpolation = true)
+  {
+    $this->_interpolation = (bool) $interpolation;
+    return $this;
+  }
   
   /**
    * Get the array of parts
@@ -60,6 +92,22 @@ abstract class Query
   }
   
   /**
+   * Set the function to use to quote strings
+   * 
+   * @param type $callback
+   * @return \zsql\Query
+   * @throws \zsql\Exception
+   */
+  public function setQuoteCallback($callback)
+  {
+    if( !is_callable($callback) ) {
+      throw new \zsql\Exception('Invalid callback specified');
+    }
+    $this->_quoteCallback = $callback;
+    return $this;
+  }
+  
+  /**
    * Set the table
    * 
    * @param mixed $table
@@ -78,7 +126,48 @@ abstract class Query
   /**
    * Convert to string
    */
-  abstract public function toString();
+  public function toString()
+  {
+    $this->_parts = array();
+    $this->_params = array();
+    $this->_assemble();
+    $this->_query = join(' ', $this->_parts);
+    if( $this->_interpolation ) {
+      $this->_interpolate();
+    }
+    return $this->_query;
+  }
+  
+  /**
+   * Assemble parts
+   */
+  abstract protected function _assemble();
+  
+  /**
+   * Interpolate parameters into query
+   * 
+   * @throws \zsql\Exception
+   */
+  protected function _interpolate()
+  {
+    if( count($this->_params) <= 0 ) {
+      return;
+    }
+    if( !$this->_quoteCallback ) {
+      throw new \zsql\Exception('Interpolation not available without setting a quote callback');
+    }
+    if( substr_count($this->_query, '?') != count($this->_params) ) {
+      throw new \zsql\Exception('Parameter count mismatch');
+    }
+    
+    $fn = $this->_quoteCallback;
+    $parts = explode('?', $this->_query);
+    $query = $parts[0];
+    for( $i = 0, $l = count($this->_params); $i < $l; $i++ ) {
+      $query .= $fn($this->_params[$i]) . $parts[$i+1];
+    }
+    $this->_query = $query;
+  }
   
   /**
    * Push an arbitrary string onto parts

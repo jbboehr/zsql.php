@@ -53,6 +53,10 @@ class Delete_Test extends Common_Test
         ->where('tableName.columnName', 2);
     $this->assertEquals('DELETE FROM `tableName` WHERE `tableName`.`columnName` = ?', $query->toString());
     $this->assertEquals(array(2), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("DELETE FROM `tableName` WHERE `tableName`.`columnName` = 2", $query->toString());
   }
   
   public function testWhere_ValueIsExpression()
@@ -71,6 +75,10 @@ class Delete_Test extends Common_Test
         ->where('columnName', 'value');
     $this->assertEquals('DELETE FROM `tableName` WHERE `columnName` = ?', $query->toString());
     $this->assertEquals(array('value'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("DELETE FROM `tableName` WHERE `columnName` = 'value'", $query->toString());
   }
   
   public function testWhere_ValueIsInteger()
@@ -80,6 +88,10 @@ class Delete_Test extends Common_Test
         ->where('columnName', 2);
     $this->assertEquals('DELETE FROM `tableName` WHERE `columnName` = ?', $query->toString());
     $this->assertEquals(array(2), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("DELETE FROM `tableName` WHERE `columnName` = 2", $query->toString());
   }
   
   public function testWhereIn()
@@ -89,6 +101,10 @@ class Delete_Test extends Common_Test
         ->whereIn('columnName', array(2, 4, 6, 8));
     $this->assertEquals('DELETE FROM `tableName` WHERE `columnName` IN (?, ?, ?, ?)', $query->toString());
     $this->assertEquals(array(2, 4, 6, 8), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("DELETE FROM `tableName` WHERE `columnName` IN (2, 4, 6, 8)", $query->toString());
   }
   
   public function testWhereExpr()
@@ -125,6 +141,10 @@ class Delete_Test extends Common_Test
         ->limit(10, 20);
     $this->assertEquals('DELETE FROM `tableName` LIMIT ?, ?', $query->toString());
     $this->assertEquals(array(20, 10), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("DELETE FROM `tableName` LIMIT 20, 10", $query->toString());
   }
   
   public function testLimit_WithoutOffset()
@@ -134,6 +154,10 @@ class Delete_Test extends Common_Test
         ->limit(30);
     $this->assertEquals('DELETE FROM `tableName` LIMIT ?', $query->toString());
     $this->assertEquals(array(30), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("DELETE FROM `tableName` LIMIT 30", $query->toString());
   }
   
   public function testOffset()
@@ -143,6 +167,10 @@ class Delete_Test extends Common_Test
         ->offset(10, 20);
     $this->assertEquals('DELETE FROM `tableName` LIMIT ?, ?', $query->toString());
     $this->assertEquals(array(10, 20), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("DELETE FROM `tableName` LIMIT 10, 20", $query->toString());
   }
   
   public function testABunchOfStuffTogether()
@@ -163,5 +191,15 @@ class Delete_Test extends Common_Test
         . 'LIMIT ?, ?', $query->toString());
     $this->assertEquals(array(1324, 9, 'red', 'blue', 'green', 100, 50), 
         $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("DELETE FROM `tableName` WHERE `columnOne` = 1324 && "
+        . "columnTwo < 9 && "
+        . "LENGTH(columnThree) > 0 && "
+        . "columnFour IS NULL && "
+        . "`columnFive` IN ('red', 'blue', 'green') "
+        . "ORDER BY `columnSix` DESC "
+        . "LIMIT 100, 50", $query->toString());
   }
 }

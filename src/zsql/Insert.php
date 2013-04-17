@@ -91,27 +91,6 @@ class Insert extends Query
   }
   
   /**
-   * Convert to string
-   * 
-   * @return string
-   * @throws \zsql\Exception
-   */
-  public function toString()
-  {
-    $this->_parts = array();
-    $this->_params = array();
-    
-    $this->_push('INSERT')
-         ->_pushIgnoreDelayed()
-         ->_push('INTO')
-         ->_pushTable()
-         ->_push('SET')
-         ->_pushValues();
-    
-    return join(' ', $this->_parts);
-  }
-  
-  /**
    * Set a value
    * 
    * @param mixed $key
@@ -138,6 +117,21 @@ class Insert extends Query
   {
     $this->_values = $values;
     return $this;
+  }
+  
+  /**
+   * Assemble parts
+   * 
+   * @return void
+   */
+  protected function _assemble()
+  {
+    $this->_push('INSERT')
+         ->_pushIgnoreDelayed()
+         ->_push('INTO')
+         ->_pushTable()
+         ->_push('SET')
+         ->_pushValues();
   }
   
   /**

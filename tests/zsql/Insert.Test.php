@@ -13,6 +13,10 @@ class Insert_Test extends Common_Test
       ->set('columnName', 'value');
     $this->assertEquals('INSERT DELAYED INTO `tableName` SET `columnName` = ?', $query->toString());
     $this->assertEquals(array('value'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("INSERT DELAYED INTO `tableName` SET `columnName` = 'value'", $query->toString());
   }
   
   public function testDelayed_False()
@@ -25,6 +29,10 @@ class Insert_Test extends Common_Test
       ->set('columnName', 'value');
     $this->assertEquals('INSERT INTO `tableName` SET `columnName` = ?', $query->toString());
     $this->assertEquals(array('value'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("INSERT INTO `tableName` SET `columnName` = 'value'", $query->toString());
   }
   
   public function testIgnore()
@@ -36,6 +44,10 @@ class Insert_Test extends Common_Test
       ->set('columnName', 'value');
     $this->assertEquals('INSERT IGNORE INTO `tableName` SET `columnName` = ?', $query->toString());
     $this->assertEquals(array('value'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("INSERT IGNORE INTO `tableName` SET `columnName` = 'value'", $query->toString());
   }
   
   public function testIgnore_False()
@@ -48,6 +60,10 @@ class Insert_Test extends Common_Test
       ->set('columnName', 'value');
     $this->assertEquals('INSERT INTO `tableName` SET `columnName` = ?', $query->toString());
     $this->assertEquals(array('value'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("INSERT INTO `tableName` SET `columnName` = 'value'", $query->toString());
   }
   
   public function testToString_ThrowsExceptionWithNoTable()
@@ -91,5 +107,10 @@ class Insert_Test extends Common_Test
     $this->assertEquals('INSERT IGNORE INTO `tableName` SET `a` = ? , ' 
         . '`d` = ? , `f` = ? , `h` = NOW() , z = SHA1(0)', $query->toString());
     $this->assertEquals(array('b', 'e', 'g'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("INSERT IGNORE INTO `tableName` SET "
+        . "`a` = 'b' , `d` = 'e' , `f` = 'g' , `h` = NOW() , z = SHA1(0)", $query->toString());
   }
 }

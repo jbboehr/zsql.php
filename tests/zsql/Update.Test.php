@@ -33,6 +33,10 @@ class Update_Test extends Common_Test
       ->update('tableName', array('columnName' => 'val'));
     $this->assertEquals('UPDATE `tableName` SET `columnName` = ?', $query->toString());
     $this->assertEquals(array('val'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("UPDATE `tableName` SET `columnName` = 'val'", $query->toString());
   }
   
   public function testABunchOfStuffTogether()
@@ -56,5 +60,11 @@ class Update_Test extends Common_Test
         . '`d` = ? , `f` = ? , `h` = NOW() , z = SHA1(0) ' 
         . 'WHERE `i` = ? && `k` IN (?, ?, ?) && LENGTH(o) > 0', $query->toString());
     $this->assertEquals(array('b', 'e', 'g', 'j', 'l', 'm', 'n'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("UPDATE `tableName` SET `a` = 'b' , "
+        . "`d` = 'e' , `f` = 'g' , `h` = NOW() , z = SHA1(0) "
+        . "WHERE `i` = 'j' && `k` IN ('l', 'm', 'n') && LENGTH(o) > 0", $query->toString());
   }
 }

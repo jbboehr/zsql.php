@@ -17,22 +17,19 @@ class Delete extends ExtendedQuery
   }
   
   /**
-   * Convert to string
+   * Assemble parts
    * 
-   * @return string
+   * @return void
    */
-  public function toString()
-  {
-    $this->_parts = array();
-    $this->_params = array();
-    
+  protected function _assemble()
+  { 
     $this->_push('DELETE FROM')
          ->_pushTable()
          ->_pushWhere()
          ->_pushOrder()
          ->_pushLimit();
     
-    return join(' ', $this->_parts);
+    $this->_query = join(' ', $this->_parts);
   }
 }
 

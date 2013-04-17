@@ -106,15 +106,12 @@ class Select extends ExtendedQuery
   }
   
   /**
-   * Convert to string
+   * Assemble parts
    * 
-   * @return string
+   * @return void
    */
-  public function toString()
+  protected function _assemble()
   {
-    $this->_parts = array();
-    $this->_params = array();
-    
     $this->_push('SELECT')
          ->_pushDistinct()
          ->_pushColumns()
@@ -125,8 +122,6 @@ class Select extends ExtendedQuery
          ->_pushGroup()
          ->_pushOrder()
          ->_pushLimit();
-    
-    return join(' ', $this->_parts);
   }
   
   /**

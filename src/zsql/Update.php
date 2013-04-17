@@ -28,28 +28,6 @@ class Update extends ExtendedQuery
   }
   
   /**
-   * Convert to string
-   * 
-   * @return string
-   * @throws \zsql\Exception
-   */
-  public function toString()
-  {
-    $this->_parts = array();
-    $this->_params = array();
-    
-    $this->_push('UPDATE')
-         ->_pushTable()
-         ->_push('SET')
-         ->_pushValues()
-         ->_pushWhere()
-         ->_pushOrder()
-         ->_pushLimit();
-    
-    return join(' ', $this->_parts);
-  }
-  
-  /**
    * Alias for {{\zsql\Update::table()}} and {{\zsql\Update::values()}}
    * 
    * @param string $table
@@ -92,5 +70,21 @@ class Update extends ExtendedQuery
   {
     $this->_values = $values;
     return $this;
+  }
+  
+  /**
+   * Assemble parts
+   * 
+   * @return void
+   */
+  protected function _assemble()
+  {
+    $this->_push('UPDATE')
+         ->_pushTable()
+         ->_push('SET')
+         ->_pushValues()
+         ->_pushWhere()
+         ->_pushOrder()
+         ->_pushLimit();
   }
 }

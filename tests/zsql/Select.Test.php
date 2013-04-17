@@ -44,6 +44,10 @@ class Select_Test extends Common_Test
       ->where('columnName', 'value');
     $this->assertEquals('SELECT DISTINCT * FROM `tableName` WHERE `columnName` = ?', $query->toString());
     $this->assertEquals(array('value'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("SELECT DISTINCT * FROM `tableName` WHERE `columnName` = 'value'", $query->toString());
   }
   
   public function testDistinct_False()
@@ -56,6 +60,10 @@ class Select_Test extends Common_Test
       ->where('columnName', 'value');
     $this->assertEquals('SELECT * FROM `tableName` WHERE `columnName` = ?', $query->toString());
     $this->assertEquals(array('value'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("SELECT * FROM `tableName` WHERE `columnName` = 'value'", $query->toString());
   }
   
   public function testFrom_WithColumns()
@@ -77,6 +85,10 @@ class Select_Test extends Common_Test
     $this->assertEquals('SELECT * FROM `tableName` ' 
         . 'WHERE `a` = ? GROUP BY `id`', $query->toString());
     $this->assertEquals(array('b'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("SELECT * FROM `tableName` WHERE `a` = 'b' GROUP BY `id`", $query->toString());
   }
   
   public function testHint()
@@ -90,6 +102,11 @@ class Select_Test extends Common_Test
     $this->assertEquals('SELECT * FROM `tableName` FORCE INDEX (`columnTwo`) ' 
         . 'WHERE `columnOne` = ? && `columnTwo` = ?', $query->toString());
     $this->assertEquals(array('a', 'b'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("SELECT * FROM `tableName` FORCE INDEX (`columnTwo`) " 
+        . "WHERE `columnOne` = 'a' && `columnTwo` = 'b'", $query->toString());
   }
   
   public function testHint_Array()
@@ -103,6 +120,11 @@ class Select_Test extends Common_Test
     $this->assertEquals('SELECT * FROM `tableName` IGNORE INDEX (`columnTwo`, `columnThree`) ' 
         . 'WHERE `columnOne` = ? && `columnTwo` = ?', $query->toString());
     $this->assertEquals(array('a', 'b'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("SELECT * FROM `tableName` IGNORE INDEX (`columnTwo`, `columnThree`) "
+        . "WHERE `columnOne` = 'a' && `columnTwo` = 'b'", $query->toString());
   }
   
   public function testSelect()
@@ -114,6 +136,11 @@ class Select_Test extends Common_Test
     $this->assertEquals('SELECT `columnName` FROM `tableName` ' 
         . 'WHERE `columnName` = ?', $query->toString());
     $this->assertEquals(array('columnValue'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("SELECT `columnName` FROM `tableName` "
+        . "WHERE `columnName` = 'columnValue'", $query->toString());
   }
   
   public function testWhereIn_Empty()
@@ -136,5 +163,10 @@ class Select_Test extends Common_Test
     $this->assertEquals('SELECT `columnName` FROM `tableName` ' 
         . 'WHERE `columnName` IN (?)', $query->toString());
     $this->assertEquals(array('columnValue'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("SELECT `columnName` FROM `tableName` "
+        . "WHERE `columnName` IN ('columnValue')", $query->toString());
   }
 }
