@@ -12,6 +12,10 @@ class Select_Test extends Common_Test
       ->columns(new \zsql\Expression('SUM(number)'));
     $this->assertEquals('SELECT SUM(number) FROM `tableName`', $query->toString());
     $this->assertEquals(array(), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals('SELECT SUM(number) FROM `tableName`', $query->toString());
   }
   
   public function testColumns_String()
@@ -22,6 +26,10 @@ class Select_Test extends Common_Test
       ->columns('columnName');
     $this->assertEquals('SELECT `columnName` FROM `tableName`', $query->toString());
     $this->assertEquals(array(), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals('SELECT `columnName` FROM `tableName`', $query->toString());
   }
   
   public function testColumns_InvalidValueThrowsException()
@@ -73,6 +81,10 @@ class Select_Test extends Common_Test
       ->from('tableName', array('a', 'b', 'c'));
     $this->assertEquals('SELECT `a`, `b`, `c` FROM `tableName`', $query->toString());
     $this->assertEquals(array(), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals('SELECT `a`, `b`, `c` FROM `tableName`', $query->toString());
   }
   
   public function testGroup()
@@ -168,5 +180,33 @@ class Select_Test extends Common_Test
     $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
     $this->assertEquals("SELECT `columnName` FROM `tableName` "
         . "WHERE `columnName` IN ('columnValue')", $query->toString());
+  }
+  
+  public function test_interpolate_ThrowsException()
+  {
+    $query = new \zsql\Select();
+    $exception = null;
+    try {
+      $query->table('tableName')->where('a', 'b');
+      $query->interpolation();
+      $query->toString();
+    } catch( Exception $e ) {
+      $exception = $e;
+    }
+    $this->assertInstanceOf('\\zsql\\Exception', $exception);
+  }
+  
+  public function test_interpolate_ThrowsException2()
+  {
+    $query = new \zsql\Select();
+    $exception = null;
+    try {
+      $query->table('tableName')->where('a??', 'b');
+      $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+      $query->toString();
+    } catch( Exception $e ) {
+      $exception = $e;
+    }
+    $this->assertInstanceOf('\\zsql\\Exception', $exception);
   }
 }

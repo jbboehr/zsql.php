@@ -113,4 +113,32 @@ class Insert_Test extends Common_Test
     $this->assertEquals("INSERT IGNORE INTO `tableName` SET "
         . "`a` = 'b' , `d` = 'e' , `f` = 'g' , `h` = NOW() , z = SHA1(0)", $query->toString());
   }
+  
+  public function test_interpolate_ThrowsException()
+  {
+    $query = new \zsql\Insert();
+    $exception = null;
+    try {
+      $query->table('tableName')->set('a', 'b');
+      $query->interpolation();
+      $query->toString();
+    } catch( Exception $e ) {
+      $exception = $e;
+    }
+    $this->assertInstanceOf('\\zsql\\Exception', $exception);
+  }
+  
+  public function test_interpolate_ThrowsException2()
+  {
+    $query = new \zsql\Insert();
+    $exception = null;
+    try {
+      $query->table('tableName')->set('a??', 'b');
+      $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+      $query->toString();
+    } catch( Exception $e ) {
+      $exception = $e;
+    }
+    $this->assertInstanceOf('\\zsql\\Exception', $exception);
+  }
 }

@@ -14,7 +14,7 @@ class Common_Test extends PHPUnit_Framework_TestCase
     $this->assertInstanceOf($this->_className, $this->_factory());
   }
   
-  public function test__toString_Fails()
+  public function testMagicToString_Fails()
   {
     $reporting = error_reporting(0);
     $this->assertEmpty((string) $this->_factory());
@@ -31,6 +31,17 @@ class Common_Test extends PHPUnit_Framework_TestCase
   public function testParams()
   {
     $this->assertEquals(true, is_array($this->_factory()->params()));
+  }
+  
+  public function testSetQuoteCallback_ThrowsException()
+  {
+    $query = $this->_factory();
+    try {
+      $query->setQuoteCallback(false);
+      $this->assertTrue(false); // -_-
+    } catch( Exception $e ) {
+      $this->assertInstanceOf('\\zsql\\Exception', $e);
+    }
   }
   
   protected function _factory()

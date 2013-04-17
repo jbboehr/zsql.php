@@ -10,6 +10,10 @@ class Delete_Test extends Common_Test
     $query->table('dbName.tableName');
     $this->assertEquals('DELETE FROM `dbName`.`tableName`', $query->toString());
     $this->assertEquals(array(), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals('DELETE FROM `dbName`.`tableName`', $query->toString());
   }
   
   public function testTable_Expression()
@@ -18,6 +22,10 @@ class Delete_Test extends Common_Test
     $query->table(new \zsql\Expression('`tableName` as `otherTableName`'));
     $this->assertEquals('DELETE FROM `tableName` as `otherTableName`', $query->toString());
     $this->assertEquals(array(), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals('DELETE FROM `tableName` as `otherTableName`', $query->toString());
   }
   
   public function testTable_String()
@@ -26,6 +34,10 @@ class Delete_Test extends Common_Test
     $query->table('tableName');
     $this->assertEquals('DELETE FROM `tableName`', $query->toString());
     $this->assertEquals(array(), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals('DELETE FROM `tableName`', $query->toString());
   }
   
   public function testWhere_KeyIsExpr()
@@ -35,6 +47,10 @@ class Delete_Test extends Common_Test
         ->where(new \zsql\Expression('columnName < NOW()'));
     $this->assertEquals('DELETE FROM `tableName` WHERE columnName < NOW()', $query->toString());
     $this->assertEquals(array(), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals('DELETE FROM `tableName` WHERE columnName < NOW()', $query->toString());
   }
   
   public function testWhere_KeyContainsQuestionMark()
@@ -44,6 +60,10 @@ class Delete_Test extends Common_Test
         ->where('columnName > ?', 2);
     $this->assertEquals('DELETE FROM `tableName` WHERE columnName > ?', $query->toString());
     $this->assertEquals(array(2), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals('DELETE FROM `tableName` WHERE columnName > 2', $query->toString());
   }
   
   public function testWhere_KeyContainsTable()
@@ -66,6 +86,10 @@ class Delete_Test extends Common_Test
         ->where('columnName', new \zsql\Expression('NOW()'));
     $this->assertEquals('DELETE FROM `tableName` WHERE `columnName` = NOW()', $query->toString());
     $this->assertEquals(array(), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals('DELETE FROM `tableName` WHERE `columnName` = NOW()', $query->toString());
   }
   
   public function testWhere_ValueIsString()
@@ -114,6 +138,10 @@ class Delete_Test extends Common_Test
         ->whereExpr('columnName < NOW()');
     $this->assertEquals('DELETE FROM `tableName` WHERE columnName < NOW()', $query->toString());
     $this->assertEquals(array(), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals('DELETE FROM `tableName` WHERE columnName < NOW()', $query->toString());
   }
   
   public function testOrder_Asc()
@@ -123,6 +151,10 @@ class Delete_Test extends Common_Test
         ->order('columnName', 'ASC');
     $this->assertEquals('DELETE FROM `tableName` ORDER BY `columnName` ASC', $query->toString());
     $this->assertEquals(array(), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals('DELETE FROM `tableName` ORDER BY `columnName` ASC', $query->toString());
   }
   
   public function testOrder_Desc()
@@ -132,6 +164,10 @@ class Delete_Test extends Common_Test
         ->order('columnName', 'DESC');
     $this->assertEquals('DELETE FROM `tableName` ORDER BY `columnName` DESC', $query->toString());
     $this->assertEquals(array(), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals('DELETE FROM `tableName` ORDER BY `columnName` DESC', $query->toString());
   }
   
   public function testLimit_WithOffset()
@@ -201,5 +237,33 @@ class Delete_Test extends Common_Test
         . "`columnFive` IN ('red', 'blue', 'green') "
         . "ORDER BY `columnSix` DESC "
         . "LIMIT 100, 50", $query->toString());
+  }
+  
+  public function test_interpolate_ThrowsException()
+  {
+    $query = new \zsql\Delete();
+    $exception = null;
+    try {
+      $query->table('tableName')->where('a', 'b');
+      $query->interpolation();
+      $query->toString();
+    } catch( Exception $e ) {
+      $exception = $e;
+    }
+    $this->assertInstanceOf('\\zsql\\Exception', $exception);
+  }
+  
+  public function test_interpolate_ThrowsException2()
+  {
+    $query = new \zsql\Delete();
+    $exception = null;
+    try {
+      $query->table('tableName')->where('a??', 'b');
+      $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+      $query->toString();
+    } catch( Exception $e ) {
+      $exception = $e;
+    }
+    $this->assertInstanceOf('\\zsql\\Exception', $exception);
   }
 }
