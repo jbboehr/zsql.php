@@ -209,4 +209,34 @@ class Select_Test extends Common_Test
     }
     $this->assertInstanceOf('\\zsql\\Exception', $exception);
   }
+  
+  public function testQuery_WithInterpolation()
+  {
+    $expectedQuery = "SELECT * FROM `tableName` WHERE `columnName` = 'value'";
+    $testObject = $this;
+    $callback = function($actualQuery)use($expectedQuery, $testObject) {
+      $testObject->assertEquals($expectedQuery, $actualQuery);
+      return $actualQuery;
+    };
+    $query = new \zsql\Select($callback);
+    $query->from('tableName')->where('columnName', 'value');
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals($expectedQuery, $query->query());
+  }
+  
+  public function testQuery_WithoutInterpolation()
+  {
+    $expectedQuery = "SELECT * FROM `tableName` WHERE `columnName` = ?";
+    $expectedParams = array('value');
+    $testObject = $this;
+    $callback = function($actualQuery, $actualParams)use($expectedQuery, $expectedParams, $testObject) {
+      $testObject->assertEquals($expectedQuery, $actualQuery);
+      $testObject->assertEquals($expectedParams, $actualParams);
+      return $actualQuery;
+    };
+    $query = new \zsql\Select($callback);
+    $query->from('tableName')->where('columnName', 'value');
+    $this->assertEquals($expectedQuery, $query->query());
+    $this->assertEquals($expectedParams, $query->params());
+  }
 }

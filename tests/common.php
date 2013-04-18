@@ -33,15 +33,28 @@ class Common_Test extends PHPUnit_Framework_TestCase
     $this->assertEquals(true, is_array($this->_factory()->params()));
   }
   
+  public function testQuery_ThrowsException()
+  {
+    $query = $this->_factory();
+    $exception = null;
+    try {
+      $query->query();
+    } catch( Exception $e ) {
+      $exception = $e;
+    }
+    $this->assertInstanceOf('\\zsql\\Exception', $exception);
+  }
+  
   public function testSetQuoteCallback_ThrowsException()
   {
     $query = $this->_factory();
+    $exception = null;
     try {
       $query->setQuoteCallback(false);
-      $this->assertTrue(false); // -_-
     } catch( Exception $e ) {
-      $this->assertInstanceOf('\\zsql\\Exception', $e);
+      $exception = $e;
     }
+    $this->assertInstanceOf('\\zsql\\Exception', $exception);
   }
   
   protected function _factory()

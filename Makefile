@@ -1,12 +1,12 @@
 
 test: 
-	@cd tests; ../vendor/bin/phpunit .
+	@"./vendor/bin/phpunit" -c tests/phpunit.xml tests
 	
 test-cov-cli:
-	@cd tests; ../vendor/bin/phpunit --coverage-text .
+	@"./vendor/bin/phpunit" -c tests/phpunit.xml  --coverage-text tests
 
 test-cov-html:
-	cd tests; ../vendor/bin/phpunit --coverage-html ../reports .
-		
+	@"./vendor/bin/phpunit" -c tests/phpunit.xml  --coverage-html reports tests
+
 docs:
 	vendor/bin/apigen.php --destination doc/ --source src/

@@ -47,6 +47,13 @@ abstract class Query
   protected $_query;
   
   /**
+   * The function to proxy calls to query to
+   * 
+   * @var callback
+   */
+  protected $_queryCallback;
+  
+  /**
    * The character to use to quote strings
    * 
    * @var string
@@ -59,6 +66,18 @@ abstract class Query
    * @var string
    */
   protected $_quoteIdentifierChar = '`';
+  
+  /**
+   * Constructor 
+   * 
+   * @param callback $queryCallback
+   */
+  public function __construct($queryCallback = null)
+  {
+    if( $queryCallback ) {
+      $this->_queryCallback = $queryCallback;
+    }
+  }
   
   /**
    * Toggle whether to interpolate parameters into the query
@@ -89,6 +108,27 @@ abstract class Query
   public function params()
   {
     return (array) $this->_params;
+  }
+  
+  /**
+   * Proxy to query callback
+   * 
+   * @return mixed
+   * @throws \zsql\Exception
+   */
+  public function query()
+  {
+    if( !$this->_queryCallback ) {
+      throw new \zsql\Exception('query() called when no callback set');
+    }
+    $c = $this->_queryCallback;
+    $query = $this->toString();
+    $params = $this->params();
+    if( $this->_interpolation ) {
+      return $c($query);
+    } else {
+      return $c($query, $params);
+    }
   }
   
   /**

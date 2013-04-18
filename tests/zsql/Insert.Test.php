@@ -141,4 +141,34 @@ class Insert_Test extends Common_Test
     }
     $this->assertInstanceOf('\\zsql\\Exception', $exception);
   }
+  
+  public function testQuery_WithInterpolation()
+  {
+    $expectedQuery = "INSERT INTO `tableName` SET `columnName` = 'value'";
+    $testObject = $this;
+    $callback = function($actualQuery)use($expectedQuery, $testObject) {
+      $testObject->assertEquals($expectedQuery, $actualQuery);
+      return $actualQuery;
+    };
+    $query = new \zsql\Insert($callback);
+    $query->into('tableName')->set('columnName', 'value');
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals($expectedQuery, $query->query());
+  }
+  
+  public function testQuery_WithoutInterpolation()
+  {
+    $expectedQuery = "INSERT INTO `tableName` SET `columnName` = ?";
+    $expectedParams = array('value');
+    $testObject = $this;
+    $callback = function($actualQuery, $actualParams)use($expectedQuery, $expectedParams, $testObject) {
+      $testObject->assertEquals($expectedQuery, $actualQuery);
+      $testObject->assertEquals($expectedParams, $actualParams);
+      return $actualQuery;
+    };
+    $query = new \zsql\Insert($callback);
+    $query->into('tableName')->set('columnName', 'value');
+    $this->assertEquals($expectedQuery, $query->query());
+    $this->assertEquals($expectedParams, $query->params());
+  }
 }
