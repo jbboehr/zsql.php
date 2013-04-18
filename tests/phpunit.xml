@@ -19,4 +19,13 @@
       <exclude>bootstrap.php</exclude>
     </testsuite>
   </testsuites>
+  
+  <filter>
+    <blacklist>
+      <directory>../vendor</directory>
+      <directory>../doc</directory>
+      <directory>../reports</directory>
+      <directory>../tests</directory>
+    </blacklist>
+  </filter>
 </phpunit>
