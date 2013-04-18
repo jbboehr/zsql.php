@@ -121,13 +121,12 @@ abstract class Query
     if( !$this->_queryCallback ) {
       throw new \zsql\Exception('query() called when no callback set');
     }
-    $c = $this->_queryCallback;
     $query = $this->toString();
     $params = $this->params();
     if( $this->_interpolation ) {
-      return $c($query);
+      return call_user_func($this->_queryCallback, $query);
     } else {
-      return $c($query, $params);
+      return call_user_func($this->_queryCallback, $query, $params);
     }
   }
   
@@ -200,11 +199,10 @@ abstract class Query
       throw new \zsql\Exception('Parameter count mismatch');
     }
     
-    $fn = $this->_quoteCallback;
     $parts = explode('?', $this->_query);
     $query = $parts[0];
     for( $i = 0, $l = count($this->_params); $i < $l; $i++ ) {
-      $query .= $fn($this->_params[$i]) . $parts[$i+1];
+      $query .= call_user_func($this->_quoteCallback, $this->_params[$i]) . $parts[$i+1];
     }
     $this->_query = $query;
   }
