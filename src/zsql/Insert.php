@@ -19,6 +19,13 @@ class Insert extends Query
   protected $_ignore;
   
   /**
+   * Use replace instead of insert
+   * 
+   * @var boolean
+   */
+  protected $_replace;
+  
+  /**
    * Values
    * 
    * @var array
@@ -70,6 +77,18 @@ class Insert extends Query
   public function into($table)
   {
     $this->table($table);
+    return $this;
+  }
+  
+  /**
+   * Use replace instead of insert
+   * 
+   * @param boolean $replace
+   * @return \zsql\Insert
+   */
+  public function replace($replace = true)
+  {
+    $this->_replace = (bool) $replace;
     return $this;
   }
   
@@ -126,7 +145,9 @@ class Insert extends Query
    */
   protected function _assemble()
   {
-    $this->_push('INSERT')
+    $this->_push($this->_replace ? 
+                  'REPLACE' : 
+                  'INSERT')
          ->_pushIgnoreDelayed()
          ->_push('INTO')
          ->_pushTable()
@@ -144,7 +165,7 @@ class Insert extends Query
     if( $this->_delayed ) {
       $this->_parts[] = 'DELAYED';
     }
-    if( $this->_ignore ) {
+    if( $this->_ignore && !$this->_replace ) {
       $this->_parts[] = 'IGNORE';
     }
     return $this;

@@ -66,6 +66,37 @@ class Insert_Test extends Common_Test
     $this->assertEquals("INSERT INTO `tableName` SET `columnName` = 'value'", $query->toString());
   }
   
+  public function testReplace()
+  {
+    $query = new \zsql\Insert();
+    $query
+      ->into('tableName')
+      ->replace()
+      ->set('columnName', 'value');
+    $this->assertEquals('REPLACE INTO `tableName` SET `columnName` = ?', $query->toString());
+    $this->assertEquals(array('value'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("REPLACE INTO `tableName` SET `columnName` = 'value'", $query->toString());
+  }
+  
+  public function testReplace_False()
+  {
+    $query = new \zsql\Insert();
+    $query
+      ->into('tableName')
+      ->replace(true)
+      ->replace(false)
+      ->set('columnName', 'value');
+    $this->assertEquals('INSERT INTO `tableName` SET `columnName` = ?', $query->toString());
+    $this->assertEquals(array('value'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("INSERT INTO `tableName` SET `columnName` = 'value'", $query->toString());
+  }
+  
   public function testToString_ThrowsExceptionWithNoTable()
   {
     $query = new \zsql\Insert();
