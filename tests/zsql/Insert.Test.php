@@ -66,6 +66,27 @@ class Insert_Test extends Common_Test
     $this->assertEquals("INSERT INTO `tableName` SET `columnName` = 'value'", $query->toString());
   }
   
+  public function testOnDuplicateKeyUpdate()
+  {
+    $query = new \zsql\Insert();
+    $query
+      ->into('tableName')
+      ->set('columnName', 'value')
+      ->onDuplicateKeyUpdate(array('a' => 'b'))
+      ->onDuplicateKeyUpdate(new \zsql\Expression('columnName = VALUE(columnName)'))
+      ->onDuplicateKeyUpdate('c', 'd');
+    $this->assertEquals('INSERT INTO `tableName` SET `columnName` = ? '
+        . 'ON DUPLICATE KEY UPDATE '
+        . '`a` = ? , columnName = VALUE(columnName) , `c` = ?', $query->toString());
+    $this->assertEquals(array('value', 'b', 'd'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("INSERT INTO `tableName` SET `columnName` = 'value' "
+        . 'ON DUPLICATE KEY UPDATE '
+        . "`a` = 'b' , columnName = VALUE(columnName) , `c` = 'd'", $query->toString());
+  }
+  
   public function testReplace()
   {
     $query = new \zsql\Insert();

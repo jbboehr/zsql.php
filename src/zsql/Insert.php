@@ -19,6 +19,13 @@ class Insert extends Query
   protected $_ignore;
   
   /**
+   * Set on duplicate key update clause
+   * 
+   * @var array
+   */
+  protected $_onDuplicateKeyUpdate;
+  
+  /**
    * Use replace instead of insert
    * 
    * @var boolean
@@ -77,6 +84,23 @@ class Insert extends Query
   public function into($table)
   {
     $this->table($table);
+    return $this;
+  }
+  
+  /**
+   * Set on duplicate key update clause
+   * 
+   * @param array $values
+   */
+  public function onDuplicateKeyUpdate($key, $value = null)
+  {
+    if( func_num_args() == 2 ) {
+      $this->_onDuplicateKeyUpdate[$key] = $value;
+    } else if( $key instanceof Expression ) {
+      $this->_onDuplicateKeyUpdate[] = $key;
+    } else if( is_array($key) ) {
+      $this->_onDuplicateKeyUpdate = $key;
+    }
     return $this;
   }
   
@@ -152,7 +176,8 @@ class Insert extends Query
          ->_push('INTO')
          ->_pushTable()
          ->_push('SET')
-         ->_pushValues();
+         ->_pushValues()
+         ->_pushOnDuplicateKeyUpdate();
   }
   
   /**
@@ -167,6 +192,23 @@ class Insert extends Query
     }
     if( $this->_ignore && !$this->_replace ) {
       $this->_parts[] = 'IGNORE';
+    }
+    return $this;
+  }
+  
+  /**
+   * Push on duplicate key update clause
+   * 
+   * @return \zsql\Insert
+   */
+  protected function _pushOnDuplicateKeyUpdate()
+  {
+    if( $this->_onDuplicateKeyUpdate ) {
+      $this->_parts[] = 'ON DUPLICATE KEY UPDATE';
+      $tmp = $this->_values;
+      $this->_values = $this->_onDuplicateKeyUpdate;
+      $this->_pushValues();
+      $this->_values = $tmp;
     }
     return $this;
   }
