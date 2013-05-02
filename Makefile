@@ -10,3 +10,13 @@ test-cov-html:
 
 docs:
 	vendor/bin/apigen.php --destination doc/ --source src/
+
+phar: clean
+	@mkdir ./build
+	@php -d "phar.readonly=0" "./bin/compile.php"
+
+test-phar: phar
+	@PHAR=1 "./vendor/bin/phpunit" -c tests/phpunit.xml tests
+
+clean:
+	@rm -Rf ./build

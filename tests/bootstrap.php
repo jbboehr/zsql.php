@@ -3,13 +3,21 @@
 $basepath = realpath(dirname(dirname(__FILE__)));
 $testpath = realpath(dirname(__FILE__));
 
-require $basepath . '/src/zsql/Exception.php';
-require $basepath . '/src/zsql/Expression.php';
-require $basepath . '/src/zsql/Query.php';
-require $basepath . '/src/zsql/ExtendedQuery.php';
-require $basepath . '/src/zsql/Delete.php';
-require $basepath . '/src/zsql/Insert.php';
-require $basepath . '/src/zsql/Select.php';
-require $basepath . '/src/zsql/Update.php';
+if( empty($_SERVER['PHAR']) ) {
+  $srcpath = $basepath . '/src/zsql';
+} else {
+  require $basepath . '/build/zsql.phar';
+  $srcpath = 'phar://zsql.phar';
+}
+
+
+require $srcpath . '/Exception.php';
+require $srcpath . '/Expression.php';
+require $srcpath . '/Query.php';
+require $srcpath . '/ExtendedQuery.php';
+require $srcpath . '/Delete.php';
+require $srcpath . '/Insert.php';
+require $srcpath . '/Select.php';
+require $srcpath . '/Update.php';
 
 require $testpath . '/common.php';
