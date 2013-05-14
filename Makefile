@@ -8,6 +8,10 @@ test-cov-cli:
 test-cov-html:
 	@"./vendor/bin/phpunit" -c tests/phpunit.xml  --coverage-html reports tests
 
+compatinfo:
+	@phpci print -R --report full src > compatinfo.log
+	@less compatinfo.log
+
 docs:
 	vendor/bin/apigen.php --destination doc/ --source src/
 
