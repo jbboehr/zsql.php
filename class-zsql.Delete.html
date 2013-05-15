@@ -21,9 +21,9 @@
 		<div id="groups">
 			<h3>Namespaces</h3>
 			<ul>
-				<li><a href="namespace-PHP.html">PHP</a>
+				<li class="active main"><a href="namespace-zsql.html">zsql</a>
 						</li>
-				<li class="active"><a href="namespace-zsql.html">zsql</a>
+				<li><a href="namespace-PHP.html">PHP</a>
 						</li>
 			</ul>
 		</div>
@@ -90,6 +90,11 @@
 	<h1>Class Delete</h1>
 
 
+	<div class="description">
+	
+<p>Delete query generator</p>
+
+	</div>
 
 	<dl class="tree">
 		<dd style="padding-left:0px">
@@ -126,13 +131,46 @@
 		<b>Namespace:</b> <a href="namespace-zsql.html">zsql</a><br />
 		
 
-		<b>Located at</b> <a href="source-class-zsql.Delete.html#5-34" title="Go to source code">zsql/Delete.php</a><br />
+		<b>Located at</b> <a href="source-class-zsql.Delete.html#5-37" title="Go to source code">zsql/Delete.php</a><br />
 	</div>
 
 
 
 	<table class="summary" id="methods">
 	<caption>Methods summary</caption>
+	<tr data-order="assemble" id="_assemble">
+
+		<td class="attributes"><code>
+			 protected 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_assemble">#</a>
+		<code><a href="source-class-zsql.Delete.html#10-24" title="Go to source code">assemble</a>( )</code>
+
+		<div class="description short">
+			
+<p>Assemble parts</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Assemble parts</p>
+
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
 	<tr data-order="from" id="_from">
 
 		<td class="attributes"><code>
@@ -144,17 +182,17 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_from">#</a>
-		<code><a href="source-class-zsql.Delete.html#7-17" title="Go to source code">from</a>( <span>string <var>$table</var></span> )</code>
+		<code><a href="source-class-zsql.Delete.html#26-36" title="Go to source code">from</a>( <span>string <var>$table</var></span> )</code>
 
 		<div class="description short">
 			
-<p>Alias for table()</p>
+<p>Alias for <code><a href="class-zsql.Query.html#_table">zsql\Query::table()</a></code></p>
 
 		</div>
 
 		<div class="description detailed hidden">
 			
-<p>Alias for table()</p>
+<p>Alias for <code><a href="class-zsql.Query.html#_table">zsql\Query::table()</a></code></p>
 
 
 
@@ -175,53 +213,20 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="_assemble" id="__assemble">
-
-		<td class="attributes"><code>
-			 protected 
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#__assemble">#</a>
-		<code><a href="source-class-zsql.Delete.html#19-33" title="Go to source code">_assemble</a>( )</code>
-
-		<div class="description short">
-			
-<p>Assemble parts</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Assemble parts</p>
-
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
 	</table>
 
 	<table class="summary inherited">
 	<caption>Methods inherited from <a href="class-zsql.ExtendedQuery.html#methods">zsql\ExtendedQuery</a></caption>
 	<tr>
 		<td><code>
-			<a href="class-zsql.ExtendedQuery.html#__pushGroup">_pushGroup()</a>, 
-			<a href="class-zsql.ExtendedQuery.html#__pushLimit">_pushLimit()</a>, 
-			<a href="class-zsql.ExtendedQuery.html#__pushOrder">_pushOrder()</a>, 
-			<a href="class-zsql.ExtendedQuery.html#__pushWhere">_pushWhere()</a>, 
 			<a href="class-zsql.ExtendedQuery.html#_group">group()</a>, 
 			<a href="class-zsql.ExtendedQuery.html#_limit">limit()</a>, 
 			<a href="class-zsql.ExtendedQuery.html#_offset">offset()</a>, 
 			<a href="class-zsql.ExtendedQuery.html#_order">order()</a>, 
+			<a href="class-zsql.ExtendedQuery.html#_pushGroup">pushGroup()</a>, 
+			<a href="class-zsql.ExtendedQuery.html#_pushLimit">pushLimit()</a>, 
+			<a href="class-zsql.ExtendedQuery.html#_pushOrder">pushOrder()</a>, 
+			<a href="class-zsql.ExtendedQuery.html#_pushWhere">pushWhere()</a>, 
 			<a href="class-zsql.ExtendedQuery.html#_where">where()</a>, 
 			<a href="class-zsql.ExtendedQuery.html#_whereExpr">whereExpr()</a>, 
 			<a href="class-zsql.ExtendedQuery.html#_whereIn">whereIn()</a>
@@ -234,16 +239,16 @@
 		<td><code>
 			<a href="class-zsql.Query.html#___construct">__construct()</a>, 
 			<a href="class-zsql.Query.html#___toString">__toString()</a>, 
-			<a href="class-zsql.Query.html#__interpolate">_interpolate()</a>, 
-			<a href="class-zsql.Query.html#__push">_push()</a>, 
-			<a href="class-zsql.Query.html#__pushTable">_pushTable()</a>, 
-			<a href="class-zsql.Query.html#__pushValues">_pushValues()</a>, 
-			<a href="class-zsql.Query.html#__quoteIdentifier">_quoteIdentifier()</a>, 
-			<a href="class-zsql.Query.html#__quoteIdentifierIfNotExpression">_quoteIdentifierIfNotExpression()</a>, 
+			<a href="class-zsql.Query.html#_interpolateParams">interpolateParams()</a>, 
 			<a href="class-zsql.Query.html#_interpolation">interpolation()</a>, 
 			<a href="class-zsql.Query.html#_params">params()</a>, 
 			<a href="class-zsql.Query.html#_parts">parts()</a>, 
+			<a href="class-zsql.Query.html#_push">push()</a>, 
+			<a href="class-zsql.Query.html#_pushTable">pushTable()</a>, 
+			<a href="class-zsql.Query.html#_pushValues">pushValues()</a>, 
 			<a href="class-zsql.Query.html#_query">query()</a>, 
+			<a href="class-zsql.Query.html#_quoteIdentifier">quoteIdentifier()</a>, 
+			<a href="class-zsql.Query.html#_quoteIdentifierIfNotExpression">quoteIdentifierIfNotExpression()</a>, 
 			<a href="class-zsql.Query.html#_setQuoteCallback">setQuoteCallback()</a>, 
 			<a href="class-zsql.Query.html#_table">table()</a>, 
 			<a href="class-zsql.Query.html#_toString">toString()</a>
@@ -266,12 +271,12 @@
 	<caption>Properties inherited from <a href="class-zsql.ExtendedQuery.html#properties">zsql\ExtendedQuery</a></caption>
 	<tr>
 		<td><code>
-			<a href="class-zsql.ExtendedQuery.html#$_direction"><var>$_direction</var></a>, 
-			<a href="class-zsql.ExtendedQuery.html#$_group"><var>$_group</var></a>, 
-			<a href="class-zsql.ExtendedQuery.html#$_limit"><var>$_limit</var></a>, 
-			<a href="class-zsql.ExtendedQuery.html#$_offset"><var>$_offset</var></a>, 
-			<a href="class-zsql.ExtendedQuery.html#$_order"><var>$_order</var></a>, 
-			<a href="class-zsql.ExtendedQuery.html#$_where"><var>$_where</var></a>
+			<a href="class-zsql.ExtendedQuery.html#$direction"><var>$direction</var></a>, 
+			<a href="class-zsql.ExtendedQuery.html#$group"><var>$group</var></a>, 
+			<a href="class-zsql.ExtendedQuery.html#$limit"><var>$limit</var></a>, 
+			<a href="class-zsql.ExtendedQuery.html#$offset"><var>$offset</var></a>, 
+			<a href="class-zsql.ExtendedQuery.html#$order"><var>$order</var></a>, 
+			<a href="class-zsql.ExtendedQuery.html#$where"><var>$where</var></a>
 		</code></td>
 	</tr>
 	</table>
@@ -279,15 +284,15 @@
 	<caption>Properties inherited from <a href="class-zsql.Query.html#properties">zsql\Query</a></caption>
 	<tr>
 		<td><code>
-			<a href="class-zsql.Query.html#$_interpolation"><var>$_interpolation</var></a>, 
-			<a href="class-zsql.Query.html#$_params"><var>$_params</var></a>, 
-			<a href="class-zsql.Query.html#$_parts"><var>$_parts</var></a>, 
-			<a href="class-zsql.Query.html#$_query"><var>$_query</var></a>, 
-			<a href="class-zsql.Query.html#$_queryCallback"><var>$_queryCallback</var></a>, 
-			<a href="class-zsql.Query.html#$_quoteCallback"><var>$_quoteCallback</var></a>, 
-			<a href="class-zsql.Query.html#$_quoteChar"><var>$_quoteChar</var></a>, 
-			<a href="class-zsql.Query.html#$_quoteIdentifierChar"><var>$_quoteIdentifierChar</var></a>, 
-			<a href="class-zsql.Query.html#$_table"><var>$_table</var></a>
+			<a href="class-zsql.Query.html#$interpolation"><var>$interpolation</var></a>, 
+			<a href="class-zsql.Query.html#$params"><var>$params</var></a>, 
+			<a href="class-zsql.Query.html#$parts"><var>$parts</var></a>, 
+			<a href="class-zsql.Query.html#$query"><var>$query</var></a>, 
+			<a href="class-zsql.Query.html#$queryCallback"><var>$queryCallback</var></a>, 
+			<a href="class-zsql.Query.html#$quoteCallback"><var>$quoteCallback</var></a>, 
+			<a href="class-zsql.Query.html#$quoteChar"><var>$quoteChar</var></a>, 
+			<a href="class-zsql.Query.html#$quoteIdentifierChar"><var>$quoteIdentifierChar</var></a>, 
+			<a href="class-zsql.Query.html#$table"><var>$table</var></a>
 		</code></td>
 	</tr>
 	</table>

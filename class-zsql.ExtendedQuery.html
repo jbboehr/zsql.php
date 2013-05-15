@@ -21,9 +21,9 @@
 		<div id="groups">
 			<h3>Namespaces</h3>
 			<ul>
-				<li><a href="namespace-PHP.html">PHP</a>
+				<li class="active main"><a href="namespace-zsql.html">zsql</a>
 						</li>
-				<li class="active"><a href="namespace-zsql.html">zsql</a>
+				<li><a href="namespace-PHP.html">PHP</a>
 						</li>
 			</ul>
 		</div>
@@ -90,6 +90,12 @@
 	<h1>Class ExtendedQuery</h1>
 
 
+	<div class="description">
+	
+<p>Abstract class for queries that support select-like functionality (delete,
+select, update)</p>
+
+	</div>
 
 	<dl class="tree">
 		<dd style="padding-left:0px">
@@ -125,143 +131,13 @@
 		<b>Namespace:</b> <a href="namespace-zsql.html">zsql</a><br />
 		
 
-		<b>Located at</b> <a href="source-class-zsql.ExtendedQuery.html#5-252" title="Go to source code">zsql/ExtendedQuery.php</a><br />
+		<b>Located at</b> <a href="source-class-zsql.ExtendedQuery.html#5-256" title="Go to source code">zsql/ExtendedQuery.php</a><br />
 	</div>
 
 
 
 	<table class="summary" id="methods">
 	<caption>Methods summary</caption>
-	<tr data-order="where" id="_where">
-
-		<td class="attributes"><code>
-			 public 
-			<code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code>
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_where">#</a>
-		<code><a href="source-class-zsql.ExtendedQuery.html#49-65" title="Go to source code">where</a>( <span>mixed <var>$where</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
-
-		<div class="description short">
-			
-<p>Set where</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Set where</p>
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$where</var></dt>
-					<dd><code>mixed</code><br>$where</dd>
-					<dt><var>$value</var></dt>
-					<dd><code>mixed</code><br>$value</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="whereIn" id="_whereIn">
-
-		<td class="attributes"><code>
-			 public 
-			<code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code>
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_whereIn">#</a>
-		<code><a href="source-class-zsql.ExtendedQuery.html#67-85" title="Go to source code">whereIn</a>( <span>mixed <var>$where</var></span>, <span>array <var>$value</var></span> )</code>
-
-		<div class="description short">
-			
-<p>Set where in</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Set where in</p>
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$where</var></dt>
-					<dd><code>mixed</code><br>$where</dd>
-					<dt><var>$value</var></dt>
-					<dd><code>array</code><br>$value</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="whereExpr" id="_whereExpr">
-
-		<td class="attributes"><code>
-			 public 
-			<code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code>
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_whereExpr">#</a>
-		<code><a href="source-class-zsql.ExtendedQuery.html#87-98" title="Go to source code">whereExpr</a>( <span>string <var>$where</var></span> )</code>
-
-		<div class="description short">
-			
-<p>Set where expression. Shorthand for: where(new Expression('string'))</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Set where expression. Shorthand for: where(new Expression('string'))</p>
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$where</var></dt>
-					<dd><code>string</code><br>$where</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
 	<tr data-order="group" id="_group">
 
 		<td class="attributes"><code>
@@ -273,7 +149,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_group">#</a>
-		<code><a href="source-class-zsql.ExtendedQuery.html#100-110" title="Go to source code">group</a>( <span>string <var>$column</var></span> )</code>
+		<code><a href="source-class-zsql.ExtendedQuery.html#53-63" title="Go to source code">group</a>( <span>string <var>$column</var></span> )</code>
 
 		<div class="description short">
 			
@@ -304,50 +180,6 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="order" id="_order">
-
-		<td class="attributes"><code>
-			 public 
-			<code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code>
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_order">#</a>
-		<code><a href="source-class-zsql.ExtendedQuery.html#112-124" title="Go to source code">order</a>( <span>string <var>$order</var></span>, <span>string <var>$direction</var> = <span class="php-quote">'ASC'</span></span> )</code>
-
-		<div class="description short">
-			
-<p>Set order</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Set order</p>
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$order</var></dt>
-					<dd><code>string</code><br>$order</dd>
-					<dt><var>$direction</var></dt>
-					<dd><code>string</code><br>$direction</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
 	<tr data-order="limit" id="_limit">
 
 		<td class="attributes"><code>
@@ -359,7 +191,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_limit">#</a>
-		<code><a href="source-class-zsql.ExtendedQuery.html#126-140" title="Go to source code">limit</a>( <span>integer <var>$limit</var></span>, <span>integer <var>$offset</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-zsql.ExtendedQuery.html#65-79" title="Go to source code">limit</a>( <span>integer <var>$limit</var></span>, <span>integer <var>$offset</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -403,7 +235,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_offset">#</a>
-		<code><a href="source-class-zsql.ExtendedQuery.html#142-156" title="Go to source code">offset</a>( <span>integer <var>$offset</var></span>, <span>integer <var>$limit</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-zsql.ExtendedQuery.html#81-95" title="Go to source code">offset</a>( <span>integer <var>$offset</var></span>, <span>integer <var>$limit</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -436,7 +268,51 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="_pushWhere" id="__pushWhere">
+	<tr data-order="order" id="_order">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_order">#</a>
+		<code><a href="source-class-zsql.ExtendedQuery.html#97-109" title="Go to source code">order</a>( <span>string <var>$order</var></span>, <span>string <var>$direction</var> = <span class="php-quote">'ASC'</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Set order</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set order</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$order</var></dt>
+					<dd><code>string</code><br>$order</dd>
+					<dt><var>$direction</var></dt>
+					<dd><code>string</code><br>$direction</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code></code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="pushLimit" id="_pushLimit">
 
 		<td class="attributes"><code>
 			 protected 
@@ -446,18 +322,18 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#__pushWhere">#</a>
-		<code><a href="source-class-zsql.ExtendedQuery.html#158-202" title="Go to source code">_pushWhere</a>( )</code>
+		<a class="anchor" href="#_pushLimit">#</a>
+		<code><a href="source-class-zsql.ExtendedQuery.html#111-129" title="Go to source code">pushLimit</a>( )</code>
 
 		<div class="description short">
 			
-<p>Push where clause onto parts</p>
+<p>Push limit clause onto parts</p>
 
 		</div>
 
 		<div class="description detailed hidden">
 			
-<p>Push where clause onto parts</p>
+<p>Push limit clause onto parts</p>
 
 
 
@@ -473,7 +349,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="_pushGroup" id="__pushGroup">
+	<tr data-order="pushGroup" id="_pushGroup">
 
 		<td class="attributes"><code>
 			 protected 
@@ -483,8 +359,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#__pushGroup">#</a>
-		<code><a href="source-class-zsql.ExtendedQuery.html#204-216" title="Go to source code">_pushGroup</a>( )</code>
+		<a class="anchor" href="#_pushGroup">#</a>
+		<code><a href="source-class-zsql.ExtendedQuery.html#131-143" title="Go to source code">pushGroup</a>( )</code>
 
 		<div class="description short">
 			
@@ -510,7 +386,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="_pushOrder" id="__pushOrder">
+	<tr data-order="pushOrder" id="_pushOrder">
 
 		<td class="attributes"><code>
 			 protected 
@@ -520,8 +396,8 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#__pushOrder">#</a>
-		<code><a href="source-class-zsql.ExtendedQuery.html#218-231" title="Go to source code">_pushOrder</a>( )</code>
+		<a class="anchor" href="#_pushOrder">#</a>
+		<code><a href="source-class-zsql.ExtendedQuery.html#145-158" title="Go to source code">pushOrder</a>( )</code>
 
 		<div class="description short">
 			
@@ -547,7 +423,7 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="_pushLimit" id="__pushLimit">
+	<tr data-order="pushWhere" id="_pushWhere">
 
 		<td class="attributes"><code>
 			 protected 
@@ -557,21 +433,151 @@
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#__pushLimit">#</a>
-		<code><a href="source-class-zsql.ExtendedQuery.html#233-251" title="Go to source code">_pushLimit</a>( )</code>
+		<a class="anchor" href="#_pushWhere">#</a>
+		<code><a href="source-class-zsql.ExtendedQuery.html#160-204" title="Go to source code">pushWhere</a>( )</code>
 
 		<div class="description short">
 			
-<p>Push limit clause onto parts</p>
+<p>Push where clause onto parts</p>
 
 		</div>
 
 		<div class="description detailed hidden">
 			
-<p>Push limit clause onto parts</p>
+<p>Push where clause onto parts</p>
 
 
 
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code></code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="where" id="_where">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_where">#</a>
+		<code><a href="source-class-zsql.ExtendedQuery.html#206-222" title="Go to source code">where</a>( <span>mixed <var>$where</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Set where</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set where</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$where</var></dt>
+					<dd><code>mixed</code><br>$where</dd>
+					<dt><var>$value</var></dt>
+					<dd><code>mixed</code><br>$value</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code></code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="whereExpr" id="_whereExpr">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_whereExpr">#</a>
+		<code><a href="source-class-zsql.ExtendedQuery.html#224-235" title="Go to source code">whereExpr</a>( <span>string <var>$where</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set where expression. Shorthand for: where(new Expression('string'))</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set where expression. Shorthand for: where(new Expression('string'))</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$where</var></dt>
+					<dd><code>string</code><br>$where</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code></code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="whereIn" id="_whereIn">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-zsql.ExtendedQuery.html">zsql\ExtendedQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_whereIn">#</a>
+		<code><a href="source-class-zsql.ExtendedQuery.html#237-255" title="Go to source code">whereIn</a>( <span>mixed <var>$where</var></span>, <span>array <var>$value</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set where in</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set where in</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$where</var></dt>
+					<dd><code>mixed</code><br>$where</dd>
+					<dt><var>$value</var></dt>
+					<dd><code>array</code><br>$value</dd>
+				</dl></div>
 
 				<h4>Returns</h4>
 				<div class="list">
@@ -592,17 +598,17 @@
 		<td><code>
 			<a href="class-zsql.Query.html#___construct">__construct()</a>, 
 			<a href="class-zsql.Query.html#___toString">__toString()</a>, 
-			<a href="class-zsql.Query.html#__assemble">_assemble()</a>, 
-			<a href="class-zsql.Query.html#__interpolate">_interpolate()</a>, 
-			<a href="class-zsql.Query.html#__push">_push()</a>, 
-			<a href="class-zsql.Query.html#__pushTable">_pushTable()</a>, 
-			<a href="class-zsql.Query.html#__pushValues">_pushValues()</a>, 
-			<a href="class-zsql.Query.html#__quoteIdentifier">_quoteIdentifier()</a>, 
-			<a href="class-zsql.Query.html#__quoteIdentifierIfNotExpression">_quoteIdentifierIfNotExpression()</a>, 
+			<a href="class-zsql.Query.html#_assemble">assemble()</a>, 
+			<a href="class-zsql.Query.html#_interpolateParams">interpolateParams()</a>, 
 			<a href="class-zsql.Query.html#_interpolation">interpolation()</a>, 
 			<a href="class-zsql.Query.html#_params">params()</a>, 
 			<a href="class-zsql.Query.html#_parts">parts()</a>, 
+			<a href="class-zsql.Query.html#_push">push()</a>, 
+			<a href="class-zsql.Query.html#_pushTable">pushTable()</a>, 
+			<a href="class-zsql.Query.html#_pushValues">pushValues()</a>, 
 			<a href="class-zsql.Query.html#_query">query()</a>, 
+			<a href="class-zsql.Query.html#_quoteIdentifier">quoteIdentifier()</a>, 
+			<a href="class-zsql.Query.html#_quoteIdentifierIfNotExpression">quoteIdentifierIfNotExpression()</a>, 
 			<a href="class-zsql.Query.html#_setQuoteCallback">setQuoteCallback()</a>, 
 			<a href="class-zsql.Query.html#_table">table()</a>, 
 			<a href="class-zsql.Query.html#_toString">toString()</a>
@@ -622,18 +628,18 @@
 
 	<table class="summary" id="properties">
 	<caption>Properties summary</caption>
-	<tr data-order="_direction" id="$_direction">
+	<tr data-order="direction" id="$direction">
 		<td class="attributes"><code>
 			protected  
 			string
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.ExtendedQuery.html#7-12" title="Go to source code"><var>$_direction</var></a>
+				<a href="source-class-zsql.ExtendedQuery.html#11-16" title="Go to source code"><var>$direction</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_direction" class="anchor">#</a>
+			<a href="#$direction" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -649,18 +655,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_group" id="$_group">
+	<tr data-order="group" id="$group">
 		<td class="attributes"><code>
 			protected  
 			string
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.ExtendedQuery.html#14-19" title="Go to source code"><var>$_group</var></a>
+				<a href="source-class-zsql.ExtendedQuery.html#18-23" title="Go to source code"><var>$group</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_group" class="anchor">#</a>
+			<a href="#$group" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -676,18 +682,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_limit" id="$_limit">
+	<tr data-order="limit" id="$limit">
 		<td class="attributes"><code>
 			protected  
 			integer
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.ExtendedQuery.html#21-26" title="Go to source code"><var>$_limit</var></a>
+				<a href="source-class-zsql.ExtendedQuery.html#25-30" title="Go to source code"><var>$limit</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_limit" class="anchor">#</a>
+			<a href="#$limit" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -703,18 +709,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_offset" id="$_offset">
+	<tr data-order="offset" id="$offset">
 		<td class="attributes"><code>
 			protected  
 			integer
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.ExtendedQuery.html#28-33" title="Go to source code"><var>$_offset</var></a>
+				<a href="source-class-zsql.ExtendedQuery.html#32-37" title="Go to source code"><var>$offset</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_offset" class="anchor">#</a>
+			<a href="#$offset" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -730,18 +736,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_order" id="$_order">
+	<tr data-order="order" id="$order">
 		<td class="attributes"><code>
 			protected  
 			string
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.ExtendedQuery.html#35-40" title="Go to source code"><var>$_order</var></a>
+				<a href="source-class-zsql.ExtendedQuery.html#39-44" title="Go to source code"><var>$order</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_order" class="anchor">#</a>
+			<a href="#$order" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -757,18 +763,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_where" id="$_where">
+	<tr data-order="where" id="$where">
 		<td class="attributes"><code>
 			protected  
 			array
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.ExtendedQuery.html#42-47" title="Go to source code"><var>$_where</var></a>
+				<a href="source-class-zsql.ExtendedQuery.html#46-51" title="Go to source code"><var>$where</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_where" class="anchor">#</a>
+			<a href="#$where" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -790,15 +796,15 @@
 	<caption>Properties inherited from <a href="class-zsql.Query.html#properties">zsql\Query</a></caption>
 	<tr>
 		<td><code>
-			<a href="class-zsql.Query.html#$_interpolation"><var>$_interpolation</var></a>, 
-			<a href="class-zsql.Query.html#$_params"><var>$_params</var></a>, 
-			<a href="class-zsql.Query.html#$_parts"><var>$_parts</var></a>, 
-			<a href="class-zsql.Query.html#$_query"><var>$_query</var></a>, 
-			<a href="class-zsql.Query.html#$_queryCallback"><var>$_queryCallback</var></a>, 
-			<a href="class-zsql.Query.html#$_quoteCallback"><var>$_quoteCallback</var></a>, 
-			<a href="class-zsql.Query.html#$_quoteChar"><var>$_quoteChar</var></a>, 
-			<a href="class-zsql.Query.html#$_quoteIdentifierChar"><var>$_quoteIdentifierChar</var></a>, 
-			<a href="class-zsql.Query.html#$_table"><var>$_table</var></a>
+			<a href="class-zsql.Query.html#$interpolation"><var>$interpolation</var></a>, 
+			<a href="class-zsql.Query.html#$params"><var>$params</var></a>, 
+			<a href="class-zsql.Query.html#$parts"><var>$parts</var></a>, 
+			<a href="class-zsql.Query.html#$query"><var>$query</var></a>, 
+			<a href="class-zsql.Query.html#$queryCallback"><var>$queryCallback</var></a>, 
+			<a href="class-zsql.Query.html#$quoteCallback"><var>$quoteCallback</var></a>, 
+			<a href="class-zsql.Query.html#$quoteChar"><var>$quoteChar</var></a>, 
+			<a href="class-zsql.Query.html#$quoteIdentifierChar"><var>$quoteIdentifierChar</var></a>, 
+			<a href="class-zsql.Query.html#$table"><var>$table</var></a>
 		</code></td>
 	</tr>
 	</table>

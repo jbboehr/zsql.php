@@ -21,9 +21,9 @@
 		<div id="groups">
 			<h3>Namespaces</h3>
 			<ul>
-				<li><a href="namespace-PHP.html">PHP</a>
+				<li class="active main"><a href="namespace-zsql.html">zsql</a>
 						</li>
-				<li class="active"><a href="namespace-zsql.html">zsql</a>
+				<li><a href="namespace-PHP.html">PHP</a>
 						</li>
 			</ul>
 		</div>
@@ -90,6 +90,11 @@
 	<h1>Class Insert</h1>
 
 
+	<div class="description">
+	
+<p>Insert query generator</p>
+
+	</div>
 
 	<dl class="tree">
 		<dd style="padding-left:0px">
@@ -119,13 +124,46 @@
 		<b>Namespace:</b> <a href="namespace-zsql.html">zsql</a><br />
 		
 
-		<b>Located at</b> <a href="source-class-zsql.Insert.html#5-215" title="Go to source code">zsql/Insert.php</a><br />
+		<b>Located at</b> <a href="source-class-zsql.Insert.html#5-218" title="Go to source code">zsql/Insert.php</a><br />
 	</div>
 
 
 
 	<table class="summary" id="methods">
 	<caption>Methods summary</caption>
+	<tr data-order="assemble" id="_assemble">
+
+		<td class="attributes"><code>
+			 protected 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_assemble">#</a>
+		<code><a href="source-class-zsql.Insert.html#45-61" title="Go to source code">assemble</a>( )</code>
+
+		<div class="description short">
+			
+<p>Assemble parts</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Assemble parts</p>
+
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
 	<tr data-order="delayed" id="_delayed">
 
 		<td class="attributes"><code>
@@ -137,7 +175,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delayed">#</a>
-		<code><a href="source-class-zsql.Insert.html#42-52" title="Go to source code">delayed</a>( <span>boolean <var>$delayed</var> = <span class="php-keyword1">true</span></span> )</code>
+		<code><a href="source-class-zsql.Insert.html#63-73" title="Go to source code">delayed</a>( <span>boolean <var>$delayed</var> = <span class="php-keyword1">true</span></span> )</code>
 
 		<div class="description short">
 			
@@ -179,7 +217,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_ignore">#</a>
-		<code><a href="source-class-zsql.Insert.html#54-64" title="Go to source code">ignore</a>( <span>boolean <var>$ignore</var> = <span class="php-keyword1">true</span></span> )</code>
+		<code><a href="source-class-zsql.Insert.html#75-85" title="Go to source code">ignore</a>( <span>boolean <var>$ignore</var> = <span class="php-keyword1">true</span></span> )</code>
 
 		<div class="description short">
 			
@@ -221,17 +259,17 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_insert">#</a>
-		<code><a href="source-class-zsql.Insert.html#66-76" title="Go to source code">insert</a>( <span>array <var>$values</var></span> )</code>
+		<code><a href="source-class-zsql.Insert.html#87-97" title="Go to source code">insert</a>( <span>array <var>$values</var></span> )</code>
 
 		<div class="description short">
 			
-<p>Alias for {{\zsql\Insert::values()}}</p>
+<p>Alias for <code><a href="class-zsql.Insert.html#_values">zsql\Insert::values()</a></code></p>
 
 		</div>
 
 		<div class="description detailed hidden">
 			
-<p>Alias for {{\zsql\Insert::values()}}</p>
+<p>Alias for <code><a href="class-zsql.Insert.html#_values">zsql\Insert::values()</a></code></p>
 
 
 
@@ -263,17 +301,17 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_into">#</a>
-		<code><a href="source-class-zsql.Insert.html#78-88" title="Go to source code">into</a>( <span>string <var>$table</var></span> )</code>
+		<code><a href="source-class-zsql.Insert.html#99-109" title="Go to source code">into</a>( <span>string <var>$table</var></span> )</code>
 
 		<div class="description short">
 			
-<p>Alias for {{\zsql\Query::table()}}</p>
+<p>Alias for <code><a href="class-zsql.Query.html#_table">zsql\Query::table()</a></code></p>
 
 		</div>
 
 		<div class="description detailed hidden">
 			
-<p>Alias for {{\zsql\Query::table()}}</p>
+<p>Alias for <code><a href="class-zsql.Query.html#_table">zsql\Query::table()</a></code></p>
 
 
 
@@ -305,7 +343,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_onDuplicateKeyUpdate">#</a>
-		<code><a href="source-class-zsql.Insert.html#90-105" title="Go to source code">onDuplicateKeyUpdate</a>( <span>array <var>$key</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-zsql.Insert.html#111-126" title="Go to source code">onDuplicateKeyUpdate</a>( <span>array <var>$key</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -334,6 +372,80 @@
 		</div>
 		</div></td>
 	</tr>
+	<tr data-order="pushIgnoreDelayed" id="_pushIgnoreDelayed">
+
+		<td class="attributes"><code>
+			 protected 
+			<code><a href="class-zsql.Insert.html">zsql\Insert</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_pushIgnoreDelayed">#</a>
+		<code><a href="source-class-zsql.Insert.html#128-142" title="Go to source code">pushIgnoreDelayed</a>( )</code>
+
+		<div class="description short">
+			
+<p>Push ignore or delayed onto parts</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Push ignore or delayed onto parts</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.Insert.html">zsql\Insert</a></code></code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="pushOnDuplicateKeyUpdate" id="_pushOnDuplicateKeyUpdate">
+
+		<td class="attributes"><code>
+			 protected 
+			<code><a href="class-zsql.Insert.html">zsql\Insert</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_pushOnDuplicateKeyUpdate">#</a>
+		<code><a href="source-class-zsql.Insert.html#144-159" title="Go to source code">pushOnDuplicateKeyUpdate</a>( )</code>
+
+		<div class="description short">
+			
+<p>Push on duplicate key update clause</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Push on duplicate key update clause</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.Insert.html">zsql\Insert</a></code></code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
 	<tr data-order="replace" id="_replace">
 
 		<td class="attributes"><code>
@@ -345,7 +457,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_replace">#</a>
-		<code><a href="source-class-zsql.Insert.html#107-117" title="Go to source code">replace</a>( <span>boolean <var>$replace</var> = <span class="php-keyword1">true</span></span> )</code>
+		<code><a href="source-class-zsql.Insert.html#161-171" title="Go to source code">replace</a>( <span>boolean <var>$replace</var> = <span class="php-keyword1">true</span></span> )</code>
 
 		<div class="description short">
 			
@@ -387,17 +499,17 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_set">#</a>
-		<code><a href="source-class-zsql.Insert.html#119-134" title="Go to source code">set</a>( <span>mixed <var>$key</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-zsql.Insert.html#173-188" title="Go to source code">set</a>( <span>mixed <var>$key</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
-<p>Alias for {{\zsql\Insert::value()}} or {{\zsql\Insert::values()}}</p>
+<p>Alias for <code><a href="class-zsql.Insert.html#_value">zsql\Insert::value()</a></code> or <code><a href="class-zsql.Insert.html#_values">zsql\Insert::values()</a></code></p>
 
 		</div>
 
 		<div class="description detailed hidden">
 			
-<p>Alias for {{\zsql\Insert::value()}} or {{\zsql\Insert::values()}}</p>
+<p>Alias for <code><a href="class-zsql.Insert.html#_value">zsql\Insert::value()</a></code> or <code><a href="class-zsql.Insert.html#_values">zsql\Insert::values()</a></code></p>
 
 
 
@@ -431,7 +543,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_value">#</a>
-		<code><a href="source-class-zsql.Insert.html#136-151" title="Go to source code">value</a>( <span>mixed <var>$key</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-zsql.Insert.html#190-205" title="Go to source code">value</a>( <span>mixed <var>$key</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -475,7 +587,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_values">#</a>
-		<code><a href="source-class-zsql.Insert.html#153-163" title="Go to source code">values</a>( <span>array <var>$values</var></span> )</code>
+		<code><a href="source-class-zsql.Insert.html#207-217" title="Go to source code">values</a>( <span>array <var>$values</var></span> )</code>
 
 		<div class="description short">
 			
@@ -506,113 +618,6 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="_assemble" id="__assemble">
-
-		<td class="attributes"><code>
-			 protected 
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#__assemble">#</a>
-		<code><a href="source-class-zsql.Insert.html#165-181" title="Go to source code">_assemble</a>( )</code>
-
-		<div class="description short">
-			
-<p>Assemble parts</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Assemble parts</p>
-
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="_pushIgnoreDelayed" id="__pushIgnoreDelayed">
-
-		<td class="attributes"><code>
-			 protected 
-			<code><a href="class-zsql.Insert.html">zsql\Insert</a></code>
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#__pushIgnoreDelayed">#</a>
-		<code><a href="source-class-zsql.Insert.html#183-197" title="Go to source code">_pushIgnoreDelayed</a>( )</code>
-
-		<div class="description short">
-			
-<p>Push ignore or delayed onto parts</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Push ignore or delayed onto parts</p>
-
-
-
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-zsql.Insert.html">zsql\Insert</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="_pushOnDuplicateKeyUpdate" id="__pushOnDuplicateKeyUpdate">
-
-		<td class="attributes"><code>
-			 protected 
-			<code><a href="class-zsql.Insert.html">zsql\Insert</a></code>
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#__pushOnDuplicateKeyUpdate">#</a>
-		<code><a href="source-class-zsql.Insert.html#199-214" title="Go to source code">_pushOnDuplicateKeyUpdate</a>( )</code>
-
-		<div class="description short">
-			
-<p>Push on duplicate key update clause</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Push on duplicate key update clause</p>
-
-
-
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-zsql.Insert.html">zsql\Insert</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
 	</table>
 
 	<table class="summary inherited">
@@ -621,16 +626,16 @@
 		<td><code>
 			<a href="class-zsql.Query.html#___construct">__construct()</a>, 
 			<a href="class-zsql.Query.html#___toString">__toString()</a>, 
-			<a href="class-zsql.Query.html#__interpolate">_interpolate()</a>, 
-			<a href="class-zsql.Query.html#__push">_push()</a>, 
-			<a href="class-zsql.Query.html#__pushTable">_pushTable()</a>, 
-			<a href="class-zsql.Query.html#__pushValues">_pushValues()</a>, 
-			<a href="class-zsql.Query.html#__quoteIdentifier">_quoteIdentifier()</a>, 
-			<a href="class-zsql.Query.html#__quoteIdentifierIfNotExpression">_quoteIdentifierIfNotExpression()</a>, 
+			<a href="class-zsql.Query.html#_interpolateParams">interpolateParams()</a>, 
 			<a href="class-zsql.Query.html#_interpolation">interpolation()</a>, 
 			<a href="class-zsql.Query.html#_params">params()</a>, 
 			<a href="class-zsql.Query.html#_parts">parts()</a>, 
+			<a href="class-zsql.Query.html#_push">push()</a>, 
+			<a href="class-zsql.Query.html#_pushTable">pushTable()</a>, 
+			<a href="class-zsql.Query.html#_pushValues">pushValues()</a>, 
 			<a href="class-zsql.Query.html#_query">query()</a>, 
+			<a href="class-zsql.Query.html#_quoteIdentifier">quoteIdentifier()</a>, 
+			<a href="class-zsql.Query.html#_quoteIdentifierIfNotExpression">quoteIdentifierIfNotExpression()</a>, 
 			<a href="class-zsql.Query.html#_setQuoteCallback">setQuoteCallback()</a>, 
 			<a href="class-zsql.Query.html#_table">table()</a>, 
 			<a href="class-zsql.Query.html#_toString">toString()</a>
@@ -650,18 +655,18 @@
 
 	<table class="summary" id="properties">
 	<caption>Properties summary</caption>
-	<tr data-order="_delayed" id="$_delayed">
+	<tr data-order="delayed" id="$delayed">
 		<td class="attributes"><code>
 			protected  
 			boolean
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.Insert.html#7-12" title="Go to source code"><var>$_delayed</var></a>
+				<a href="source-class-zsql.Insert.html#10-15" title="Go to source code"><var>$delayed</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_delayed" class="anchor">#</a>
+			<a href="#$delayed" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -677,18 +682,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_ignore" id="$_ignore">
+	<tr data-order="ignore" id="$ignore">
 		<td class="attributes"><code>
 			protected  
 			boolean
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.Insert.html#14-19" title="Go to source code"><var>$_ignore</var></a>
+				<a href="source-class-zsql.Insert.html#17-22" title="Go to source code"><var>$ignore</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_ignore" class="anchor">#</a>
+			<a href="#$ignore" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -704,18 +709,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_onDuplicateKeyUpdate" id="$_onDuplicateKeyUpdate">
+	<tr data-order="onDuplicateKeyUpdate" id="$onDuplicateKeyUpdate">
 		<td class="attributes"><code>
 			protected  
 			array
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.Insert.html#21-26" title="Go to source code"><var>$_onDuplicateKeyUpdate</var></a>
+				<a href="source-class-zsql.Insert.html#24-29" title="Go to source code"><var>$onDuplicateKeyUpdate</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_onDuplicateKeyUpdate" class="anchor">#</a>
+			<a href="#$onDuplicateKeyUpdate" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -731,18 +736,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_replace" id="$_replace">
+	<tr data-order="replace" id="$replace">
 		<td class="attributes"><code>
 			protected  
 			boolean
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.Insert.html#28-33" title="Go to source code"><var>$_replace</var></a>
+				<a href="source-class-zsql.Insert.html#31-36" title="Go to source code"><var>$replace</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_replace" class="anchor">#</a>
+			<a href="#$replace" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -758,18 +763,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_values" id="$_values">
+	<tr data-order="values" id="$values">
 		<td class="attributes"><code>
 			protected  
 			array
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.Insert.html#35-40" title="Go to source code"><var>$_values</var></a>
+				<a href="source-class-zsql.Insert.html#38-43" title="Go to source code"><var>$values</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_values" class="anchor">#</a>
+			<a href="#$values" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -791,15 +796,15 @@
 	<caption>Properties inherited from <a href="class-zsql.Query.html#properties">zsql\Query</a></caption>
 	<tr>
 		<td><code>
-			<a href="class-zsql.Query.html#$_interpolation"><var>$_interpolation</var></a>, 
-			<a href="class-zsql.Query.html#$_params"><var>$_params</var></a>, 
-			<a href="class-zsql.Query.html#$_parts"><var>$_parts</var></a>, 
-			<a href="class-zsql.Query.html#$_query"><var>$_query</var></a>, 
-			<a href="class-zsql.Query.html#$_queryCallback"><var>$_queryCallback</var></a>, 
-			<a href="class-zsql.Query.html#$_quoteCallback"><var>$_quoteCallback</var></a>, 
-			<a href="class-zsql.Query.html#$_quoteChar"><var>$_quoteChar</var></a>, 
-			<a href="class-zsql.Query.html#$_quoteIdentifierChar"><var>$_quoteIdentifierChar</var></a>, 
-			<a href="class-zsql.Query.html#$_table"><var>$_table</var></a>
+			<a href="class-zsql.Query.html#$interpolation"><var>$interpolation</var></a>, 
+			<a href="class-zsql.Query.html#$params"><var>$params</var></a>, 
+			<a href="class-zsql.Query.html#$parts"><var>$parts</var></a>, 
+			<a href="class-zsql.Query.html#$query"><var>$query</var></a>, 
+			<a href="class-zsql.Query.html#$queryCallback"><var>$queryCallback</var></a>, 
+			<a href="class-zsql.Query.html#$quoteCallback"><var>$quoteCallback</var></a>, 
+			<a href="class-zsql.Query.html#$quoteChar"><var>$quoteChar</var></a>, 
+			<a href="class-zsql.Query.html#$quoteIdentifierChar"><var>$quoteIdentifierChar</var></a>, 
+			<a href="class-zsql.Query.html#$table"><var>$table</var></a>
 		</code></td>
 	</tr>
 	</table>

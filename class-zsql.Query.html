@@ -21,9 +21,9 @@
 		<div id="groups">
 			<h3>Namespaces</h3>
 			<ul>
-				<li><a href="namespace-PHP.html">PHP</a>
+				<li class="active main"><a href="namespace-zsql.html">zsql</a>
 						</li>
-				<li class="active"><a href="namespace-zsql.html">zsql</a>
+				<li><a href="namespace-PHP.html">PHP</a>
 						</li>
 			</ul>
 		</div>
@@ -90,6 +90,11 @@
 	<h1>Class Query</h1>
 
 
+	<div class="description">
+	
+<p>Base abstract query</p>
+
+	</div>
 
 
 
@@ -116,7 +121,7 @@
 		<b>Namespace:</b> <a href="namespace-zsql.html">zsql</a><br />
 		
 
-		<b>Located at</b> <a href="source-class-zsql.Query.html#5-309" title="Go to source code">zsql/Query.php</a><br />
+		<b>Located at</b> <a href="source-class-zsql.Query.html#5-314" title="Go to source code">zsql/Query.php</a><br />
 	</div>
 
 
@@ -134,7 +139,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-zsql.Query.html#70-80" title="Go to source code">__construct</a>( <span>callable <var>$queryCallback</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-zsql.Query.html#73-83" title="Go to source code">__construct</a>( <span>callable <var>$queryCallback</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -161,6 +166,113 @@
 		</div>
 		</div></td>
 	</tr>
+	<tr data-order="__toString" id="___toString">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___toString">#</a>
+		<code><a href="source-class-zsql.Query.html#85-98" title="Go to source code">__toString</a>( )</code>
+
+		<div class="description short">
+			
+<p>Magic string conversion. Alias of <code><a href="class-zsql.Query.html#_toString">zsql\Query::toString()</a></code></p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Magic string conversion. Alias of <code><a href="class-zsql.Query.html#_toString">zsql\Query::toString()</a></code></p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="assemble" id="_assemble">
+
+		<td class="attributes"><code>
+			abstract protected 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_assemble">#</a>
+		<code><a href="source-class-zsql.Query.html#100-103" title="Go to source code">assemble</a>( )</code>
+
+		<div class="description short">
+			
+<p>Assemble parts</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Assemble parts</p>
+
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="interpolateParams" id="_interpolateParams">
+
+		<td class="attributes"><code>
+			 protected 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_interpolateParams">#</a>
+		<code><a href="source-class-zsql.Query.html#105-128" title="Go to source code">interpolateParams</a>( )</code>
+
+		<div class="description short">
+			
+<p>Interpolate parameters into query</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Interpolate parameters into query</p>
+
+
+
+
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.Exception.html">zsql\Exception</a></code></code><br />
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
 	<tr data-order="interpolation" id="_interpolation">
 
 		<td class="attributes"><code>
@@ -172,7 +284,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_interpolation">#</a>
-		<code><a href="source-class-zsql.Query.html#82-91" title="Go to source code">interpolation</a>( <span>mixed <var>$interpolation</var> = <span class="php-keyword1">true</span></span> )</code>
+		<code><a href="source-class-zsql.Query.html#130-139" title="Go to source code">interpolation</a>( <span>mixed <var>$interpolation</var> = <span class="php-keyword1">true</span></span> )</code>
 
 		<div class="description short">
 			
@@ -198,6 +310,43 @@
 		</div>
 		</div></td>
 	</tr>
+	<tr data-order="params" id="_params">
+
+		<td class="attributes"><code>
+			 public 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_params">#</a>
+		<code><a href="source-class-zsql.Query.html#141-149" title="Go to source code">params</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get the parameters</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get the parameters</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
 	<tr data-order="parts" id="_parts">
 
 		<td class="attributes"><code>
@@ -209,7 +358,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_parts">#</a>
-		<code><a href="source-class-zsql.Query.html#93-101" title="Go to source code">parts</a>( )</code>
+		<code><a href="source-class-zsql.Query.html#151-159" title="Go to source code">parts</a>( )</code>
 
 		<div class="description short">
 			
@@ -235,37 +384,124 @@
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="params" id="_params">
+	<tr data-order="push" id="_push">
 
 		<td class="attributes"><code>
-			 public 
-			array
+			 protected 
+			<code><a href="class-zsql.Query.html">zsql\Query</a></code>
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_params">#</a>
-		<code><a href="source-class-zsql.Query.html#103-111" title="Go to source code">params</a>( )</code>
+		<a class="anchor" href="#_push">#</a>
+		<code><a href="source-class-zsql.Query.html#161-171" title="Go to source code">push</a>( <span>string <var>$string</var></span> )</code>
 
 		<div class="description short">
 			
-<p>Get the parameters</p>
+<p>Push an arbitrary string onto parts</p>
 
 		</div>
 
 		<div class="description detailed hidden">
 			
-<p>Get the parameters</p>
+<p>Push an arbitrary string onto parts</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$string</var></dt>
+					<dd><code>string</code><br>$string</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.Query.html">zsql\Query</a></code></code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="pushTable" id="_pushTable">
+
+		<td class="attributes"><code>
+			 protected 
+			<code><a href="class-zsql.Query.html">zsql\Query</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_pushTable">#</a>
+		<code><a href="source-class-zsql.Query.html#173-186" title="Go to source code">pushTable</a>( )</code>
+
+		<div class="description short">
+			
+<p>Push table onto parts</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Push table onto parts</p>
 
 
 
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code>array</code><br />
+					<code><code><a href="class-zsql.Query.html">zsql\Query</a></code></code><br />
 				</div>
 
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.Exception.html">zsql\Exception</a></code></code><br />
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="pushValues" id="_pushValues">
+
+		<td class="attributes"><code>
+			 protected 
+			<code><a href="class-zsql.Query.html">zsql\Query</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_pushValues">#</a>
+		<code><a href="source-class-zsql.Query.html#188-215" title="Go to source code">pushValues</a>( )</code>
+
+		<div class="description short">
+			
+<p>Push values onto parts</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Push values onto parts</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.Query.html">zsql\Query</a></code></code><br />
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.Exception.html">zsql\Exception</a></code></code><br />
+				</div>
 
 
 
@@ -283,7 +519,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_query">#</a>
-		<code><a href="source-class-zsql.Query.html#113-131" title="Go to source code">query</a>( )</code>
+		<code><a href="source-class-zsql.Query.html#217-235" title="Go to source code">query</a>( )</code>
 
 		<div class="description short">
 			
@@ -313,6 +549,90 @@
 		</div>
 		</div></td>
 	</tr>
+	<tr data-order="quoteIdentifier" id="_quoteIdentifier">
+
+		<td class="attributes"><code>
+			 protected 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_quoteIdentifier">#</a>
+		<code><a href="source-class-zsql.Query.html#237-249" title="Go to source code">quoteIdentifier</a>( <span>string <var>$identifier</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Quotes an identifier</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Quotes an identifier</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$identifier</var></dt>
+					<dd><code>string</code><br>$identifier</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="quoteIdentifierIfNotExpression" id="_quoteIdentifierIfNotExpression">
+
+		<td class="attributes"><code>
+			 protected 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_quoteIdentifierIfNotExpression">#</a>
+		<code><a href="source-class-zsql.Query.html#251-264" title="Go to source code">quoteIdentifierIfNotExpression</a>( <span>mixed <var>$identifier</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Quotes an identifier if not an <code><a href="class-zsql.Expression.html">zsql\Expression</a></code></p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Quotes an identifier if not an <code><a href="class-zsql.Expression.html">zsql\Expression</a></code></p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$identifier</var></dt>
+					<dd><code>mixed</code><br>$identifier</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
 	<tr data-order="setQuoteCallback" id="_setQuoteCallback">
 
 		<td class="attributes"><code>
@@ -324,7 +644,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setQuoteCallback">#</a>
-		<code><a href="source-class-zsql.Query.html#133-147" title="Go to source code">setQuoteCallback</a>( <span>type <var>$callback</var></span> )</code>
+		<code><a href="source-class-zsql.Query.html#266-280" title="Go to source code">setQuoteCallback</a>( <span>type <var>$callback</var></span> )</code>
 
 		<div class="description short">
 			
@@ -370,7 +690,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_table">#</a>
-		<code><a href="source-class-zsql.Query.html#149-163" title="Go to source code">table</a>( <span>mixed <var>$table</var></span> )</code>
+		<code><a href="source-class-zsql.Query.html#282-296" title="Go to source code">table</a>( <span>mixed <var>$table</var></span> )</code>
 
 		<div class="description short">
 			
@@ -405,14 +725,14 @@
 
 		<td class="attributes"><code>
 			 public 
-			
+			string
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_toString">#</a>
-		<code><a href="source-class-zsql.Query.html#165-178" title="Go to source code">toString</a>( )</code>
+		<code><a href="source-class-zsql.Query.html#298-313" title="Go to source code">toString</a>( )</code>
 
 		<div class="description short">
 			
@@ -423,317 +743,6 @@
 		<div class="description detailed hidden">
 			
 <p>Convert to string</p>
-
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="_assemble" id="__assemble">
-
-		<td class="attributes"><code>
-			abstract protected 
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#__assemble">#</a>
-		<code><a href="source-class-zsql.Query.html#180-183" title="Go to source code">_assemble</a>( )</code>
-
-		<div class="description short">
-			
-<p>Assemble parts</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Assemble parts</p>
-
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="_interpolate" id="__interpolate">
-
-		<td class="attributes"><code>
-			 protected 
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#__interpolate">#</a>
-		<code><a href="source-class-zsql.Query.html#185-208" title="Go to source code">_interpolate</a>( )</code>
-
-		<div class="description short">
-			
-<p>Interpolate parameters into query</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Interpolate parameters into query</p>
-
-
-
-
-
-				<h4>Throws</h4>
-				<div class="list">
-					<code><code><a href="class-zsql.Exception.html">zsql\Exception</a></code></code><br />
-				</div>
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="_push" id="__push">
-
-		<td class="attributes"><code>
-			 protected 
-			<code><a href="class-zsql.Query.html">zsql\Query</a></code>
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#__push">#</a>
-		<code><a href="source-class-zsql.Query.html#210-220" title="Go to source code">_push</a>( <span>string <var>$string</var></span> )</code>
-
-		<div class="description short">
-			
-<p>Push an arbitrary string onto parts</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Push an arbitrary string onto parts</p>
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$string</var></dt>
-					<dd><code>string</code><br>$string</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-zsql.Query.html">zsql\Query</a></code></code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="_pushTable" id="__pushTable">
-
-		<td class="attributes"><code>
-			 protected 
-			<code><a href="class-zsql.Query.html">zsql\Query</a></code>
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#__pushTable">#</a>
-		<code><a href="source-class-zsql.Query.html#222-235" title="Go to source code">_pushTable</a>( )</code>
-
-		<div class="description short">
-			
-<p>Push table onto parts</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Push table onto parts</p>
-
-
-
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-zsql.Query.html">zsql\Query</a></code></code><br />
-				</div>
-
-				<h4>Throws</h4>
-				<div class="list">
-					<code><code><a href="class-zsql.Exception.html">zsql\Exception</a></code></code><br />
-				</div>
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="_pushValues" id="__pushValues">
-
-		<td class="attributes"><code>
-			 protected 
-			<code><a href="class-zsql.Query.html">zsql\Query</a></code>
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#__pushValues">#</a>
-		<code><a href="source-class-zsql.Query.html#237-264" title="Go to source code">_pushValues</a>( )</code>
-
-		<div class="description short">
-			
-<p>Push values onto parts</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Push values onto parts</p>
-
-
-
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code><code><a href="class-zsql.Query.html">zsql\Query</a></code></code><br />
-				</div>
-
-				<h4>Throws</h4>
-				<div class="list">
-					<code><code><a href="class-zsql.Exception.html">zsql\Exception</a></code></code><br />
-				</div>
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="_quoteIdentifier" id="__quoteIdentifier">
-
-		<td class="attributes"><code>
-			 protected 
-			string
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#__quoteIdentifier">#</a>
-		<code><a href="source-class-zsql.Query.html#266-278" title="Go to source code">_quoteIdentifier</a>( <span>string <var>$identifier</var></span> )</code>
-
-		<div class="description short">
-			
-<p>Quotes an identifier</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Quotes an identifier</p>
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$identifier</var></dt>
-					<dd><code>string</code><br>$identifier</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="_quoteIdentifierIfNotExpression" id="__quoteIdentifierIfNotExpression">
-
-		<td class="attributes"><code>
-			 protected 
-			string
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#__quoteIdentifierIfNotExpression">#</a>
-		<code><a href="source-class-zsql.Query.html#280-293" title="Go to source code">_quoteIdentifierIfNotExpression</a>( <span>mixed <var>$identifier</var></span> )</code>
-
-		<div class="description short">
-			
-<p>Quotes an identifier if not an {{\zsql\Expression}}</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Quotes an identifier if not an {{\zsql\Expression}}</p>
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$identifier</var></dt>
-					<dd><code>mixed</code><br>$identifier</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="__toString" id="___toString">
-
-		<td class="attributes"><code>
-			 public 
-			string
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#___toString">#</a>
-		<code><a href="source-class-zsql.Query.html#295-308" title="Go to source code">__toString</a>( )</code>
-
-		<div class="description short">
-			
-<p>Magic string conversion. Alias of {{\zsql\Query::toString()}}</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Magic string conversion. Alias of {{\zsql\Query::toString()}}</p>
 
 
 
@@ -764,18 +773,18 @@
 
 	<table class="summary" id="properties">
 	<caption>Properties summary</caption>
-	<tr data-order="_interpolation" id="$_interpolation">
+	<tr data-order="interpolation" id="$interpolation">
 		<td class="attributes"><code>
 			protected  
 			boolean
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.Query.html#7-12" title="Go to source code"><var>$_interpolation</var></a>
+				<a href="source-class-zsql.Query.html#10-15" title="Go to source code"><var>$interpolation</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">false</span></code></td>
 		<td class="description"><div>
-			<a href="#$_interpolation" class="anchor">#</a>
+			<a href="#$interpolation" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -791,18 +800,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_table" id="$_table">
+	<tr data-order="table" id="$table">
 		<td class="attributes"><code>
 			protected  
 			string
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.Query.html#14-19" title="Go to source code"><var>$_table</var></a>
+				<a href="source-class-zsql.Query.html#17-22" title="Go to source code"><var>$table</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_table" class="anchor">#</a>
+			<a href="#$table" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -818,18 +827,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_params" id="$_params">
+	<tr data-order="params" id="$params">
 		<td class="attributes"><code>
 			protected  
 			array
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.Query.html#21-26" title="Go to source code"><var>$_params</var></a>
+				<a href="source-class-zsql.Query.html#24-29" title="Go to source code"><var>$params</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_params" class="anchor">#</a>
+			<a href="#$params" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -845,18 +854,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_parts" id="$_parts">
+	<tr data-order="parts" id="$parts">
 		<td class="attributes"><code>
 			protected  
 			array
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.Query.html#28-33" title="Go to source code"><var>$_parts</var></a>
+				<a href="source-class-zsql.Query.html#31-36" title="Go to source code"><var>$parts</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_parts" class="anchor">#</a>
+			<a href="#$parts" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -872,18 +881,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_quoteCallback" id="$_quoteCallback">
+	<tr data-order="quoteCallback" id="$quoteCallback">
 		<td class="attributes"><code>
 			protected  
 			callable
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.Query.html#35-40" title="Go to source code"><var>$_quoteCallback</var></a>
+				<a href="source-class-zsql.Query.html#38-43" title="Go to source code"><var>$quoteCallback</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_quoteCallback" class="anchor">#</a>
+			<a href="#$quoteCallback" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -899,18 +908,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_query" id="$_query">
+	<tr data-order="query" id="$query">
 		<td class="attributes"><code>
 			protected  
 			string
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.Query.html#42-47" title="Go to source code"><var>$_query</var></a>
+				<a href="source-class-zsql.Query.html#45-50" title="Go to source code"><var>$query</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_query" class="anchor">#</a>
+			<a href="#$query" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -926,18 +935,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_queryCallback" id="$_queryCallback">
+	<tr data-order="queryCallback" id="$queryCallback">
 		<td class="attributes"><code>
 			protected  
 			callable
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.Query.html#49-54" title="Go to source code"><var>$_queryCallback</var></a>
+				<a href="source-class-zsql.Query.html#52-57" title="Go to source code"><var>$queryCallback</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
-			<a href="#$_queryCallback" class="anchor">#</a>
+			<a href="#$queryCallback" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -953,18 +962,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_quoteChar" id="$_quoteChar">
+	<tr data-order="quoteChar" id="$quoteChar">
 		<td class="attributes"><code>
 			protected  
 			string
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.Query.html#56-61" title="Go to source code"><var>$_quoteChar</var></a>
+				<a href="source-class-zsql.Query.html#59-64" title="Go to source code"><var>$quoteChar</var></a>
 		</td>
 		<td class="value"><code><span class="php-quote">&quot;'&quot;</span></code></td>
 		<td class="description"><div>
-			<a href="#$_quoteChar" class="anchor">#</a>
+			<a href="#$quoteChar" class="anchor">#</a>
 
 			<div class="description short">
 				
@@ -980,18 +989,18 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="_quoteIdentifierChar" id="$_quoteIdentifierChar">
+	<tr data-order="quoteIdentifierChar" id="$quoteIdentifierChar">
 		<td class="attributes"><code>
 			protected  
 			string
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-zsql.Query.html#63-68" title="Go to source code"><var>$_quoteIdentifierChar</var></a>
+				<a href="source-class-zsql.Query.html#66-71" title="Go to source code"><var>$quoteIdentifierChar</var></a>
 		</td>
 		<td class="value"><code><span class="php-quote">'`'</span></code></td>
 		<td class="description"><div>
-			<a href="#$_quoteIdentifierChar" class="anchor">#</a>
+			<a href="#$quoteIdentifierChar" class="anchor">#</a>
 
 			<div class="description short">
 				
