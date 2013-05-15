@@ -2,6 +2,10 @@
 
 namespace zsql;
 
+/**
+ * Abstract class for queries that support select-like functionality (delete, 
+ * select, update)
+ */
 abstract class ExtendedQuery extends Query
 {
   /**
@@ -9,42 +13,195 @@ abstract class ExtendedQuery extends Query
    * 
    * @var string
    */
-  protected $_direction;
+  protected $direction;
   
   /**
    * Group by column
    * 
    * @var string
    */
-  protected $_group;
+  protected $group;
   
   /**
    * Limit number
    * 
    * @var integer
    */
-  protected $_limit;
+  protected $limit;
   
   /**
    * Offset number
    * 
    * @var integer
    */
-  protected $_offset;
+  protected $offset;
   
   /**
    * Order by column
    * 
    * @var string
    */
-  protected $_order;
+  protected $order;
   
   /**
    * Where expressions
    * 
    * @var array
    */
-  protected $_where;
+  protected $where;
+  
+  /**
+   * Set group by
+   * 
+   * @param string $column
+   * @return \zsql\ExtendedQuery
+   */
+  public function group($column)
+  {
+    $this->group = $column;
+    return $this;
+  }
+  
+  /**
+   * Set limit
+   * 
+   * @param integer $limit
+   * @param integer $offset
+   * @return \zsql\ExtendedQuery
+   */
+  public function limit($limit, $offset = null)
+  {
+    $this->limit = (int) $limit;
+    if( null !== $offset ) {
+      $this->offset = (int) $offset;
+    }
+    return $this;
+  }
+  
+  /**
+   * Set offset
+   * 
+   * @param integer $offset
+   * @param integer $limit
+   * @return \zsql\ExtendedQuery
+   */
+  public function offset($offset, $limit = null)
+  {
+    $this->offset = (int) $offset;
+    if( null !== $limit ) {
+      $this->limit = (int) $limit;
+    }
+    return $this;
+  }
+  
+  /**
+   * Set order
+   * 
+   * @param string $order
+   * @param string $direction
+   * @return \zsql\ExtendedQuery
+   */
+  public function order($order, $direction = 'ASC')
+  {
+    $this->order = $order;
+    $this->direction = $direction;
+    return $this;
+  }
+  
+  /**
+   * Push limit clause onto parts
+   * 
+   * @return \zsql\ExtendedQuery
+   */
+  protected function pushLimit()
+  {
+    if( null !== $this->limit ) {
+      if( null !== $this->offset ) {
+        $this->parts[] = 'LIMIT ?, ?';
+        $this->params[] = $this->offset;
+        $this->params[] = $this->limit;
+      } else {
+        $this->parts[] = 'LIMIT ?';
+        $this->params[] = $this->limit;
+      }
+    }
+    return $this;
+  }
+  
+  /**
+   * Push group by clause onto parts
+   * 
+   * @return \zsql\ExtendedQuery
+   */
+  protected function pushGroup()
+  {
+    if( $this->group ) {
+      $this->parts[] = 'GROUP BY';
+      $this->parts[] = $this->quoteIdentifierIfNotExpression($this->group);
+    }
+    return $this;
+  }
+  
+  /**
+   * Push order by clause onto parts
+   * 
+   * @return \zsql\ExtendedQuery
+   */
+  protected function pushOrder()
+  {
+    if( $this->order ) {
+      $this->parts[] = 'ORDER BY';
+      $this->parts[] = $this->quoteIdentifierIfNotExpression($this->order);
+      $this->parts[] = $this->direction == 'DESC' ? 'DESC' : 'ASC';
+    }
+    return $this;
+  }
+  
+  /**
+   * Push where clause onto parts
+   * 
+   * @return \zsql\ExtendedQuery
+   */
+  protected function pushWhere()
+  {
+    if( empty($this->where) ) {
+      return $this;
+    }
+    
+    $this->parts[] = 'WHERE';
+    foreach( $this->where as $w ) {
+      $where = $w[0];
+      $value = @$w[1];
+      $type = @$w[2];
+      if( $where instanceof Expression ) {
+        $this->parts[] = (string) $where;
+      } else if( count($w) == 3 ) {
+        $this->parts[] = $this->quoteIdentifierIfNotExpression($where);
+        $this->parts[] = $type;
+        $tmp = '';
+        foreach( $value as $val ) {
+          $tmp .= '?, ';
+          $this->params[] = $val;
+        }
+        $this->parts[] = '(' . substr($tmp, 0, -2) . ')';
+      } else if( false !== strpos($where, '?') ) {
+        $this->parts[] = $where; //$this->quoteIdentifierIfNotExpression($where);
+        $this->params[] = $value;
+      } else {
+        $this->parts[] = $this->quoteIdentifierIfNotExpression($where);
+        $this->parts[] = '=';
+        if( $value instanceof Expression ) {
+          $this->parts[] = (string) $value;
+        } else {
+          $this->parts[] = '?';
+          $this->params[] = $value;
+        }
+      }
+      $this->parts[] = '&&';
+    }
+    array_pop($this->parts);
+    return $this;
+  }
   
   /**
    * Set where
@@ -57,10 +214,23 @@ abstract class ExtendedQuery extends Query
   {
     $nArgs = func_num_args();
     if( $nArgs >= 2 ) {
-      $this->_where[] = array($where, $value);
+      $this->where[] = array($where, $value);
     } else if( $nArgs >= 1 ) {
-      $this->_where[] = array($where);
+      $this->where[] = array($where);
     }
+    return $this;
+  }
+  
+  /**
+   * Set where expression. Shorthand for:
+   * where(new Expression('string'))
+   * 
+   * @param string $where
+   * @return \zsql\ExtendedQuery
+   */
+  public function whereExpr($where)
+  {
+    $this->where[] = array(new Expression((string) $where));
     return $this;
   }
   
@@ -77,175 +247,9 @@ abstract class ExtendedQuery extends Query
       $value = (array) $value;
     }
     if( count($value) <= 0 ) {
-      $this->_where[] = array(new Expression('FALSE'));
+      $this->where[] = array(new Expression('FALSE'));
     } else {
-      $this->_where[] = array($where, $value, 'IN');
-    }
-    return $this;
-  }
-  
-  /**
-   * Set where expression. Shorthand for:
-   * where(new Expression('string'))
-   * 
-   * @param string $where
-   * @return \zsql\ExtendedQuery
-   */
-  public function whereExpr($where)
-  {
-    $this->_where[] = array(new Expression((string) $where));
-    return $this;
-  }
-  
-  /**
-   * Set group by
-   * 
-   * @param string $column
-   * @return \zsql\ExtendedQuery
-   */
-  public function group($column)
-  {
-    $this->_group = $column;
-    return $this;
-  }
-  
-  /**
-   * Set order
-   * 
-   * @param string $order
-   * @param string $direction
-   * @return \zsql\ExtendedQuery
-   */
-  public function order($order, $direction = 'ASC')
-  {
-    $this->_order = $order;
-    $this->_direction = $direction;
-    return $this;
-  }
-  
-  /**
-   * Set limit
-   * 
-   * @param integer $limit
-   * @param integer $offset
-   * @return \zsql\ExtendedQuery
-   */
-  public function limit($limit, $offset = null)
-  {
-    $this->_limit = (int) $limit;
-    if( null !== $offset ) {
-      $this->_offset = (int) $offset;
-    }
-    return $this;
-  }
-  
-  /**
-   * Set offset
-   * 
-   * @param integer $offset
-   * @param integer $limit
-   * @return \zsql\ExtendedQuery
-   */
-  public function offset($offset, $limit = null)
-  {
-    $this->_offset = (int) $offset;
-    if( null !== $limit ) {
-      $this->_limit = (int) $limit;
-    }
-    return $this;
-  }
-  
-  /**
-   * Push where clause onto parts
-   * 
-   * @return \zsql\ExtendedQuery
-   */
-  protected function _pushWhere()
-  {
-    if( empty($this->_where) ) {
-      return $this;
-    }
-    
-    $this->_parts[] = 'WHERE';
-    foreach( $this->_where as $w ) {
-      $where = $w[0];
-      $value = @$w[1];
-      $type = @$w[2];
-      if( $where instanceof Expression ) {
-        $this->_parts[] = (string) $where;
-      } else if( count($w) == 3 ) {
-        $this->_parts[] = $this->_quoteIdentifierIfNotExpression($where);
-        $this->_parts[] = $type;
-        $tmp = '';
-        foreach( $value as $val ) {
-          $tmp .= '?, ';
-          $this->_params[] = $val;
-        }
-        $this->_parts[] = '(' . substr($tmp, 0, -2) . ')';
-      } else if( false !== strpos($where, '?') ) {
-        $this->_parts[] = $where; //$this->_quoteIdentifierIfNotExpression($where);
-        $this->_params[] = $value;
-      } else {
-        $this->_parts[] = $this->_quoteIdentifierIfNotExpression($where);
-        $this->_parts[] = '=';
-        if( $value instanceof Expression ) {
-          $this->_parts[] = (string) $value;
-        } else {
-          $this->_parts[] = '?';
-          $this->_params[] = $value;
-        }
-      }
-      $this->_parts[] = '&&';
-    }
-    array_pop($this->_parts);
-    return $this;
-  }
-  
-  /**
-   * Push group by clause onto parts
-   * 
-   * @return \zsql\ExtendedQuery
-   */
-  protected function _pushGroup()
-  {
-    if( $this->_group ) {
-      $this->_parts[] = 'GROUP BY';
-      $this->_parts[] = $this->_quoteIdentifierIfNotExpression($this->_group);
-    }
-    return $this;
-  }
-  
-  /**
-   * Push order by clause onto parts
-   * 
-   * @return \zsql\ExtendedQuery
-   */
-  protected function _pushOrder()
-  {
-    if( $this->_order ) {
-      $this->_parts[] = 'ORDER BY';
-      $this->_parts[] = $this->_quoteIdentifierIfNotExpression($this->_order);
-      $this->_parts[] = $this->_direction == 'DESC' ? 'DESC' : 'ASC';
-    }
-    return $this;
-  }
-  
-  /**
-   * Push limit clause onto parts
-   * 
-   * @return \zsql\ExtendedQuery
-   */
-  protected function _pushLimit()
-  {
-    if( null !== $this->_limit ) {
-      if( null !== $this->_offset ) {
-        $this->_parts[] = 'LIMIT ?, ?';
-        $this->_params[] = $this->_offset;
-        $this->_params[] = $this->_limit;
-      } else {
-        $this->_parts[] = 'LIMIT ?';
-        $this->_params[] = $this->_limit;
-      }
+      $this->where[] = array($where, $value, 'IN');
     }
     return $this;
   }

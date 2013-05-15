@@ -2,6 +2,9 @@
 
 namespace zsql;
 
+/**
+ * Select query generator
+ */
 class Select extends ExtendedQuery
 {
   /**
@@ -9,28 +12,28 @@ class Select extends ExtendedQuery
    * 
    * @var mixed
    */
-  protected $_columns;
+  protected $columns;
   
   /**
    * Distinct clause
    * 
    * @var boolean
    */
-  protected $_distinct;
+  protected $distinct;
   
   /**
    * Index hint clause (column)
    * 
    * @var string
    */
-  protected $_hint;
+  protected $hint;
   
   /**
    * Index hint clause (mode)
    * 
    * @var string
    */
-  protected $_hintMode;
+  protected $hintMode;
   
   /**
    * Set the columns
@@ -44,7 +47,7 @@ class Select extends ExtendedQuery
     if( is_array($columns) || 
         is_string($columns) ||
         $columns instanceof Expression ) {
-      $this->_columns = $columns;
+      $this->columns = $columns;
     } else {
       throw new \zsql\Exception('Invalid columns parameter');
     }
@@ -59,12 +62,12 @@ class Select extends ExtendedQuery
    */
   public function distinct($distinct = true)
   {
-    $this->_distinct = (bool) $distinct;
+    $this->distinct = (bool) $distinct;
     return $this;
   }
   
   /**
-   * Alias for {{\zsql\Query::table()}} and {{\zsql\Select::columns()}}
+   * Alias for {@link Query::table()} and {@link Select::columns()}
    * 
    * @param mixed $table
    * @param mixed $columns
@@ -88,13 +91,13 @@ class Select extends ExtendedQuery
    */
   public function hint($columns, $mode = null)
   {
-    $this->_hint = $columns;
-    $this->_hintMode = $mode;
+    $this->hint = $columns;
+    $this->hintMode = $mode;
     return $this;
   }
   
   /**
-   * Alias for {{\zsql\Select::columns()}}
+   * Alias for {@link Select::columns()}
    * 
    * @param mixed $columns
    * @return \zsql\Select
@@ -110,18 +113,18 @@ class Select extends ExtendedQuery
    * 
    * @return void
    */
-  protected function _assemble()
+  protected function assemble()
   {
-    $this->_push('SELECT')
-         ->_pushDistinct()
-         ->_pushColumns()
-         ->_push('FROM')
-         ->_pushTable()
-         ->_pushHint()
-         ->_pushWhere()
-         ->_pushGroup()
-         ->_pushOrder()
-         ->_pushLimit();
+    $this->push('SELECT')
+         ->pushDistinct()
+         ->pushColumns()
+         ->push('FROM')
+         ->pushTable()
+         ->pushHint()
+         ->pushWhere()
+         ->pushGroup()
+         ->pushOrder()
+         ->pushLimit();
   }
   
   /**
@@ -129,20 +132,20 @@ class Select extends ExtendedQuery
    * 
    * @return \zsql\Select
    */
-  protected function _pushColumns()
+  protected function pushColumns()
   {
-    if( !$this->_columns || $this->_columns == '*' ) {
-      $this->_parts[] = '*';
-    } else if( is_array($this->_columns) ) {
+    if( !$this->columns || $this->columns == '*' ) {
+      $this->parts[] = '*';
+    } else if( is_array($this->columns) ) {
       $cols = array();
-      foreach( $this->_columns as $col ) {
-        $cols[] = $this->_quoteIdentifierIfNotExpression($col);
+      foreach( $this->columns as $col ) {
+        $cols[] = $this->quoteIdentifierIfNotExpression($col);
       }
-      $this->_parts[] = join(', ', $cols);
-    } else if( is_string($this->_columns) ) {
-      $this->_parts[] = $this->_quoteIdentifierIfNotExpression($this->_columns);
-    } else if( $this->_columns instanceof Expression ) {
-      $this->_parts[] = (string) $this->_columns;
+      $this->parts[] = join(', ', $cols);
+    } else if( is_string($this->columns) ) {
+      $this->parts[] = $this->quoteIdentifierIfNotExpression($this->columns);
+    } else if( $this->columns instanceof Expression ) {
+      $this->parts[] = (string) $this->columns;
     }
     return $this;
   }
@@ -152,10 +155,10 @@ class Select extends ExtendedQuery
    * 
    * @return \zsql\Select
    */
-  protected function _pushDistinct()
+  protected function pushDistinct()
   {
-    if( $this->_distinct ) {
-      $this->_parts[] = 'DISTINCT';
+    if( $this->distinct ) {
+      $this->parts[] = 'DISTINCT';
     }
     return $this;
   }
@@ -165,15 +168,15 @@ class Select extends ExtendedQuery
    * 
    * @return \zsql\Select
    */
-  protected function _pushHint()
+  protected function pushHint()
   {
-    if( $this->_hint ) {
-      $this->_parts[] = $this->_hintMode ?: 'USE';
-      $this->_parts[] = 'INDEX';
-      if( is_array($this->_hint) ) {
-        $this->_parts[] = '(' . join(', ', array_map(array($this, '_quoteIdentifierIfNotExpression'), $this->_hint)) . ')';
+    if( $this->hint ) {
+      $this->parts[] = $this->hintMode ?: 'USE';
+      $this->parts[] = 'INDEX';
+      if( is_array($this->hint) ) {
+        $this->parts[] = '(' . join(', ', array_map(array($this, 'quoteIdentifierIfNotExpression'), $this->hint)) . ')';
       } else {
-        $this->_parts[] = '(' . $this->_quoteIdentifierIfNotExpression($this->_hint) . ')';
+        $this->parts[] = '(' . $this->quoteIdentifierIfNotExpression($this->hint) . ')';
       }
     }
     return $this;

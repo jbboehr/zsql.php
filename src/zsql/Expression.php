@@ -2,6 +2,9 @@
 
 namespace zsql;
 
+/**
+ * Represents a string that should not be quoted
+ */
 class Expression
 {
   /**
@@ -9,7 +12,7 @@ class Expression
    * 
    * @var string 
    */
-  protected $_expr;
+  protected $expression;
   
   /**
    * Constructor
@@ -18,7 +21,7 @@ class Expression
    */
   public function __construct($expr)
   {
-    $this->_expr = $expr;
+    $this->expression = $expr;
   }
   
   /**
@@ -28,6 +31,6 @@ class Expression
    */
   public function __toString()
   {
-    return (string) $this->_expr;
+    return (string) $this->expression;
   }
 }

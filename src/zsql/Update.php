@@ -2,6 +2,9 @@
 
 namespace zsql;
 
+/**
+ * Update query generator
+ */
 class Update extends ExtendedQuery
 {
   /**
@@ -9,10 +12,26 @@ class Update extends ExtendedQuery
    * 
    * @var array
    */
-  protected $_values;
+  protected $values;
   
   /**
-   * Alias for {{\zsql\Update::value()}} or {{\zsql\Update::values()}}
+   * Assemble parts
+   * 
+   * @return void
+   */
+  protected function assemble()
+  {
+    $this->push('UPDATE')
+         ->pushTable()
+         ->push('SET')
+         ->pushValues()
+         ->pushWhere()
+         ->pushOrder()
+         ->pushLimit();
+  }
+  
+  /**
+   * Alias for {@link Update::value()} or {@link Update::values()}
    * 
    * @param mixed $key
    * @param mixed $value
@@ -28,7 +47,7 @@ class Update extends ExtendedQuery
   }
   
   /**
-   * Alias for {{\zsql\Update::table()}} and {{\zsql\Update::values()}}
+   * Alias for {@link Update::table()} and {@link Update::values()}
    * 
    * @param string $table
    * @param array $values
@@ -53,9 +72,9 @@ class Update extends ExtendedQuery
   public function value($key, $value = null)
   {
     if( null === $value && $key instanceof Expression ) {
-      $this->_values[] = $key;
+      $this->values[] = $key;
     } else {
-      $this->_values[$key] = $value;
+      $this->values[$key] = $value;
     }
     return $this;
   }
@@ -68,23 +87,7 @@ class Update extends ExtendedQuery
    */
   public function values(array $values)
   {
-    $this->_values = $values;
+    $this->values = $values;
     return $this;
-  }
-  
-  /**
-   * Assemble parts
-   * 
-   * @return void
-   */
-  protected function _assemble()
-  {
-    $this->_push('UPDATE')
-         ->_pushTable()
-         ->_push('SET')
-         ->_pushValues()
-         ->_pushWhere()
-         ->_pushOrder()
-         ->_pushLimit();
   }
 }

@@ -20,10 +20,10 @@ check-pages:
 	}
 
 gh-pages: check-pages
-	@vendor/bin/apigen.php --destination gh-pages/ --source src/
+	@vendor/bin/apigen.php --main zsql --destination gh-pages/ --source src/
 
 docs:
-	@vendor/bin/apigen.php --destination doc/ --source src/
+	@vendor/bin/apigen.php --main zsql --destination doc/ --source src/
 
 phar: clean
 	@mkdir ./build

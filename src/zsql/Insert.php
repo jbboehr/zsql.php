@@ -2,6 +2,9 @@
 
 namespace zsql;
 
+/**
+ * Insert query generator
+ */
 class Insert extends Query
 {
   /**
@@ -9,35 +12,53 @@ class Insert extends Query
    * 
    * @var boolean
    */
-  protected $_delayed;
+  protected $delayed;
   
   /**
    * Set ignore clause
    * 
    * @var boolean
    */
-  protected $_ignore;
+  protected $ignore;
   
   /**
    * Set on duplicate key update clause
    * 
    * @var array
    */
-  protected $_onDuplicateKeyUpdate;
+  protected $onDuplicateKeyUpdate;
   
   /**
    * Use replace instead of insert
    * 
    * @var boolean
    */
-  protected $_replace;
+  protected $replace;
   
   /**
    * Values
    * 
    * @var array
    */
-  protected $_values;
+  protected $values;
+  
+  /**
+   * Assemble parts
+   * 
+   * @return void
+   */
+  protected function assemble()
+  {
+    $this->push($this->replace ? 
+                  'REPLACE' : 
+                  'INSERT')
+         ->pushIgnoreDelayed()
+         ->push('INTO')
+         ->pushTable()
+         ->push('SET')
+         ->pushValues()
+         ->pushOnDuplicateKeyUpdate();
+  }
   
   /**
    * Set delayed clause
@@ -47,7 +68,7 @@ class Insert extends Query
    */
   public function delayed($delayed = true)
   {
-    $this->_delayed = (bool) $delayed;
+    $this->delayed = (bool) $delayed;
     return $this;
   }
   
@@ -59,12 +80,12 @@ class Insert extends Query
    */
   public function ignore($ignore = true)
   {
-    $this->_ignore = (bool) $ignore;
+    $this->ignore = (bool) $ignore;
     return $this;
   }
   
   /**
-   * Alias for {{\zsql\Insert::values()}}
+   * Alias for {@link Insert::values()}
    * 
    * @param array $values
    * @return \zsql\Insert
@@ -76,7 +97,7 @@ class Insert extends Query
   }
   
   /**
-   * Alias for {{\zsql\Query::table()}}
+   * Alias for {@link Query::table()}
    * 
    * @param string $table
    * @return \zsql\Insert
@@ -95,11 +116,44 @@ class Insert extends Query
   public function onDuplicateKeyUpdate($key, $value = null)
   {
     if( func_num_args() == 2 ) {
-      $this->_onDuplicateKeyUpdate[$key] = $value;
+      $this->onDuplicateKeyUpdate[$key] = $value;
     } else if( $key instanceof Expression ) {
-      $this->_onDuplicateKeyUpdate[] = $key;
+      $this->onDuplicateKeyUpdate[] = $key;
     } else if( is_array($key) ) {
-      $this->_onDuplicateKeyUpdate = $key;
+      $this->onDuplicateKeyUpdate = $key;
+    }
+    return $this;
+  }
+  
+  /**
+   * Push ignore or delayed onto parts
+   * 
+   * @return \zsql\Insert
+   */
+  protected function pushIgnoreDelayed()
+  {
+    if( $this->delayed ) {
+      $this->parts[] = 'DELAYED';
+    }
+    if( $this->ignore && !$this->replace ) {
+      $this->parts[] = 'IGNORE';
+    }
+    return $this;
+  }
+  
+  /**
+   * Push on duplicate key update clause
+   * 
+   * @return \zsql\Insert
+   */
+  protected function pushOnDuplicateKeyUpdate()
+  {
+    if( $this->onDuplicateKeyUpdate ) {
+      $this->parts[] = 'ON DUPLICATE KEY UPDATE';
+      $tmp = $this->values;
+      $this->values = $this->onDuplicateKeyUpdate;
+      $this->pushValues();
+      $this->values = $tmp;
     }
     return $this;
   }
@@ -112,12 +166,12 @@ class Insert extends Query
    */
   public function replace($replace = true)
   {
-    $this->_replace = (bool) $replace;
+    $this->replace = (bool) $replace;
     return $this;
   }
   
   /**
-   * Alias for {{\zsql\Insert::value()}} or {{\zsql\Insert::values()}}
+   * Alias for {@link Insert::value()} or {@link Insert::values()}
    * 
    * @param mixed $key
    * @param mixed $value
@@ -143,9 +197,9 @@ class Insert extends Query
   public function value($key, $value = null)
   {
     if( null === $value && $key instanceof Expression ) {
-      $this->_values[] = $key;
+      $this->values[] = $key;
     } else {
-      $this->_values[$key] = $value;
+      $this->values[$key] = $value;
     }
     return $this;
   }
@@ -158,58 +212,7 @@ class Insert extends Query
    */
   public function values(array $values)
   {
-    $this->_values = $values;
-    return $this;
-  }
-  
-  /**
-   * Assemble parts
-   * 
-   * @return void
-   */
-  protected function _assemble()
-  {
-    $this->_push($this->_replace ? 
-                  'REPLACE' : 
-                  'INSERT')
-         ->_pushIgnoreDelayed()
-         ->_push('INTO')
-         ->_pushTable()
-         ->_push('SET')
-         ->_pushValues()
-         ->_pushOnDuplicateKeyUpdate();
-  }
-  
-  /**
-   * Push ignore or delayed onto parts
-   * 
-   * @return \zsql\Insert
-   */
-  protected function _pushIgnoreDelayed()
-  {
-    if( $this->_delayed ) {
-      $this->_parts[] = 'DELAYED';
-    }
-    if( $this->_ignore && !$this->_replace ) {
-      $this->_parts[] = 'IGNORE';
-    }
-    return $this;
-  }
-  
-  /**
-   * Push on duplicate key update clause
-   * 
-   * @return \zsql\Insert
-   */
-  protected function _pushOnDuplicateKeyUpdate()
-  {
-    if( $this->_onDuplicateKeyUpdate ) {
-      $this->_parts[] = 'ON DUPLICATE KEY UPDATE';
-      $tmp = $this->_values;
-      $this->_values = $this->_onDuplicateKeyUpdate;
-      $this->_pushValues();
-      $this->_values = $tmp;
-    }
+    $this->values = $values;
     return $this;
   }
 }
