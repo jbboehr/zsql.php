@@ -12,8 +12,18 @@ compatinfo:
 	@phpci print -R --report full src > compatinfo.log
 	@less compatinfo.log
 
+check-pages:
+	@test -d gh-pages || { \
+		mkdir gh-pages; \
+		cd gh-pages; \
+		git clone -b gh-pages https://github.com/jbboehr/zsql.php.git .; \
+	}
+
+gh-pages: check-pages
+	@vendor/bin/apigen.php --destination gh-pages/ --source src/
+
 docs:
-	vendor/bin/apigen.php --destination doc/ --source src/
+	@vendor/bin/apigen.php --destination doc/ --source src/
 
 phar: clean
 	@mkdir ./build
