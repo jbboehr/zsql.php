@@ -1,5 +1,7 @@
 # zsql.php
 
+[![Build Status](https://travis-ci.org/jbboehr/zsql.php.png?branch=master)](https://travis-ci.org/jbboehr/zsql.php)
+
 SQL generator modeled loosely after Zend_Db_Select.
 
 ## Installation
