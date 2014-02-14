@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="generator" content="ApiGen 2.8.0" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.8.0">
 
 	<title>Class zsql\Select</title>
 
-	<script type="text/javascript" src="resources/combined.js?3024097829"></script>
-	<script type="text/javascript" src="elementlist.js?3698363998"></script>
-	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+	<script type="text/javascript" src="resources/combined.js?1623298882"></script>
+	<script type="text/javascript" src="elementlist.js?2880678532"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360">
 
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
@@ -39,17 +39,20 @@
 			</ul>
 		</div>
 
-		<hr />
+		<hr>
 
 
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-zsql.Database.html">Database</a></li>
 				<li><a href="class-zsql.Delete.html">Delete</a></li>
 				<li><a href="class-zsql.Expression.html">Expression</a></li>
 				<li><a href="class-zsql.ExtendedQuery.html">ExtendedQuery</a></li>
 				<li><a href="class-zsql.Insert.html">Insert</a></li>
+				<li><a href="class-zsql.Model.html">Model</a></li>
 				<li><a href="class-zsql.Query.html">Query</a></li>
+				<li><a href="class-zsql.Result.html">Result</a></li>
 				<li class="active"><a href="class-zsql.Select.html">Select</a></li>
 				<li><a href="class-zsql.Update.html">Update</a></li>
 			</ul>
@@ -71,10 +74,10 @@
 <div id="right">
 <div id="rightInner">
 	<form id="search">
-		<input type="hidden" name="cx" value="" />
-		<input type="hidden" name="ie" value="UTF-8" />
-		<input type="text" name="q" class="text" />
-		<input type="submit" value="Search" />
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text">
+		<input type="submit" value="Search">
 	</form>
 
 	<div id="navigation">
@@ -115,14 +118,14 @@
 			
 		</dd>
 		<dd style="padding-left:30px">
-			<img src="resources/inherit.png" alt="Extended by" />
+			<img src="resources/inherit.png" alt="Extended by">
 			<a href="class-zsql.ExtendedQuery.html"><span>zsql\ExtendedQuery</span></a>
 			
 			
 			
 		</dd>
 		<dd style="padding-left:60px">
-			<img src="resources/inherit.png" alt="Extended by" />
+			<img src="resources/inherit.png" alt="Extended by">
 <b><span>zsql\Select</span></b>			
 			
 			
@@ -139,10 +142,10 @@
 	<div class="info">
 		
 		
-		<b>Namespace:</b> <a href="namespace-zsql.html">zsql</a><br />
+		<b>Namespace:</b> <a href="namespace-zsql.html">zsql</a><br>
 		
 
-		<b>Located at</b> <a href="source-class-zsql.Select.html#5-184" title="Go to source code">zsql/Select.php</a><br />
+		<b>Located at</b> <a href="source-class-zsql.Select.html#5-213" title="Go to source code">zsql/Select.php</a><br>
 	</div>
 
 
@@ -160,7 +163,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_columns">#</a>
-		<code><a href="source-class-zsql.Select.html#38-55" title="Go to source code">columns</a>( <span>mixed <var>$columns</var></span> )</code>
+		<code><a href="source-class-zsql.Select.html#45-62" title="Go to source code">columns</a>( <span>mixed <var>$columns</var></span> )</code>
 
 		<div class="description short">
 			
@@ -182,12 +185,12 @@
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br />
+					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br>
 				</div>
 
 				<h4>Throws</h4>
 				<div class="list">
-					<code><code><a href="class-zsql.Exception.html">zsql\Exception</a></code></code><br />
+					<code><code><a href="class-zsql.Exception.html">zsql\Exception</a></code></code><br>
 				</div>
 
 
@@ -206,7 +209,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_distinct">#</a>
-		<code><a href="source-class-zsql.Select.html#57-67" title="Go to source code">distinct</a>( <span>type <var>$distinct</var> = <span class="php-keyword1">true</span></span> )</code>
+		<code><a href="source-class-zsql.Select.html#64-74" title="Go to source code">distinct</a>( <span>type <var>$distinct</var> = <span class="php-keyword1">true</span></span> )</code>
 
 		<div class="description short">
 			
@@ -228,7 +231,7 @@
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br />
+					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br>
 				</div>
 
 
@@ -248,7 +251,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_from">#</a>
-		<code><a href="source-class-zsql.Select.html#69-83" title="Go to source code">from</a>( <span>mixed <var>$table</var></span>, <span>mixed <var>$columns</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-zsql.Select.html#76-90" title="Go to source code">from</a>( <span>mixed <var>$table</var></span>, <span>mixed <var>$columns</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -272,7 +275,7 @@
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br />
+					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br>
 				</div>
 
 
@@ -292,7 +295,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_hint">#</a>
-		<code><a href="source-class-zsql.Select.html#85-97" title="Go to source code">hint</a>( <span>mixed <var>$columns</var></span>, <span>string <var>$mode</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-zsql.Select.html#92-104" title="Go to source code">hint</a>( <span>mixed <var>$columns</var></span>, <span>string <var>$mode</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -316,7 +319,7 @@
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br />
+					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br>
 				</div>
 
 
@@ -336,7 +339,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_select">#</a>
-		<code><a href="source-class-zsql.Select.html#99-109" title="Go to source code">select</a>( <span>mixed <var>$columns</var></span> )</code>
+		<code><a href="source-class-zsql.Select.html#106-116" title="Go to source code">select</a>( <span>mixed <var>$columns</var></span> )</code>
 
 		<div class="description short">
 			
@@ -358,7 +361,86 @@
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br />
+					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getResultClass" id="_getResultClass">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getResultClass">#</a>
+		<code><a href="source-class-zsql.Select.html#118-126" title="Go to source code">getResultClass</a>( )</code>
+
+		<div class="description short">
+			
+<p>Get the result class</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get the result class</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setResultClass" id="_setResultClass">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-zsql.Select.html">zsql\Select</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setResultClass">#</a>
+		<code><a href="source-class-zsql.Select.html#128-138" title="Go to source code">setResultClass</a>( <span>string <var>$class</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set result class</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set result class</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$class</var></dt>
+					<dd><code>string</code><br>$class</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br>
 				</div>
 
 
@@ -378,7 +460,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_assemble">#</a>
-		<code><a href="source-class-zsql.Select.html#111-128" title="Go to source code">assemble</a>( )</code>
+		<code><a href="source-class-zsql.Select.html#140-157" title="Go to source code">assemble</a>( )</code>
 
 		<div class="description short">
 			
@@ -411,7 +493,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_pushColumns">#</a>
-		<code><a href="source-class-zsql.Select.html#130-151" title="Go to source code">pushColumns</a>( )</code>
+		<code><a href="source-class-zsql.Select.html#159-180" title="Go to source code">pushColumns</a>( )</code>
 
 		<div class="description short">
 			
@@ -428,7 +510,7 @@
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br />
+					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br>
 				</div>
 
 
@@ -448,7 +530,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_pushDistinct">#</a>
-		<code><a href="source-class-zsql.Select.html#153-164" title="Go to source code">pushDistinct</a>( )</code>
+		<code><a href="source-class-zsql.Select.html#182-193" title="Go to source code">pushDistinct</a>( )</code>
 
 		<div class="description short">
 			
@@ -465,7 +547,7 @@
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br />
+					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br>
 				</div>
 
 
@@ -485,7 +567,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_pushHint">#</a>
-		<code><a href="source-class-zsql.Select.html#166-183" title="Go to source code">pushHint</a>( )</code>
+		<code><a href="source-class-zsql.Select.html#195-212" title="Go to source code">pushHint</a>( )</code>
 
 		<div class="description short">
 			
@@ -502,7 +584,7 @@
 
 				<h4>Returns</h4>
 				<div class="list">
-					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br />
+					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br>
 				</div>
 
 
@@ -669,6 +751,33 @@
 			<div class="description detailed hidden">
 				
 <p>Index hint clause (mode)</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="resultClass" id="$resultClass">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-zsql.Select.html#38-43" title="Go to source code"><var>$resultClass</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$resultClass" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>The result class</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>The result class</p>
 
 
 			</div>

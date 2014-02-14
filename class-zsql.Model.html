@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.8.0">
+
+	<title>Class zsql\Model</title>
+
+	<script type="text/javascript" src="resources/combined.js?1623298882"></script>
+	<script type="text/javascript" src="elementlist.js?2880678532"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360">
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', "UA-7764958-4"]);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Namespaces</h3>
+			<ul>
+				<li class="active main"><a href="namespace-zsql.html">zsql</a>
+						</li>
+				<li><a href="namespace-PHP.html">PHP</a>
+						</li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-zsql.Database.html">Database</a></li>
+				<li><a href="class-zsql.Delete.html">Delete</a></li>
+				<li><a href="class-zsql.Expression.html">Expression</a></li>
+				<li><a href="class-zsql.ExtendedQuery.html">ExtendedQuery</a></li>
+				<li><a href="class-zsql.Insert.html">Insert</a></li>
+				<li class="active"><a href="class-zsql.Model.html">Model</a></li>
+				<li><a href="class-zsql.Query.html">Query</a></li>
+				<li><a href="class-zsql.Result.html">Result</a></li>
+				<li><a href="class-zsql.Select.html">Select</a></li>
+				<li><a href="class-zsql.Update.html">Update</a></li>
+			</ul>
+
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-zsql.Exception.html">Exception</a></li>
+			</ul>
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text">
+		<input type="submit" value="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-zsql.html" title="Summary of zsql"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Model</h1>
+
+
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-zsql.html">zsql</a><br>
+		
+
+		<b>Located at</b> <a href="source-class-zsql.Model.html#5-213" title="Go to source code">zsql/Model.php</a><br>
+	</div>
+
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-zsql.Model.html#33-40" title="Go to source code">__construct</a>( <span><code><a href="class-zsql.Database.html">zsql\Database</a></code> <var>$database</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$database</var></dt>
+					<dd><code>Engine\Database</code><br>$database</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="init" id="_init">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_init">#</a>
+		<code><a href="source-class-zsql.Model.html#42-47" title="Go to source code">init</a>( )</code>
+
+		<div class="description short">
+			
+<p>Post initialization hook</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Post initialization hook</p>
+
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="find" id="_find">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-stdClass.html">stdClass</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_find">#</a>
+		<code><a href="source-class-zsql.Model.html#49-65" title="Go to source code">find</a>( <span>mixed <var>$identity</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Find a record by primary key</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Find a record by primary key</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$identity</var></dt>
+					<dd><code>mixed</code><br>$identity</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-stdClass.html">stdClass</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="findMany" id="_findMany">
+
+		<td class="attributes"><code>
+			 public 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_findMany">#</a>
+		<code><a href="source-class-zsql.Model.html#67-82" title="Go to source code">findMany</a>( <span>array <var>$identities</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Find many records by identity</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Find many records by identity</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$identities</var></dt>
+					<dd><code>array</code><br>$identities</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getDatabase" id="_getDatabase">
+
+		<td class="attributes"><code>
+			 public 
+			Engine\Database
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getDatabase">#</a>
+		<code><a href="source-class-zsql.Model.html#84-92" title="Go to source code">getDatabase</a>( )</code>
+
+		<div class="description short">
+			
+<p>Getter method for the database adapter</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Getter method for the database adapter</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>Engine\Database</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setDatabase" id="_setDatabase">
+
+		<td class="attributes"><code>
+			 public 
+			Engine\Model
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setDatabase">#</a>
+		<code><a href="source-class-zsql.Model.html#94-104" title="Go to source code">setDatabase</a>( <span><code><a href="class-zsql.Database.html">zsql\Database</a></code> <var>$database</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Setter method for the database adapter</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Setter method for the database adapter</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$database</var></dt>
+					<dd><code>Engine\Database</code><br>$database</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>Engine\Model</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getTableName" id="_getTableName">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getTableName">#</a>
+		<code><a href="source-class-zsql.Model.html#106-114" title="Go to source code">getTableName</a>( )</code>
+
+		<div class="description short">
+			
+<p>Getter method for the $tableName property.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Getter method for the $tableName property.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setTableName" id="_setTableName">
+
+		<td class="attributes"><code>
+			 public 
+			Engine\Model
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setTableName">#</a>
+		<code><a href="source-class-zsql.Model.html#116-126" title="Go to source code">setTableName</a>( <span>string <var>$table</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Setter method for the $tableName property.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Setter method for the $tableName property.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$table</var></dt>
+					<dd><code>string</code><br>$table</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>Engine\Model</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getPrimaryKey" id="_getPrimaryKey">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getPrimaryKey">#</a>
+		<code><a href="source-class-zsql.Model.html#128-136" title="Go to source code">getPrimaryKey</a>( )</code>
+
+		<div class="description short">
+			
+<p>Getter method for the $primaryKey property</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Getter method for the $primaryKey property</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setPrimaryKey" id="_setPrimaryKey">
+
+		<td class="attributes"><code>
+			 public 
+			Engine\Model
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setPrimaryKey">#</a>
+		<code><a href="source-class-zsql.Model.html#138-148" title="Go to source code">setPrimaryKey</a>( <span>string <var>$primaryKey</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Setter method for the $primaryKey property</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Setter method for the $primaryKey property</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$primaryKey</var></dt>
+					<dd><code>string</code><br>$primaryKey</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>Engine\Model</code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="select" id="_select">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-zsql.Select.html">zsql\Select</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_select">#</a>
+		<code><a href="source-class-zsql.Model.html#150-164" title="Go to source code">select</a>( )</code>
+
+		<div class="description short">
+			
+<p>Helper function the provides the \zsql\Select object with the table name
+pre-populated.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Helper function the provides the \zsql\Select object with the table name
+pre-populated.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.Select.html">zsql\Select</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="insert" id="_insert">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-zsql.Insert.html">zsql\Insert</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_insert">#</a>
+		<code><a href="source-class-zsql.Model.html#166-180" title="Go to source code">insert</a>( )</code>
+
+		<div class="description short">
+			
+<p>Insert a row into the model's table. If no table name is specified an
+exception will be thrown</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Insert a row into the model's table. If no table name is specified an
+exception will be thrown</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.Insert.html">zsql\Insert</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="update" id="_update">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-zsql.Update.html">zsql\Update</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_update">#</a>
+		<code><a href="source-class-zsql.Model.html#182-196" title="Go to source code">update</a>( )</code>
+
+		<div class="description short">
+			
+<p>Update existing rows in the model's table. If no table name is specified an
+exception will be thrown</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Update existing rows in the model's table. If no table name is specified an
+exception will be thrown</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.Update.html">zsql\Update</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="delete" id="_delete">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-zsql.Delete.html">zsql\Delete</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_delete">#</a>
+		<code><a href="source-class-zsql.Model.html#198-212" title="Go to source code">delete</a>( )</code>
+
+		<div class="description short">
+			
+<p>Deletes existing rows from the model's table. If no table name is specified
+an exception will be thrown</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Deletes existing rows from the model's table. If no table name is specified
+an exception will be thrown</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-zsql.Delete.html">zsql\Delete</a></code></code><br>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="database" id="$database">
+		<td class="attributes"><code>
+			protected  
+			Engine\Database
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-zsql.Model.html#7-10" title="Go to source code"><var>$database</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$database" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="primaryKey" id="$primaryKey">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-zsql.Model.html#12-17" title="Go to source code"><var>$primaryKey</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$primaryKey" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Name of the primary key column for a table, if one exists</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Name of the primary key column for a table, if one exists</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="resultClass" id="$resultClass">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-zsql.Model.html#19-24" title="Go to source code"><var>$resultClass</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$resultClass" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Class to use for results</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Class to use for results</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="tableName" id="$tableName">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-zsql.Model.html#26-31" title="Go to source code"><var>$tableName</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$tableName" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Name of the table associated with the model</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Name of the table associated with the model</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		 API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>
