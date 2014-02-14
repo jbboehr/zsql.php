@@ -18,4 +18,4 @@ php:
   - 5.5
 
 script:
-  - phpunit -c tests/phpunit.xml --coverage-text
+  - make test
