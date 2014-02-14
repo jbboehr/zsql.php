@@ -36,6 +36,13 @@ class Select extends ExtendedQuery
   protected $hintMode;
   
   /**
+   * The result class
+   * 
+   * @var string
+   */
+  protected $resultClass;
+  
+  /**
    * Set the columns
    * 
    * @param mixed $columns
@@ -105,6 +112,28 @@ class Select extends ExtendedQuery
   public function select($columns)
   {
     $this->columns($columns);
+    return $this;
+  }
+  
+  /**
+   * Get the result class
+   * 
+   * @return string
+   */
+  public function getResultClass()
+  {
+    return $this->resultClass;
+  }
+  
+  /**
+   * Set result class
+   * 
+   * @param string $class
+   * @return \zsql\Select
+   */
+  public function setResultClass($class)
+  {
+    $this->resultClass = $class;
     return $this;
   }
   

@@ -1,6 +1,6 @@
 <?php
 
-class Delete_Test extends Common_Test
+class Delete_Test extends Common_Query_Test
 {
   protected $_className = '\\zsql\\Delete';
   

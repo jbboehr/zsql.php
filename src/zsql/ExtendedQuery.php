@@ -171,8 +171,8 @@ abstract class ExtendedQuery extends Query
     $this->parts[] = 'WHERE';
     foreach( $this->where as $w ) {
       $where = $w[0];
-      $value = @$w[1];
-      $type = @$w[2];
+      $value = isset($w[1]) ? $w[1] : null;
+      $type = isset($w[2]) ? $w[2] : null;
       if( $where instanceof Expression ) {
         $this->parts[] = (string) $where;
       } else if( count($w) == 3 ) {

@@ -2,6 +2,51 @@
 
 class Common_Test extends PHPUnit_Framework_TestCase
 {
+  protected $fixtureOneRowCount = 2;
+  
+  protected $useVerboseErrorHandler = false;
+  
+  public function __construct($name = NULL, array $data = array(), $dataName = '')
+  {
+    parent::__construct($name, $data, $dataName);
+    
+    if( $this->useVerboseErrorHandler ) {
+      $this->setVerboseErrorHandler();
+    }
+  }
+  
+  protected function setVerboseErrorHandler() 
+  {
+    $handler = function($errorNumber, $errorString, $errorFile, $errorLine) {
+        echo "ERROR INFO\nMessage: $errorString\nFile: $errorFile\nLine: $errorLine\n";
+    };
+    set_error_handler($handler);        
+  }
+  
+  protected function fixtureModelOneFactory()
+  {
+    return new FixtureModelOne($this->databaseFactory());
+  }
+  
+  protected function databaseFactory()
+  {
+    $mysql = new \mysqli();
+    $mysql->connect('localhost', 'zsql', 'nopass', 'zsql');
+    return new \zsql\Database($mysql);
+  }
+  
+  public function getReflectedPropertyValue($class, $propertyName)
+  {
+    $reflectedClass = new ReflectionClass($class);
+    $property = $reflectedClass->getProperty($propertyName);
+    $property->setAccessible(true);
+ 
+    return $property->getValue($class);
+}
+}
+
+class Common_Query_Test extends Common_Test
+{
   protected $_className;
   
   public function testClassExists()
@@ -77,4 +122,16 @@ class Common_Test extends PHPUnit_Framework_TestCase
       }
     };
   }
+}
+
+class FixtureModelOne extends \zsql\Model
+{
+  protected $tableName = 'fixture1';
+  
+  protected $primaryKey = 'id';
+}
+
+class FixtureModelWithoutTableOrPrimaryKey extends \zsql\Model
+{
+  
 }

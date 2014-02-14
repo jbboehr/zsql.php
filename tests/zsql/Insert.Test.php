@@ -1,6 +1,6 @@
 <?php
 
-class Insert_Test extends Common_Test
+class Insert_Test extends Common_Query_Test
 {
   protected $_className = '\\zsql\\Insert';
   

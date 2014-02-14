@@ -1,8 +1,11 @@
 language: php
 
+services: mysql
+
 before_script:
   - composer self-update
   - composer install --dev --prefer-source
+  - mysql < tests/fixtures.sql
 
 php:
   - 5.3.3

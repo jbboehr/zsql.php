@@ -20,4 +20,8 @@ require $srcpath . '/Insert.php';
 require $srcpath . '/Select.php';
 require $srcpath . '/Update.php';
 
+//require $srcpath . '/Database.php';
+//require $srcpath . '/Result.php';
+//require $srcpath . '/Model.php';
+
 require $testpath . '/common.php';
