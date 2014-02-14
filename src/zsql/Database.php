@@ -10,19 +10,20 @@ use \mysqli_result;
 
 class Database 
 {
-  
   /**
-   * Insert query modifiers
+   * @var integer
    */
-  const NORMAL  = 0;
-  const DELAYED = 1;
-  const IGNORE  = 2;
-  const REPLACE = 4;
+  protected $affectedRows;
   
   /**
    * @var mysqli
    */
   protected $connection;
+  
+  /**
+   * @var integer
+   */
+  protected $insertId;
   
   /**
    * Holds the total number of queries ran for the database object's lifetime.
@@ -32,6 +33,8 @@ class Database
   protected $queryCount = 0;
   
   /**
+   * Construct a new database object.
+   * 
    * @param \mysqli $connection 
    */
   public function __construct(mysqli $connection)
@@ -50,6 +53,16 @@ class Database
   }
   
   /**
+   * Get affected rows
+   * 
+   * @return integer
+   */
+  public function getAffectedRows()
+  {
+    return $this->affectedRows;
+  }
+  
+  /**
    * Exposes the local connection object
    *
    * @return \mysqli
@@ -63,7 +76,7 @@ class Database
    * Sets the local mysqli object
    *
    * @param \mysqli $connection 
-   * @return \Engine\Database
+   * @return \zsql\Database
    */
   public function setConnection(mysqli $connection = null)
   {
@@ -72,7 +85,17 @@ class Database
   }
   
   /**
-   * Gets number of queries ran for the database object's lifetime.
+   * Get the last insert ID
+   * 
+   * @return integer
+   */
+  public function getInsertId()
+  {
+    return $this->insertId;
+  }
+  
+  /**
+   * Gets number of queries run using this adapter.
    * 
    * @return integer
    */
@@ -82,116 +105,90 @@ class Database
   }
   
   /**
-   * Wraps common options used to configure all zsql objects
-   *
-   * @param \zsql\Query $$query 
-   * @return \zsql\Query
-   */
-  protected function _configureZsqlObject(Query $query)
-  {
-    return $query
-      ->setQuoteCallback(array($this, 'quote'))
-      ->interpolation();
-  }
-  
-  /**
-   * Wrapper for zsql\Select
+   * Wrapper for \zsql\Select
    *
    * @return \zsql\Select
    */
   public function select()
   {
-    $database = $this;
-    $queryObject = new Select(
-      function($query) use ($database, &$queryObject) {
-        $result = $database->query($query);
-        if( $queryObject instanceof Select &&
-            $result instanceof Result && 
-            ($class = $queryObject->getResultClass()) ) {
-          $result->setResultClass($class);
-        }
-        return $result;
-      }
-    );
-    return $this->_configureZsqlObject($queryObject);
+    return new Select($this);
   }
   
   /**
-   * The insert function
+   * Wrapper for \zsql\Insert
    *
-   * @return \zsql\Insert|mixed
+   * @return \zsql\Insert
    */
   public function insert()
   {
-    $database = $this;
-    return $this->_configureZsqlObject(new Insert(
-      function($query) use ($database) {
-        return $database->query($query);
-      }
-    ));
+    return new Insert($this);
   }
   
   /**
-   * The update function
+   * Wrapper for \zsql\Update
    *
    * @return \zsql\Update
    */
   public function update()
   {
-    $database = $this;
-    return $this->_configureZsqlObject(new Update(
-      function($query) use ($database) {
-        return $database->query($query);
-      }
-    ));
+    return new Update($this);
   }
   
   /**
-   * The delete function
+   * Wrapper for \zsql\Delete
    *
    * @return \zsql\Delete
    */
   public function delete()
   {
-    $database = $this;
-    return $this->_configureZsqlObject(new Delete(
-      function($query) use ($database) {
-        return $database->query($query);
-      }
-    ));
+    return new Delete($this);
   }
   
   /**
    * Executes an SQL query
    *
-   * @param string $query 
+   * @param string|\zsql\Query $query 
    * @param string $resultmode 
    * @return \Engine\Database\Result|mixed
    */
   public function query($query, $resultmode = MYSQLI_STORE_RESULT)
   {
     $connection = $this->getConnection();
-
+    
+    $this->affectedRows = null;
+    $this->insertId = null;
     $this->queryCount++;
     
-    $query = (string) $query; 
-    $ret = $connection->query($query, $resultmode);
-
-    if( $ret === false ) {
-      // throwing exceptions if an error occurss...
-      throw new Exception(sprintf("%s: %s\n%s",
-        $connection->errno, $connection->error, $query));
+    $queryString = (string) $query; 
+    $ret = $connection->query($queryString, $resultmode);
+    
+    // Save insert ID if instance of insert
+    if( $query instanceof \zsql\Insert ) {
+      $this->insertId = $connection->insert_id;
     }
     
-    // mysql_query:
-    // Returns FALSE on failure. For successful SELECT, SHOW, DESCRIBE or 
-    // EXPLAIN queries mysqli_query() will return a mysqli_result object. For 
-    // other successful queries mysqli_query() will return TRUE.
-    if( $ret instanceof mysqli_result ) {
-      // handle mysqli_result object
-      return new Result($ret);
+    // Save affected rows
+    $this->affectedRows = $connection->affected_rows;
+
+    // Handle result
+    if( $ret !== false ) {
+      // Select -> \zsql\Result
+      // Insert -> insertId OR true
+      // Update/Delete -> affectedRows
+      if( $ret instanceof mysqli_result ) {
+        // handle mysqli_result object
+        return new Result($ret);
+      } else if( $query instanceof \zsql\Insert ) {
+        return $this->getInsertId();
+      } else if( $query instanceof \zsql\Update || 
+                 $query instanceof \zsql\Delete ) {
+        return $this->getAffectedRows();
+      }
+      // Should never get to this line
     } else {
-      return $ret; 
+      // Query failed, throw exception
+      throw new Exception(sprintf("%s: %s\n%s",
+        $connection->errno, $connection->error, $query));
     }
   }
 

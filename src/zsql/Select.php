@@ -138,6 +138,20 @@ class Select extends ExtendedQuery
   }
   
   /**
+   * Execute a query
+   * 
+   * @return \zsql\Result
+   */
+  public function query()
+  {
+    $result = parent::query();
+    if( $this->resultClass ) {
+      $result->setResultClass($this->getResultClass());
+    }
+    return $result;
+  }
+  
+  /**
    * Assemble parts
    * 
    * @return void

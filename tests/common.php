@@ -102,6 +102,17 @@ class Common_Query_Test extends Common_Test
     $this->assertInstanceOf('\\zsql\\Exception', $exception);
   }
   
+  public function testInvalidConstructionArgThrowsException()
+  {
+    $exception = null;
+    try {
+      $query = new $this->_className('blah');
+    } catch( Exception $e ) {
+      $exception = $e;
+    }
+    $this->assertInstanceOf('\\zsql\\Exception', $exception);
+  }
+  
   protected function _factory()
   {
     return new $this->_className();

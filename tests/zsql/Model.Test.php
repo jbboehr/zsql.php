@@ -112,11 +112,10 @@ class Model_Test extends Common_Test
     $class = '\\zsql\\Select';
     $query = $model->select();
     $string = (string) $query;
-    $cb = $this->getReflectedPropertyValue($query, 'queryCallback');
     
     $this->assertInstanceOf($class, $query);
     $this->assertContains($model->getTableName(), $string);
-    $this->assertEquals(true, is_callable($cb));
+    $this->assertInstanceOf('\\zsql\\Database', $this->getReflectedPropertyValue($query, 'database'));
   }
   
   public function testSelect_ThrowsWithNoTable()
@@ -139,11 +138,10 @@ class Model_Test extends Common_Test
     $class = '\\zsql\\Insert';
     $query = $model->insert()->value('double', '2');
     $string = (string) $query;
-    $cb = $this->getReflectedPropertyValue($query, 'queryCallback');
     
     $this->assertInstanceOf($class, $query);
     $this->assertContains($model->getTableName(), $string);
-    $this->assertEquals(true, is_callable($cb));
+    $this->assertInstanceOf('\\zsql\\Database', $this->getReflectedPropertyValue($query, 'database'));
   }
   
   public function testInsert_ThrowsWithNoTable()
@@ -166,11 +164,10 @@ class Model_Test extends Common_Test
     $class = '\\zsql\\Update';
     $query = $model->update()->value('double', '2')->where('id', 54);
     $string = (string) $query;
-    $cb = $this->getReflectedPropertyValue($query, 'queryCallback');
     
     $this->assertInstanceOf($class, $query);
     $this->assertContains($model->getTableName(), $string);
-    $this->assertEquals(true, is_callable($cb));
+    $this->assertInstanceOf('\\zsql\\Database', $this->getReflectedPropertyValue($query, 'database'));
   }
   
   public function testUpdate_ThrowsWithNoTable()
@@ -193,11 +190,10 @@ class Model_Test extends Common_Test
     $class = '\\zsql\\Delete';
     $query = $model->delete()->where('id', 54);
     $string = (string) $query;
-    $cb = $this->getReflectedPropertyValue($query, 'queryCallback');
     
     $this->assertInstanceOf($class, $query);
     $this->assertContains($model->getTableName(), $string);
-    $this->assertEquals(true, is_callable($cb));
+    $this->assertInstanceOf('\\zsql\\Database', $this->getReflectedPropertyValue($query, 'database'));
   }
   
   public function testDelete_ThrowsWithNoTable()

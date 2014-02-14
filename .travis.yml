@@ -18,4 +18,4 @@ php:
   - 5.5
 
 script:
-  - make test
+  - make test-cov-cli

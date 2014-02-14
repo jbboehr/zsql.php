@@ -92,11 +92,11 @@ class Database_Test extends Common_Test
     $this->assertInstanceOf('\\zsql\\Delete', $query);
     
     
-    $database->insert()
+    $id = $database->insert()
             ->into('fixture2')
             ->set('double', 0)
             ->query();
-    $id = $database->getConnection()->insert_id;
+    $idAlt = $database->getInsertId();
     
     $ret = $query->table('fixture2')
             ->where('id', $id)
@@ -104,6 +104,8 @@ class Database_Test extends Common_Test
     
     $this->assertEquals(true, $ret);
     $this->assertEquals(1, $database->getConnection()->affected_rows);
+    $this->assertNotEmpty($id);
+    $this->assertEquals($id, $idAlt);
   }
   
   public function testQuery()
@@ -136,7 +138,7 @@ class Database_Test extends Common_Test
     $database = $this->databaseFactory();
     
     $result = $database->query('DELETE FROM fixture1 WHERE id = 234234');
-    $this->assertEquals(true, $result);
+    $this->assertEquals(null, $result);
   }
   
   public function testQuote()

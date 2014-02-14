@@ -8,6 +8,13 @@ namespace zsql;
 abstract class Query
 {
   /**
+   * The database adapter for this query
+   * 
+   * @var \zsql\Database
+   */
+  protected $database;
+  
+  /**
    * Toggle whether to interpolate parameters into the query
    * 
    * @var boolean
@@ -77,8 +84,13 @@ abstract class Query
    */
   public function __construct($queryCallback = null)
   {
-    if( $queryCallback ) {
+    if( $queryCallback instanceof \zsql\Database ) {
+      $this->database = $queryCallback;
+      $this->interpolation();
+    } else if( is_callable($queryCallback) ) {
       $this->queryCallback = $queryCallback;
+    } else if( $queryCallback !== null ) {
+      throw new \zsql\Exception('Invalid query executor');
     }
   }
   
@@ -112,8 +124,13 @@ abstract class Query
     if( count($this->params) <= 0 ) {
       return;
     }
-    if( !$this->quoteCallback ) {
-      throw new \zsql\Exception('Interpolation not available without setting a quote callback');
+    if( $this->quoteCallback ) {
+      $cb = $this->quoteCallback;
+    } else if( $this->database ) {
+      $cb = array($this->database, 'quote');
+    } else {
+      throw new \zsql\Exception('Interpolation not available without ' 
+              . 'setting a quote callback or database adapter');
     }
     if( substr_count($this->query, '?') != count($this->params) ) {
       throw new \zsql\Exception('Parameter count mismatch');
@@ -122,7 +139,7 @@ abstract class Query
     $parts = explode('?', $this->query);
     $query = $parts[0];
     for( $i = 0, $l = count($this->params); $i < $l; $i++ ) {
-      $query .= call_user_func($this->quoteCallback, $this->params[$i]) . $parts[$i+1];
+      $query .= call_user_func($cb, $this->params[$i]) . $parts[$i+1];
     }
     $this->query = $query;
   }
@@ -217,20 +234,24 @@ abstract class Query
   /**
    * Proxy to query callback
    * 
-   * @return mixed
+   * @return \zsql\Result|boolean
    * @throws \zsql\Exception
    */
   public function query()
   {
-    if( !$this->queryCallback ) {
-      throw new \zsql\Exception('query() called when no callback set');
-    }
-    $query = $this->toString();
-    $params = $this->params();
-    if( $this->interpolation ) {
-      return call_user_func($this->queryCallback, $query);
+    if( $this->database ) {
+      $this->interpolateParams();
+      return $this->database->query($this);
+    } else if( $this->queryCallback ) {
+      $query = $this->toString();
+      $params = $this->params();
+      if( $this->interpolation ) {
+        return call_user_func($this->queryCallback, $query);
+      } else {
+        return call_user_func($this->queryCallback, $query, $params);
+      }
     } else {
-      return call_user_func($this->queryCallback, $query, $params);
+      throw new \zsql\Exception('query() called when no callback or database adapter set');
     }
   }
   
