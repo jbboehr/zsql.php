@@ -2,11 +2,14 @@ language: php
 
 services: mysql
 
+env:
+  - DB=mysql
+
 before_script:
   - composer self-update
   - composer install --dev --prefer-source
   - /etc/init.d/mysql start || 1
-  - mysql -utravis -p'' < tests/fixtures.sql
+  - mysql -uroot < tests/fixtures.sql
 
 php:
   - 5.3.3
