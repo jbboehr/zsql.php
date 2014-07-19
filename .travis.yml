@@ -1,0 +1,21 @@
+language: php
+
+services: mysql
+
+env:
+  - DB=mysql
+
+before_script:
+  - composer self-update
+  - composer install --dev --prefer-source
+  - /etc/init.d/mysql start || 1
+  - mysql -uroot < tests/fixtures.sql
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - hhvm
+
+script:
+  - make test-cov-cli
