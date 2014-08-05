@@ -4,6 +4,29 @@ class Insert_Test extends Common_Query_Test
 {
   protected $_className = '\\zsql\\Insert';
   
+  public function testAfter()
+  {
+    $bit = null;
+    $bit2 = null;
+    $cb = function($result) use (&$bit) {
+      if( $result === 'fakeInsertId' ) {
+        $bit = true;
+      }
+    };
+    $queryCallback = function() use (&$bit2) {
+      $bit2 = true;
+      return 'fakeInsertId';
+    };
+    $query = new \zsql\Insert($queryCallback);
+    $query
+      ->into('tableName')
+      ->set('a3', 'b4')
+      ->after($cb)
+      ->query();
+    $this->assertEquals($bit, true);
+    $this->assertTrue($bit2, true);
+  }
+  
   public function testClearValues()
   {
     $query = new \zsql\Insert();

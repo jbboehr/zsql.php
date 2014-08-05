@@ -43,6 +43,13 @@ abstract class Query
   protected $parts;
   
   /**
+   * Array of callbacks to execute after query is executed
+   * 
+   * @var array
+   */
+  protected $postExecuteCallbacks;
+  
+  /**
    * Callback to quote a string
    * 
    * @var callback
@@ -107,6 +114,20 @@ abstract class Query
       trigger_error($e->getMessage(), E_USER_WARNING);
       return '';
     }
+  }
+  
+  /**
+   * A callback to execute when the query is executed
+   * 
+   * @param callable $callable
+   * @return self
+   */
+  public function after($callable)
+  {
+    if( is_callable($callable) ) {
+      $this->postExecuteCallbacks[] = $callable;
+    }
+    return $this;
   }
   
   /**
@@ -241,18 +262,24 @@ abstract class Query
   {
     if( $this->database ) {
       $this->interpolateParams();
-      return $this->database->query($this);
+      $result = $this->database->query($this);
     } else if( $this->queryCallback ) {
       $query = $this->toString();
       $params = $this->params();
       if( $this->interpolation ) {
-        return call_user_func($this->queryCallback, $query);
+        $result = call_user_func($this->queryCallback, $query);
       } else {
-        return call_user_func($this->queryCallback, $query, $params);
+        $result = call_user_func($this->queryCallback, $query, $params);
       }
     } else {
       throw new \zsql\Exception('query() called when no callback or database adapter set');
     }
+    if( !empty($this->postExecuteCallbacks) ) {
+      foreach( $this->postExecuteCallbacks as $callable ) {
+        call_user_func($callable, $result);
+      }
+    }
+    return $result;
   }
   
   /**

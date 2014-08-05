@@ -4,6 +4,29 @@ class Update_Test extends Common_Query_Test
 {
   protected $_className = '\\zsql\Update';
   
+  public function testAfter()
+  {
+    $bit = null;
+    $bit2 = null;
+    $cb = function($result) use (&$bit) {
+      if( $result === 23 ) {
+        $bit = true;
+      }
+    };
+    $queryCallback = function() use (&$bit2) {
+      $bit2 = true;
+      return 23;
+    };
+    $query = new \zsql\Update($queryCallback);
+    $query
+      ->table('tableName')
+      ->set('a3', 'b4')
+      ->after($cb)
+      ->query();
+    $this->assertEquals($bit, true);
+    $this->assertTrue($bit2, true);
+  }
+  
   public function testClearValues()
   {
     $query = new \zsql\Update();
