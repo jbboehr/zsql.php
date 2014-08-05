@@ -120,6 +120,21 @@ class Insert extends Query
   }
   
   /**
+   * Get a value that has been set
+   * 
+   * @param $key
+   * @return mixed
+   */
+  public function get($key)
+  {
+      if( isset($this->values[$key]) ) {
+          return $this->values[$key];
+      } else {
+          return null;
+      }
+  }
+  
+  /**
    * Set on duplicate key update clause
    * 
    * @param array $values

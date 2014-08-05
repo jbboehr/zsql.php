@@ -51,6 +51,22 @@ abstract class ExtendedQuery extends Query
   protected $where;
   
   /**
+   * Get the specified where
+   * 
+   * @param mixed $key 
+   * @return mixed
+   */
+  public function getWhere($key)
+  {
+    foreach( $this->where as $w ) {
+      if( $w[0] === $key ) {
+        return $w[1];
+      }
+    }
+    return null;
+  }
+  
+  /**
    * Set group by
    * 
    * @param string $column

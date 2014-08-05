@@ -70,6 +70,15 @@ class Insert_Test extends Common_Query_Test
     $this->assertEquals("INSERT INTO `tableName` SET `columnName` = 'value'", $query->toString());
   }
   
+  public function testGet()
+  {
+    $query = new \zsql\Insert();
+    $query
+      ->set('columnName', 'value');
+    $this->assertEquals('value', $query->get('columnName'));
+    $this->assertEquals(null, $query->get('otherColumnName'));
+  }
+  
   public function testIgnore()
   {
     $query = new \zsql\Insert();

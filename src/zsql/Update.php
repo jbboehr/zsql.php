@@ -42,6 +42,21 @@ class Update extends ExtendedQuery
   }
   
   /**
+   * Get a value that has been set
+   * 
+   * @param $key
+   * @return mixed
+   */
+  public function get($key)
+  {
+      if( isset($this->values[$key]) ) {
+          return $this->values[$key];
+      } else {
+          return null;
+      }
+  }
+  
+  /**
    * Alias for {@link Update::value()} or {@link Update::values()}
    * 
    * @param mixed $key

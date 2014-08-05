@@ -87,6 +87,15 @@ class Select_Test extends Common_Query_Test
     $this->assertEquals('SELECT `a`, `b`, `c` FROM `tableName`', $query->toString());
   }
   
+  public function testGetWhere()
+  {
+    $query = new \zsql\Select();
+    $query
+      ->where('ab', 'cd');
+    $this->assertEquals('cd', $query->getWhere('ab'));
+    $this->assertEquals(null, $query->getWhere('columnName'));
+  }
+  
   public function testGroup()
   {
     $query = new \zsql\Select();

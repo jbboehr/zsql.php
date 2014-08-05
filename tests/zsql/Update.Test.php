@@ -39,6 +39,25 @@ class Update_Test extends Common_Query_Test
     $this->assertEquals(array('b2'), $query->params());
   }
   
+  public function testGet()
+  {
+    $query = new \zsql\Update();
+    $query
+      ->set('columnName', 'value');
+    $this->assertEquals('value', $query->get('columnName'));
+    $this->assertEquals(null, $query->get('otherColumnName'));
+  }
+  
+  public function testGetWhere()
+  {
+    $query = new \zsql\Update();
+    $query
+      ->set('columnName', 'value')
+      ->where('otherColumnName', 'otherValue');
+    $this->assertEquals('otherValue', $query->getWhere('otherColumnName'));
+    $this->assertEquals(null, $query->getWhere('columnName'));
+  }
+  
   public function testToString_ThrowsExceptionWithNoTable()
   {
     $query = new \zsql\Update();

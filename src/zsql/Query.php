@@ -276,7 +276,7 @@ abstract class Query
     }
     if( !empty($this->postExecuteCallbacks) ) {
       foreach( $this->postExecuteCallbacks as $callable ) {
-        call_user_func($callable, $result);
+        call_user_func($callable, $result, $this);
       }
     }
     return $result;
