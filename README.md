@@ -1,6 +1,8 @@
 # zsql.php
 
-[![Build Status](https://travis-ci.org/jbboehr/zsql.php.png?branch=master)](https://travis-ci.org/jbboehr/zsql.php) [![HHVM Status](http://hhvm.h4cc.de/badge/jbboehr/zsql.png)](http://hhvm.h4cc.de/package/jbboehr/zsql)
+[![Build Status](https://travis-ci.org/jbboehr/zsql.php.png?branch=master)](https://travis-ci.org/jbboehr/zsql.php)
+[![HHVM Status](http://hhvm.h4cc.de/badge/jbboehr/zsql.png)](http://hhvm.h4cc.de/package/jbboehr/zsql)
+[![Latest Stable Version](https://poser.pugx.org/jbboehr/zsql/v/stable.svg)](https://packagist.org/packages/jbboehr/zsql)
 
 Lightweight MySQL adapter and SQL generator
 
