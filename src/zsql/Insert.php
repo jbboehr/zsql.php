@@ -59,7 +59,18 @@ class Insert extends Query
          ->pushValues()
          ->pushOnDuplicateKeyUpdate();
   }
-  
+
+  /**
+   * Clear current values
+   * 
+   * @return \zsql\Insert
+   */
+  public function clearValues()
+  {
+    $this->values = null;
+    return $this;
+  }
+
   /**
    * Set delayed clause
    * 
@@ -205,14 +216,16 @@ class Insert extends Query
   }
   
   /**
-   * Set values
+   * Set values. Merges into existing values.
    * 
    * @param array $values
    * @return \zsql\Insert
    */
   public function values(array $values)
   {
-    $this->values = $values;
+    foreach( $values as $k => $v ) {
+      $this->value($k, $v);
+    }
     return $this;
   }
 }

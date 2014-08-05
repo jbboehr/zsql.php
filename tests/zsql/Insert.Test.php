@@ -146,8 +146,8 @@ class Insert_Test extends Common_Query_Test
     $query
       ->into('tableName')
       ->ignore()
-      ->insert(array('1' => '2')) // gets ignored
-      ->set(array('3' => '4')) // gets ignored
+      ->insert(array('a1' => 'b2')) // does not get ignored any more
+      ->set(array('c3' => 'd4')) // does not get ignored any more
       ->values(array(
         'a' => 'b',
         'd' => 'e',
@@ -156,14 +156,12 @@ class Insert_Test extends Common_Query_Test
       ->value('h', new \zsql\Expression('NOW()'))
       ->value(new \zsql\Expression('z = SHA1(0)'))
       ;
-    $this->assertEquals('INSERT IGNORE INTO `tableName` SET `a` = ? , ' 
-        . '`d` = ? , `f` = ? , `h` = NOW() , z = SHA1(0)', $query->toString());
-    $this->assertEquals(array('b', 'e', 'g'), $query->params());
+    $this->assertEquals('INSERT IGNORE INTO `tableName` SET `a1` = ? , `c3` = ? , `a` = ? , `d` = ? , `f` = ? , `h` = NOW() , z = SHA1(0)', $query->toString());
+    $this->assertEquals(array('b2', 'd4', 'b', 'e', 'g'), $query->params());
     
     // Test interpolation
     $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
-    $this->assertEquals("INSERT IGNORE INTO `tableName` SET "
-        . "`a` = 'b' , `d` = 'e' , `f` = 'g' , `h` = NOW() , z = SHA1(0)", $query->toString());
+    $this->assertEquals("INSERT IGNORE INTO `tableName` SET `a1` = 'b2' , `c3` = 'd4' , `a` = 'b' , `d` = 'e' , `f` = 'g' , `h` = NOW() , z = SHA1(0)", $query->toString());
   }
   
   public function test_interpolate_ThrowsException()

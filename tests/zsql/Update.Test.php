@@ -44,7 +44,7 @@ class Update_Test extends Common_Query_Test
     $query = new \zsql\Update();
     $query
       ->update('tableName')
-      ->set(array('3' => '4')) // gets ignored
+      ->set(array('a3' => 'b4')) // does not get ignored any more
       ->values(array(
         'a' => 'b',
         'd' => 'e',
@@ -56,16 +56,12 @@ class Update_Test extends Common_Query_Test
       ->whereIn('k', array('l', 'm', 'n'))
       ->whereExpr('LENGTH(o) > 0')
       ;
-    $this->assertEquals('UPDATE `tableName` SET `a` = ? , ' 
-        . '`d` = ? , `f` = ? , `h` = NOW() , z = SHA1(0) ' 
-        . 'WHERE `i` = ? && `k` IN (?, ?, ?) && LENGTH(o) > 0', $query->toString());
-    $this->assertEquals(array('b', 'e', 'g', 'j', 'l', 'm', 'n'), $query->params());
+    $this->assertEquals('UPDATE `tableName` SET `a3` = ? , `a` = ? , `d` = ? , `f` = ? , `h` = NOW() , z = SHA1(0) WHERE `i` = ? && `k` IN (?, ?, ?) && LENGTH(o) > 0', $query->toString());
+    $this->assertEquals(array('b4', 'b', 'e', 'g', 'j', 'l', 'm', 'n'), $query->params());
     
     // Test interpolation
     $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
-    $this->assertEquals("UPDATE `tableName` SET `a` = 'b' , "
-        . "`d` = 'e' , `f` = 'g' , `h` = NOW() , z = SHA1(0) "
-        . "WHERE `i` = 'j' && `k` IN ('l', 'm', 'n') && LENGTH(o) > 0", $query->toString());
+    $this->assertEquals("UPDATE `tableName` SET `a3` = 'b4' , `a` = 'b' , `d` = 'e' , `f` = 'g' , `h` = NOW() , z = SHA1(0) WHERE `i` = 'j' && `k` IN ('l', 'm', 'n') && LENGTH(o) > 0", $query->toString());
   }
   
   public function test_interpolate_ThrowsException()

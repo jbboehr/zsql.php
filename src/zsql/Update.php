@@ -29,6 +29,17 @@ class Update extends ExtendedQuery
          ->pushOrder()
          ->pushLimit();
   }
+
+  /**
+   * Clear current values
+   * 
+   * @return \zsql\Update
+   */
+  public function clearValues()
+  {
+    $this->values = null;
+    return $this;
+  }
   
   /**
    * Alias for {@link Update::value()} or {@link Update::values()}
@@ -80,14 +91,16 @@ class Update extends ExtendedQuery
   }
   
   /**
-   * Set values
+   * Set values. Merges into existing values.
    * 
    * @param array $values
    * @return \zsql\Update
    */
   public function values(array $values)
   {
-    $this->values = $values;
+    foreach( $values as $k => $v ) {
+      $this->value($k, $v);
+    }
     return $this;
   }
 }
