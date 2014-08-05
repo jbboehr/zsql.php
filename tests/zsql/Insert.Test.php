@@ -4,6 +4,18 @@ class Insert_Test extends Common_Query_Test
 {
   protected $_className = '\\zsql\\Insert';
   
+  public function testClearValues()
+  {
+    $query = new \zsql\Insert();
+    $query
+      ->into('tableName')
+      ->set('a3', 'b4')
+      ->clearValues()
+      ->set('a1', 'b2');
+    $query->toString(); // sigh
+    $this->assertEquals(array('b2'), $query->params());
+  }
+  
   public function testDelayed()
   {
     $query = new \zsql\Insert();

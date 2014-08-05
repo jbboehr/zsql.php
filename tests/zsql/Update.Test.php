@@ -4,6 +4,18 @@ class Update_Test extends Common_Query_Test
 {
   protected $_className = '\\zsql\Update';
   
+  public function testClearValues()
+  {
+    $query = new \zsql\Update();
+    $query
+      ->update('tableName')
+      ->set('a3', 'b4')
+      ->clearValues()
+      ->set('a1', 'b2');
+    $query->toString(); // sigh
+    $this->assertEquals(array('b2'), $query->params());
+  }
+  
   public function testToString_ThrowsExceptionWithNoTable()
   {
     $query = new \zsql\Update();
