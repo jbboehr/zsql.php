@@ -138,7 +138,7 @@ class Database_Test extends Common_Test
     $database = $this->databaseFactory();
     
     $result = $database->query('DELETE FROM fixture1 WHERE id = 234234');
-    $this->assertEquals(null, $result);
+    $this->assertEquals(true, $result);
   }
   
   public function testQuote()

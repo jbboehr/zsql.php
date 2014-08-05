@@ -149,7 +149,7 @@ class Database
    *
    * @param string|\zsql\Query $query 
    * @param string $resultmode 
-   * @return \Engine\Database\Result|mixed
+   * @return \zsql\Result|mixed
    */
   public function query($query, $resultmode = MYSQLI_STORE_RESULT)
   {
@@ -184,7 +184,8 @@ class Database
                  $query instanceof \zsql\Delete ) {
         return $this->getAffectedRows();
       }
-      // Should never get to this line
+      // handle string update/delete/insert queries 
+      return $ret;
     } else {
       // Query failed, throw exception
       throw new Exception(sprintf("%s: %s\n%s",

@@ -5,7 +5,7 @@ namespace zsql;
 class Model
 {
   /**
-   * @var \Engine\Database
+   * @var \zsql\Database
    **/
   protected $database;
   
@@ -31,7 +31,7 @@ class Model
   protected $tableName;
   
   /**
-   * @param \Engine\Database $database 
+   * @param \zsql\Database $database 
    */
   public function __construct(Database $database)
   {
@@ -84,7 +84,7 @@ class Model
   /**
    * Getter method for the database adapter
    *
-   * @return \Engine\Database
+   * @return \zsql\Database
    */
   public function getDatabase()
   {
@@ -94,8 +94,8 @@ class Model
   /**
    * Setter method for the database adapter
    *
-   * @param \Engine\Database $database 
-   * @return \Engine\Model
+   * @param \zsql\Database $database 
+   * @return \zsql\Model
    */
   public function setDatabase(Database $database)
   {
@@ -117,7 +117,7 @@ class Model
    * Setter method for the $tableName property.
    *
    * @param string $table 
-   * @return \Engine\Model
+   * @return \zsql\Model
    */
   public function setTableName($table)
   {
@@ -139,7 +139,7 @@ class Model
    * Setter method for the $primaryKey property
    *
    * @param string $primaryKey 
-   * @return \Engine\Model
+   * @return \zsql\Model
    */
   public function setPrimaryKey($primaryKey)
   {
