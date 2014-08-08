@@ -142,7 +142,20 @@ class FixtureModelOne extends \zsql\Model
   protected $primaryKey = 'id';
 }
 
+class FixtureModelWithResultClass extends \zsql\Model
+{
+    protected $tableName = 'fixture1';
+    
+    protected $resultClass = 'FixtureResult';
+    
+    protected $primaryKey = 'id';
+}
+
 class FixtureModelWithoutTableOrPrimaryKey extends \zsql\Model
 {
   
+}
+
+class FixtureResult extends \stdClass {
+    
 }

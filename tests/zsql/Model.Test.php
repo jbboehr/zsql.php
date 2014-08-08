@@ -118,6 +118,18 @@ class Model_Test extends Common_Test
     $this->assertInstanceOf('\\zsql\\Database', $this->getReflectedPropertyValue($query, 'database'));
   }
   
+  public function testSelect_WithResultClass()
+  {
+      $model = new FixtureModelWithResultClass($this->databaseFactory());
+      
+      $row = $model->select()
+              ->limit(1)
+              ->query()
+              ->fetchRow();
+      
+      $this->assertInstanceOf('FixtureResult', $row);
+  }
+  
   public function testSelect_ThrowsWithNoTable()
   {
     $model = new FixtureModelWithoutTableOrPrimaryKey($this->databaseFactory());

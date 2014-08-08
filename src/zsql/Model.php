@@ -158,9 +158,13 @@ class Model
     if( !$this->tableName ) {
       throw new Exception('No table name specified');
     }
-    return $this->getDatabase()
+    $q = $this->getDatabase()
         ->select()
         ->table($this->tableName);
+    if( $this->resultClass ) {
+        $q->setResultClass($this->resultClass);
+    }
+    return $q;
   }
 
   /**

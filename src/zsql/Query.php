@@ -50,6 +50,13 @@ abstract class Query
   protected $postExecuteCallbacks;
   
   /**
+   * Array of callbacks to execute before the query is executed
+   * 
+   * @var array
+   */
+  protected $preExecuteCallbacks;
+  
+  /**
    * Callback to quote a string
    * 
    * @var callback
@@ -134,6 +141,20 @@ abstract class Query
    * Assemble parts
    */
   abstract protected function assemble();
+  
+  /**
+   * A callback to execute before the query is executed
+   * 
+   * @param callable $callable
+   * @return self
+   */
+  public function before($callable)
+  {
+    if( is_callable($callable) ) {
+        $this->preExecuteCallbacks[] = $callable;
+    }
+    return $this;
+  }
   
   /**
    * Interpolate parameters into query
@@ -260,6 +281,13 @@ abstract class Query
    */
   public function query()
   {
+    // Pre-execute callbacks
+    if( !empty($this->preExecuteCallbacks) ) {
+      foreach( $this->preExecuteCallbacks as $callable ) {
+        call_user_func($callable, $this);
+      }
+    }
+    // Execute
     if( $this->database ) {
       $this->interpolateParams();
       $result = $this->database->query($this);
@@ -274,6 +302,7 @@ abstract class Query
     } else {
       throw new \zsql\Exception('query() called when no callback or database adapter set');
     }
+    // Post-execute callbacks
     if( !empty($this->postExecuteCallbacks) ) {
       foreach( $this->postExecuteCallbacks as $callable ) {
         call_user_func($callable, $result, $this);

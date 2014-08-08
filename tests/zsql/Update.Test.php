@@ -27,6 +27,29 @@ class Update_Test extends Common_Query_Test
     $this->assertTrue($bit2, true);
   }
   
+  public function testBefore()
+  {
+    $bit = null;
+    $bit2 = null;
+    $cb = function($query) use (&$bit, &$bit2) {
+      if( $query instanceof \zsql\Query && !$bit2 ) {
+        $bit = true;
+      }
+    };
+    $queryCallback = function() use (&$bit2) {
+      $bit2 = true;
+      return 'fakeInsertId';
+    };
+    $query = new \zsql\Update($queryCallback);
+    $query
+      ->table('tableName')
+      ->set('a3', 'b4')
+      ->before($cb)
+      ->query();
+    $this->assertEquals($bit, true);
+    $this->assertTrue($bit2, true);
+  }
+  
   public function testClearValues()
   {
     $query = new \zsql\Update();
