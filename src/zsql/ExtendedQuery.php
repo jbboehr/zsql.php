@@ -269,4 +269,24 @@ abstract class ExtendedQuery extends Query
     }
     return $this;
   }
+  
+  /**
+   * Set where not in
+   * 
+   * @param mixed $where
+   * @param array $value
+   * @return \zsql\ExtendedQuery
+   */
+  public function whereNotIn($where, $value)
+  {
+    if( !is_array($value) ) {
+      $value = (array) $value;
+    }
+    if( count($value) <= 0 ) {
+      $this->where[] = array(new Expression('TRUE'));
+    } else {
+      $this->where[] = array($where, $value, 'NOT IN');
+    }
+    return $this;
+  }
 }
