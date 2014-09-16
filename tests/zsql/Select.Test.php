@@ -191,6 +191,33 @@ class Select_Test extends Common_Query_Test
         . "WHERE `columnName` IN ('columnValue')", $query->toString());
   }
   
+  public function testWhereNotIn_Empty()
+  {
+    $query = new \zsql\Select();
+    $query->select('columnName')
+        ->from('tableName')
+        ->whereNotIn('columnName', array());
+    $this->assertEquals('SELECT `columnName` FROM `tableName` ' 
+        . 'WHERE TRUE', $query->toString());
+    $this->assertEquals(array(), $query->params());
+  }
+  
+  public function testWhereNotIn_String()
+  {
+    $query = new \zsql\Select();
+    $query->select('columnName')
+        ->from('tableName')
+        ->whereNotIn('columnName', 'columnValue');
+    $this->assertEquals('SELECT `columnName` FROM `tableName` ' 
+        . 'WHERE `columnName` NOT IN (?)', $query->toString());
+    $this->assertEquals(array('columnValue'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals("SELECT `columnName` FROM `tableName` "
+        . "WHERE `columnName` NOT IN ('columnValue')", $query->toString());
+  }
+  
   public function test_interpolate_ThrowsException()
   {
     $query = new \zsql\Select();
