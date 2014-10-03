@@ -6,8 +6,8 @@
     }
   ],
   "autoload" : {
-    "psr-0" : {
-      "zsql": "src/"
+    "psr-4" : {
+      "zsql\\": "src/"
     }
   },
   "description" : "SQL generator loosely based on Zend_Db_Select",
