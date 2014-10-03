@@ -15,7 +15,7 @@
          
   <testsuites>
     <testsuite name="zsql Test">
-      <directory>./tests/zsql/</directory>
+      <directory suffix="Test.php">./tests/</directory>
     </testsuite>
   </testsuites>
   
