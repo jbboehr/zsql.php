@@ -1,6 +1,10 @@
 filter:
     excluded_paths: [vendor/*]
 
+checks:
+    php:
+        code_rating: true
+        duplication: true
 tools:
     php_pdepend: true
     php_code_coverage: true
