@@ -8,26 +8,19 @@ namespace zsql;
 class Update extends ExtendedQuery
 {
   /**
-   * Values
-   * 
-   * @var array
-   */
-  protected $values;
-  
-  /**
    * Assemble parts
    * 
    * @return void
    */
   protected function assemble()
   {
-    $this->push('UPDATE')
-         ->pushTable()
-         ->push('SET')
-         ->pushValues()
-         ->pushWhere()
-         ->pushOrder()
-         ->pushLimit();
+    $this->push('UPDATE');
+    $this->pushTable();
+    $this->push('SET');
+    $this->pushValues();
+    $this->pushWhere();
+    $this->pushOrder();
+    $this->pushLimit();
   }
 
   /**
@@ -37,7 +30,7 @@ class Update extends ExtendedQuery
    */
   public function clearValues()
   {
-    $this->values = null;
+    $this->values = array();
     return $this;
   }
   

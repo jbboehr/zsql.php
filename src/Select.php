@@ -24,7 +24,7 @@ class Select extends ExtendedQuery
   /**
    * Index hint clause (column)
    * 
-   * @var string
+   * @var mixed
    */
   protected $hint;
   
@@ -140,13 +140,13 @@ class Select extends ExtendedQuery
   /**
    * Execute a query
    * 
-   * @return \zsql\Result
+   * @return \zsql\Result|boolean
    */
   public function query()
   {
     $result = parent::query();
-    if( $this->resultClass ) {
-      $result->setResultClass($this->getResultClass());
+    if( $this->resultClass && ($result instanceof Result) ) {
+        $result->setResultClass($this->getResultClass());
     }
     return $result;
   }
@@ -158,16 +158,16 @@ class Select extends ExtendedQuery
    */
   protected function assemble()
   {
-    $this->push('SELECT')
-         ->pushDistinct()
-         ->pushColumns()
-         ->push('FROM')
-         ->pushTable()
-         ->pushHint()
-         ->pushWhere()
-         ->pushGroup()
-         ->pushOrder()
-         ->pushLimit();
+    $this->push('SELECT');
+    $this->pushDistinct();
+    $this->pushColumns();
+    $this->push('FROM');
+    $this->pushTable();
+    $this->pushHint();
+    $this->pushWhere();
+    $this->pushGroup();
+    $this->pushOrder();
+    $this->pushLimit();
   }
   
   /**

@@ -161,7 +161,7 @@ class Model
     $q = $this->getDatabase()
         ->select()
         ->table($this->tableName);
-    if( $this->resultClass ) {
+    if( $this->resultClass && $q instanceof Select ) {
         $q->setResultClass($this->resultClass);
     }
     return $q;

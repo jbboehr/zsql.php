@@ -24,7 +24,7 @@ abstract class Query
   /**
    * The table
    * 
-   * @var string
+   * @var string|\zsql\Expression
    */
   protected $table;
   
@@ -90,6 +90,13 @@ abstract class Query
    * @var string
    */
   protected $quoteIdentifierChar = '`';
+  
+  /**
+   * Values
+   * 
+   * @var array
+   */
+  protected $values;
   
   /**
    * Constructor 

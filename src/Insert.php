@@ -36,13 +36,6 @@ class Insert extends Query
   protected $replace;
   
   /**
-   * Values
-   * 
-   * @var array
-   */
-  protected $values;
-  
-  /**
    * Assemble parts
    * 
    * @return void
@@ -51,13 +44,13 @@ class Insert extends Query
   {
     $this->push($this->replace ? 
                   'REPLACE' : 
-                  'INSERT')
-         ->pushIgnoreDelayed()
-         ->push('INTO')
-         ->pushTable()
-         ->push('SET')
-         ->pushValues()
-         ->pushOnDuplicateKeyUpdate();
+                  'INSERT');
+    $this->pushIgnoreDelayed();
+    $this->push('INTO');
+    $this->pushTable();
+    $this->push('SET');
+    $this->pushValues();
+    $this->pushOnDuplicateKeyUpdate();
   }
 
   /**
@@ -67,7 +60,7 @@ class Insert extends Query
    */
   public function clearValues()
   {
-    $this->values = null;
+    $this->values = array();
     return $this;
   }
 
