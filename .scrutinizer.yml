@@ -1,15 +1,19 @@
 filter:
-    excluded_paths: [vendor/*]
+  excluded_paths: [vendor/*, tests/*]
 
 checks:
-    php:
-        code_rating: true
-        duplication: true
+  php:
+    code_rating: true
+    duplication: true
+
 tools:
-    php_pdepend: true
-    php_code_coverage: true
-    php_analyzer: true
-    php_code_sniffer: true
+  php_pdepend: true
+  php_code_coverage: true
+  php_analyzer: true
+  php_code_sniffer: true
+  external_code_coverage:
+    timeout: 600 
 
 before_commands:
-    - "composer install --prefer-source"
+  - "composer install --prefer-source"
+
