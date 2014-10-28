@@ -42,6 +42,10 @@ class Select extends ExtendedQuery
    */
   protected $resultClass;
   
+  protected $joins;
+  
+  private $currentJoin;
+  
   /**
    * Set the columns
    * 
@@ -101,6 +105,97 @@ class Select extends ExtendedQuery
     $this->hint = $columns;
     $this->hintMode = $mode;
     return $this;
+  }
+  
+  /**
+   * Join to a table
+   * 
+   * @param string $table
+   * @return \zsql\Select
+   */
+  public function join($table)
+  {
+      if( !empty($this->currentJoin) ) {
+          $this->joins[] = $this->currentJoin;
+      }
+      $this->currentJoin = array();
+      $this->currentJoin['table'] = $table;
+      $this->currentJoin['direction'] = 'INNER';
+      return $this;
+  }
+  
+  /**
+   * Set the current join direction to left
+   * 
+   * @return \zsql\Select
+   */
+  public function left()
+  {
+      $this->currentJoin['direction'] = 'LEFT';
+      return $this;
+  }
+  
+  /**
+   * Set the current join direction to right
+   * 
+   * @return \zsql\Select
+   */
+  public function right()
+  {
+      $this->currentJoin['direction'] = 'RIGHT';
+      return $this;
+  }
+  
+  /**
+   * Set the current join direction to inner
+   * 
+   * @return \zsql\Select
+   */
+  public function inner()
+  {
+      $this->currentJoin['direction'] = 'INNER';
+      return $this;
+  }
+  
+  /**
+   * Set the current join direction to outer
+   * 
+   * @return \zsql\Select
+   */
+  public function outer()
+  {
+      $this->currentJoin['direction'] = 'OUTER';
+      return $this;
+  }
+  
+  /**
+   * Set the current join relation. Takes one to three args:
+   *  - One arg: expression
+   *  - Two args: (tableA.columnA) = (tableB.columnB) (quoted)
+   *  - Three args: (tableA.columnA) (operator) (tableB.columnB) (quoted)
+   * 
+   * @return \zsql\Select
+   */
+  public function on()
+  {
+      switch( func_num_args() ) {
+          case 1:
+              $this->currentJoin['expr'] = func_get_arg(0);
+              break;
+          case 2:
+              $this->currentJoin['expr'] = $this->quoteIdentifier(func_get_arg(0))
+                  . ' = '
+                  . $this->quoteIdentifier(func_get_arg(1));
+              break;
+          case 3:
+              $this->currentJoin['expr'] = $this->quoteIdentifier(func_get_arg(0))
+                  . ' ' . func_get_arg(1) . ' '
+                  . $this->quoteIdentifier(func_get_arg(2));
+              break;
+          default:
+              throw new Exception('Please specify 1-3 arguments to on');
+      }
+      return $this;
   }
   
   /**
@@ -164,6 +259,7 @@ class Select extends ExtendedQuery
          ->push('FROM')
          ->pushTable()
          ->pushHint()
+         ->pushJoin()
          ->pushWhere()
          ->pushGroup()
          ->pushOrder()
@@ -223,5 +319,23 @@ class Select extends ExtendedQuery
       }
     }
     return $this;
+  }
+  
+  protected function pushJoin()
+  {
+      if( !empty($this->currentJoin) ) {
+          $this->joins[] = $this->currentJoin;
+      }
+      $this->currentJoin = array();
+      if( !empty($this->joins) ) {
+        foreach( $this->joins as $join ) {
+            $this->parts[] = 'JOIN';
+            $this->parts[] = $join['direction'];
+            $this->parts[] = $this->quoteIdentifier($join['table']);
+            $this->parts[] = 'ON';
+            $this->parts[] = $join['expr'];
+        }
+      }
+      return $this;
   }
 }
