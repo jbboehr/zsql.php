@@ -275,4 +275,21 @@ class Select_Test extends Common_Query_Test
     $this->assertEquals($expectedQuery, $query->query());
     $this->assertEquals($expectedParams, $query->params());
   }
+  
+  /**
+   * Calling toString then query with a database adapter was failing to 
+   * interpolate
+   */
+  public function testCallingToStringThenDatabaseQuery()
+  {
+      $database = $this->databaseFactory();
+      $query = new \zsql\Select($database);
+      $query->table('fixture1')
+            ->where('id = ?', 102)
+            ->limit(1);
+      $query->toString();
+      
+      // This should not throw an exception
+      $query->query();
+  }
 }
