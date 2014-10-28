@@ -175,7 +175,7 @@ abstract class Query
               . 'setting a quote callback or database adapter');
     }
     if( substr_count($this->query, '?') != count($this->params) ) {
-      throw new \zsql\Exception('Parameter count mismatch');
+      throw new \zsql\Exception('Parameter count mismatch: ' . $this->query);
     }
     
     $parts = explode('?', $this->query);
@@ -289,7 +289,7 @@ abstract class Query
     }
     // Execute
     if( $this->database ) {
-      $this->interpolateParams();
+      //$this->interpolateParams();
       $result = $this->database->query($this);
     } else if( $this->queryCallback ) {
       $query = $this->toString();
