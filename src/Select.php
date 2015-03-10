@@ -329,8 +329,8 @@ class Select extends ExtendedQuery
       $this->currentJoin = array();
       if( !empty($this->joins) ) {
         foreach( $this->joins as $join ) {
-            $this->parts[] = 'JOIN';
             $this->parts[] = $join['direction'];
+            $this->parts[] = 'JOIN';
             $this->parts[] = $this->quoteIdentifier($join['table']);
             $this->parts[] = 'ON';
             $this->parts[] = $join['expr'];

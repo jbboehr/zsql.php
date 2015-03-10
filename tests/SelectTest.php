@@ -160,16 +160,16 @@ class Select_Test extends Common_Query_Test
           ->where('tableA.columnOne', 'a')
           ;
 
-      $this->assertEquals('SELECT * FROM `tableA` JOIN ' . strtoupper($dir) 
-              . ' `tableB` ON ' 
+      $this->assertEquals('SELECT * FROM `tableA` ' . strtoupper($dir) . ' JOIN '
+              . '`tableB` ON ' 
               . '`tableA`.`columnTwo` = `tableB`.`columnThree` WHERE ' 
               . '`tableA`.`columnOne` = ?', $query->toString());
       $this->assertEquals(array('a'), $query->params());
 
       // Test interpolation
       $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
-      $this->assertEquals('SELECT * FROM `tableA` JOIN ' . strtoupper($dir) 
-              . ' `tableB` ON ' 
+      $this->assertEquals('SELECT * FROM `tableA` ' . strtoupper($dir) . ' JOIN '
+              . '`tableB` ON ' 
               . '`tableA`.`columnTwo` = `tableB`.`columnThree` WHERE ' 
               . '`tableA`.`columnOne` = \'a\'', $query->toString());
     }
@@ -185,7 +185,7 @@ class Select_Test extends Common_Query_Test
           ->on('tableA.columnTwo = tableB.columnThree')
       ->where('tableA.columnOne', 'a')
       ;
-      $this->assertEquals('SELECT * FROM `tableA` JOIN LEFT `tableB` ON ' 
+      $this->assertEquals('SELECT * FROM `tableA` LEFT JOIN `tableB` ON ' 
               . 'tableA.columnTwo = tableB.columnThree WHERE ' 
               . '`tableA`.`columnOne` = ?', $query->toString());
       $this->assertEquals(array('a'), $query->params());
@@ -201,7 +201,7 @@ class Select_Test extends Common_Query_Test
           ->on('tableA.columnTwo', '>=', 'tableB.columnThree')
       ->where('tableA.columnOne', 'a')
       ;
-      $this->assertEquals('SELECT * FROM `tableA` JOIN LEFT `tableB` ON ' 
+      $this->assertEquals('SELECT * FROM `tableA` LEFT JOIN `tableB` ON ' 
               . '`tableA`.`columnTwo` >= `tableB`.`columnThree` WHERE ' 
               . '`tableA`.`columnOne` = ?', $query->toString());
       $this->assertEquals(array('a'), $query->params());
@@ -233,16 +233,16 @@ class Select_Test extends Common_Query_Test
         ->where('tableA.columnOne', 'b')
         ;
       
-    $this->assertEquals('SELECT * FROM `tableA` JOIN LEFT `tableB` ON ' 
-            . '`tableA`.`columnTwo` = `tableB`.`columnThree` JOIN RIGHT ' 
+    $this->assertEquals('SELECT * FROM `tableA` LEFT JOIN `tableB` ON ' 
+            . '`tableA`.`columnTwo` = `tableB`.`columnThree` RIGHT JOIN ' 
             . '`tableC` ON `tableC`.`columnFour` = `tableA`.`columnFive` ' 
             . 'WHERE `tableA`.`columnOne` = ?', $query->toString());
     $this->assertEquals(array('b'), $query->params());
     
     // Test interpolation
     $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
-    $this->assertEquals('SELECT * FROM `tableA` JOIN LEFT `tableB` ON ' 
-            . '`tableA`.`columnTwo` = `tableB`.`columnThree` JOIN RIGHT ' 
+    $this->assertEquals('SELECT * FROM `tableA` LEFT JOIN `tableB` ON ' 
+            . '`tableA`.`columnTwo` = `tableB`.`columnThree` RIGHT JOIN ' 
             . '`tableC` ON `tableC`.`columnFour` = `tableA`.`columnFive` ' 
             . 'WHERE `tableA`.`columnOne` = \'b\'', $query->toString());
   }
