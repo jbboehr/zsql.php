@@ -148,6 +148,105 @@ class Select_Test extends Common_Query_Test
         . "WHERE `columnOne` = 'a' && `columnTwo` = 'b'", $query->toString());
   }
   
+  public function testJoin()
+  {
+    foreach( array('left', 'right', 'inner', 'outer') as $dir ) {
+        $query = new \zsql\Select();
+        $query
+          ->from('tableA')
+          ->join('tableB')
+              ->$dir()
+              ->on('tableA.columnTwo', 'tableB.columnThree')
+          ->where('tableA.columnOne', 'a')
+          ;
+
+      $this->assertEquals('SELECT * FROM `tableA` JOIN ' . strtoupper($dir) 
+              . ' `tableB` ON ' 
+              . '`tableA`.`columnTwo` = `tableB`.`columnThree` WHERE ' 
+              . '`tableA`.`columnOne` = ?', $query->toString());
+      $this->assertEquals(array('a'), $query->params());
+
+      // Test interpolation
+      $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+      $this->assertEquals('SELECT * FROM `tableA` JOIN ' . strtoupper($dir) 
+              . ' `tableB` ON ' 
+              . '`tableA`.`columnTwo` = `tableB`.`columnThree` WHERE ' 
+              . '`tableA`.`columnOne` = \'a\'', $query->toString());
+    }
+  }
+  
+  public function testJoinOnOneArgument()
+  {
+    $query = new \zsql\Select();
+    $query
+      ->from('tableA')
+      ->join('tableB')
+          ->left()
+          ->on('tableA.columnTwo = tableB.columnThree')
+      ->where('tableA.columnOne', 'a')
+      ;
+      $this->assertEquals('SELECT * FROM `tableA` JOIN LEFT `tableB` ON ' 
+              . 'tableA.columnTwo = tableB.columnThree WHERE ' 
+              . '`tableA`.`columnOne` = ?', $query->toString());
+      $this->assertEquals(array('a'), $query->params());
+  }
+  
+  public function testJoinOnThreeArguments()
+  {
+    $query = new \zsql\Select();
+    $query
+      ->from('tableA')
+      ->join('tableB')
+          ->left()
+          ->on('tableA.columnTwo', '>=', 'tableB.columnThree')
+      ->where('tableA.columnOne', 'a')
+      ;
+      $this->assertEquals('SELECT * FROM `tableA` JOIN LEFT `tableB` ON ' 
+              . '`tableA`.`columnTwo` >= `tableB`.`columnThree` WHERE ' 
+              . '`tableA`.`columnOne` = ?', $query->toString());
+      $this->assertEquals(array('a'), $query->params());
+      
+  }
+  
+  public function testJoinThrowsWithInvalidArgNumber()
+  {
+    $this->setExpectedException('\\zsql\\Exception');
+    $query = new \zsql\Select();
+    $query
+      ->from('tableA')
+      ->join('tableB')
+          ->left()
+          ->on();
+  }
+  
+  public function testJoinWithTwoJoins()
+  {
+      $query = new \zsql\Select();
+      $query
+        ->from('tableA')
+        ->join('tableB')
+            ->left()
+            ->on('tableA.columnTwo', 'tableB.columnThree')
+        ->join('tableC')
+            ->right()
+            ->on('tableC.columnFour', 'tableA.columnFive')
+        ->where('tableA.columnOne', 'b')
+        ;
+      
+    $this->assertEquals('SELECT * FROM `tableA` JOIN LEFT `tableB` ON ' 
+            . '`tableA`.`columnTwo` = `tableB`.`columnThree` JOIN RIGHT ' 
+            . '`tableC` ON `tableC`.`columnFour` = `tableA`.`columnFive` ' 
+            . 'WHERE `tableA`.`columnOne` = ?', $query->toString());
+    $this->assertEquals(array('b'), $query->params());
+    
+    // Test interpolation
+    $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
+    $this->assertEquals('SELECT * FROM `tableA` JOIN LEFT `tableB` ON ' 
+            . '`tableA`.`columnTwo` = `tableB`.`columnThree` JOIN RIGHT ' 
+            . '`tableC` ON `tableC`.`columnFour` = `tableA`.`columnFive` ' 
+            . 'WHERE `tableA`.`columnOne` = \'b\'', $query->toString());
+  }
+  
   public function testSelect()
   {
     $query = new \zsql\Select();
