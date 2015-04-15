@@ -31,7 +31,7 @@ class Common_Test extends PHPUnit_Framework_TestCase
   protected function databaseFactory()
   {
     $mysql = new \mysqli();
-    $mysql->connect('localhost', 'zsql', 'nopass', 'zsql');
+    $mysql->connect('127.0.0.1', 'zsql', 'nopass', 'zsql');
     return new \zsql\Database($mysql);
   }
   
