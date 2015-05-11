@@ -1,16 +1,13 @@
 
 test: 
-	@"./vendor/bin/phpunit" -c tests/phpunit.xml tests
+	./vendor/bin/phpunit
 	
-test-cov-cli:
-	@"./vendor/bin/phpunit" -c tests/phpunit.xml  --coverage-text tests
-
-test-cov-html:
-	@"./vendor/bin/phpunit" -c tests/phpunit.xml  --coverage-html reports tests
+coverage:
+	./vendor/bin/phpunit --coverage-text --coverage-html=reports
 
 compatinfo:
-	@phpci print -R --report full src > compatinfo.log
-	@less compatinfo.log
+	phpci print -R --report full src > compatinfo.log
+	less compatinfo.log
 
 check-pages:
 	@test -d gh-pages || { \
