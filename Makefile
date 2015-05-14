@@ -1,33 +1,29 @@
 
-test: 
-	./vendor/bin/phpunit
-	
-coverage:
-	./vendor/bin/phpunit --coverage-text --coverage-html=reports
+PHPCS_OPTS := -n -p --standard=vendor/jbboehr/coding-standard/JbboehrStandard/ruleset.xml \
+	--report=full --tab-width=4 --encoding=utf-8 src tests
 
-compatinfo:
-	phpci print -R --report full src > compatinfo.log
-	less compatinfo.log
-
-check-pages:
-	@test -d gh-pages || { \
-		mkdir gh-pages; \
-		cd gh-pages; \
-		git clone -b gh-pages https://github.com/jbboehr/zsql.php.git .; \
-	}
-
-gh-pages: check-pages
-	@"vendor/bin/apigen.php" --config apigen.neon --destination gh-pages/
-
-docs:
-	@"vendor/bin/apigen.php" --config apigen.neon
-
-phar: clean
-	@mkdir ./build
-	@php -d "phar.readonly=0" "./bin/compile.php"
-
-test-phar: phar
-	@PHAR=1 "./vendor/bin/phpunit" -c tests/phpunit.xml tests
+cbf: vendor
+	./vendor/bin/phpcbf $(PHPCS_OPTS)
 
 clean:
-	@rm -Rf ./build
+	rm -rf docs
+
+coverage: vendor
+	./vendor/bin/phpunit --coverage-text --coverage-html=reports
+
+cs: vendor
+	./vendor/bin/phpcs $(PHPCS_OPTS)
+
+docs:
+	./vendor/bin/apigen.php --config apigen.neon
+
+phpunit: vendor
+	./vendor/bin/phpunit
+
+test: cs phpunit
+
+vendor: 
+	composer install --optimize-autoloader
+
+.PHONY: cbf clean coverage cs phpunit test
+
