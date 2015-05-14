@@ -7,30 +7,30 @@ namespace zsql;
  */
 class Expression
 {
-  /**
-   * The expression
-   * 
-   * @var string 
-   */
-  protected $expression;
-  
-  /**
-   * Constructor
-   * 
-   * @param string $expr
-   */
-  public function __construct($expr)
-  {
-    $this->expression = $expr;
-  }
-  
-  /**
-   * Convert to string
-   * 
-   * @return string
-   */
-  public function __toString()
-  {
-    return (string) $this->expression;
-  }
+    /**
+     * The expression
+     *
+     * @var string
+     */
+    protected $expression;
+
+    /**
+     * Constructor
+     *
+     * @param string $expr
+     */
+    public function __construct($expr)
+    {
+        $this->expression = $expr;
+    }
+
+    /**
+     * Convert to string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->expression;
+    }
 }
