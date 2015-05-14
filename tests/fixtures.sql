@@ -23,3 +23,11 @@ INSERT INTO `zsql`.`fixture1` VALUES
 DROP TABLE IF EXISTS `zsql`.`fixture2`;
 CREATE TABLE `zsql`.`fixture2` LIKE `zsql`.`fixture1`;
 INSERT `zsql`.`fixture2` SELECT * FROM `zsql`.`fixture1`;
+
+DROP TABLE IF EXISTS `zsql`.`fixture3`;
+CREATE TABLE `zsql`.`fixture3` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+INSERT INTO `zsql`.`fixture3` VALUES
+(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL),(NULL);

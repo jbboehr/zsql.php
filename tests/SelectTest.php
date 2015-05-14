@@ -391,4 +391,13 @@ class Select_Test extends Common_Query_Test
       // This should not throw an exception
       $query->query();
   }
+  
+  public function testScan()
+  {
+      $database = $this->databaseFactory();
+      $query = new \zsql\Select($database);
+      $expectedClass = PHP_VERSION_ID < 50500 || defined('HHVM_VERSION') ? 
+              '\\zsql\\ScannerIterator' : '\\zsql\\ScannerGenerator';
+      $this->assertInstanceOf($expectedClass, $query->scan());
+  }
 }

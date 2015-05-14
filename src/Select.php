@@ -66,6 +66,21 @@ class Select extends ExtendedQuery
   }
   
   /**
+   * Create a table scanner iterator object
+   * 
+   * @return \zsql\ScannerGenerator|\zsql\ScannerIterator
+   */
+  public function scan()
+  {
+    // @codeCoverageIgnoreStart
+    if( PHP_VERSION_ID < 50500 || defined('HHVM_VERSION') ) {
+      return new ScannerIterator($this);
+    }
+    // @codeCoverageIgnoreEnd
+    return new ScannerGenerator($this);
+  }
+  
+  /**
    * Set distinct clause
    * 
    * @param type $distinct
@@ -208,6 +223,26 @@ class Select extends ExtendedQuery
   {
     $this->columns($columns);
     return $this;
+  }
+  
+  /**
+   * Get the current set limit
+   * 
+   * @return integer
+   */
+  public function getLimit()
+  {
+    return $this->limit;
+  }
+  
+  /**
+   * Get the current set offset
+   * 
+   * @return integer
+   */
+  public function getOffset()
+  {
+    return $this->offset;
   }
   
   /**
