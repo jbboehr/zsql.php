@@ -73,7 +73,7 @@ class Select extends ExtendedQuery
   public function scan()
   {
     // @codeCoverageIgnoreStart
-    if( PHP_VERSION_ID < 50500 ) {
+    if( PHP_VERSION_ID < 50500 || defined('HHVM_VERSION') ) {
       return new ScannerIterator($this);
     }
     // @codeCoverageIgnoreEnd

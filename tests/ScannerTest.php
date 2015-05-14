@@ -25,8 +25,8 @@ class Scanner_Test extends Common_Test
   
   public function testGenerator()
   {
-      if( PHP_VERSION_ID < 50500 ) {
-          return $this->markTestIncomplete('Generators are not supported on < PHP 5.5');
+      if( PHP_VERSION_ID < 50500 || defined('HHVM_VERSION') ) {
+          return $this->markTestIncomplete('Generators are not supported on < PHP 5.5 or HHVM');
       }
       
     foreach( array(1, 2, 10, 15) as $limit ) {
