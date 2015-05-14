@@ -1,26 +1,26 @@
 # zsql.php
 
-[![Build Status](https://travis-ci.org/jbboehr/zsql.php.png?branch=master)](https://travis-ci.org/jbboehr/zsql.php)
+[![Build Status](https://travis-ci.org/jbboehr/zsql.php.svg?branch=master)](https://travis-ci.org/jbboehr/zsql.php)
 [![HHVM Status](http://hhvm.h4cc.de/badge/jbboehr/zsql.png)](http://hhvm.h4cc.de/package/jbboehr/zsql)
+[![Code Coverage](https://scrutinizer-ci.com/g/jbboehr/zsql.php/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/jbboehr/zsql.php/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/jbboehr/zsql/v/stable.svg)](https://packagist.org/packages/jbboehr/zsql)
+[![License](https://poser.pugx.org/jbboehr/zsql/license.svg)](https://packagist.org/packages/jbboehr/zsql)
 
 Lightweight MySQL adapter and SQL generator
 
-## Installation
 
-With [composer](http://getcomposer.org)
+## Install
 
-```json
-{
-    "require": {
-        "jbboehr/zsql": "0.3.*"
-    }
-}
+Via Composer
+
+``` bash
+composer require jbboehr/zsql
 ```
+
 
 ## Usage
 
-#### Delete
+### Delete
 
 ```php
 $database = new \zsql\Database($mysqli);
@@ -70,9 +70,16 @@ $database->update()
   ->query();
 ```
 
-## Basic SQL or Custom Database Adapter
+### Basic SQL or Custom Database Adapter
 
-See [this](https://github.com/jbboehr/zsql.php/blob/master/Adapters.md)
+See [Adapters.md](https://github.com/jbboehr/zsql.php/blob/master/Adapters.md)
+
+
+## Testing
+
+``` bash
+make test
+```
 
 
 ## License
