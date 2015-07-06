@@ -149,4 +149,28 @@ class DatabaseTest extends Common
         $this->assertEquals('3.14', $database->quote(3.14));
         $this->assertEquals("'blah'", $database->quote('blah'));
     }
+
+    public function testQueryWithLogger()
+    {
+        $database = $this->databaseFactory();
+        $logger = $this->getMock('Psr\Log\NullLogger', array('debug'));
+        $logger->expects($this->once())
+            ->method('debug');
+        $database->setLogger($logger);
+        $database->query('SELECT TRUE');
+    }
+
+    public function testQueryWithLoggerWithFailedQuery()
+    {
+        $this->setExpectedException('\\zsql\\Exception');
+        $database = $this->databaseFactory();
+        $logger = $this->getMock('Psr\Log\NullLogger', array('debug', 'error'));
+        $logger->expects($this->once())
+            ->method('debug');
+        $logger->expects($this->once())
+            ->method('error');
+        $database->setLogger($logger);
+        $database->query('SELECT fakesomething');
+    }
 }
+
