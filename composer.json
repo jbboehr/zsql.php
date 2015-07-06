@@ -32,6 +32,7 @@
         "apigen/apigen": "2.8.*",
         "jbboehr/coding-standard": "1.0.*@dev",
         "phpunit/phpunit": "~4.5.0",
+        "psr/log": "~1.0",
         "scrutinizer/ocular": "~1.1",
         "squizlabs/php_codesniffer": "~2.3.2"
     },

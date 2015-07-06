@@ -5,8 +5,9 @@ namespace zsql;
 /**
  * Import classes from the global namespace
  */
-use \mysqli;
-use \mysqli_result;
+use mysqli;
+use mysqli_result;
+use Psr\Log\LoggerInterface;
 
 class Database
 {
@@ -24,6 +25,11 @@ class Database
      * @var integer
      */
     protected $insertId;
+
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
 
     /**
      * Holds the total number of queries ran for the database object's lifetime.
@@ -105,6 +111,17 @@ class Database
     }
 
     /**
+     * Set a query logger
+     *
+     * @return self
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+        return $this;
+    }
+
+    /**
      * Wrapper for \zsql\Select
      *
      * @return \zsql\Select
@@ -160,6 +177,13 @@ class Database
         $this->queryCount++;
 
         $queryString = (string) $query;
+
+        // Log query
+        if( $this->logger ) {
+            $this->logger->debug($queryString);
+        }
+
+        // Execute query
         $ret = $connection->query($queryString, $resultmode);
 
         // Save insert ID if instance of insert
@@ -187,13 +211,18 @@ class Database
             // handle string update/delete/insert queries
             return $ret;
         } else {
-            // Query failed, throw exception
-            throw new Exception(sprintf(
+            $message = sprintf(
                 "%s: %s\n%s",
                 $connection->errno,
                 $connection->error,
                 $query
-            ));
+            );
+            // Log error
+            if( $this->logger ) {
+                $this->logger->error($message);
+            }
+            // Query failed, throw exception
+            throw new Exception($message);
         }
     }
 
