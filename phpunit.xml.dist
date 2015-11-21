@@ -18,6 +18,13 @@
       <directory suffix="Test.php">./tests/</directory>
     </testsuite>
   </testsuites>
+
+  <php>
+    <const name="ZSQL_TEST_DATABASE_HOST" value="127.0.0.1"/>
+    <const name="ZSQL_TEST_DATABASE_USERNAME" value="zsql"/>
+    <const name="ZSQL_TEST_DATABASE_PASSWORD" value="zsql"/>
+    <const name="ZSQL_TEST_DATABASE_DBNAME" value="zsql"/>
+  </php>
   
   <filter>
     <blacklist>

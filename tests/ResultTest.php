@@ -28,7 +28,7 @@ class ResultTest extends Common
         $database = $this->databaseFactory();
         $result = $database->select()->from('fixture1')->query();
 
-        $this->assertEquals(null, $result->getResultClass());
+        $this->assertEquals('\\zsql\\Row\\DefaultRow', $result->getResultClass());
         $result->setResultClass('ArrayObject');
         $this->assertEquals('ArrayObject', $result->getResultClass());
     }
@@ -39,6 +39,19 @@ class ResultTest extends Common
         
         $result = new \zsql\Result(null);
         $result->setResultClass('InvalidClassNameNoob');
+    }
+
+    public function testSetResultParams()
+    {
+        $database = $this->databaseFactory();
+        $result = $database->select()->from('fixture1')->query();
+        $result->setResultClass('\\zsql\\Tests\\Fixture\\RowWithConstructor');
+
+        $params = array('param1', 'param2');
+        $result->setResultParams($params);
+
+        $r = $result->fetchRow();
+        $this->assertEquals($r->params, $params);
     }
 
     public function testGetResultMode()

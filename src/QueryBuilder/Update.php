@@ -1,6 +1,8 @@
 <?php
 
-namespace zsql;
+namespace zsql\QueryBuilder;
+
+use zsql\Expression;
 
 /**
  * Update query generator

@@ -1,6 +1,10 @@
 <?php
 
-namespace zsql;
+namespace zsql\QueryBuilder;
+
+use zsql\Expression;
+use zsql\Adapter\Adapter;
+use zsql\Result\Result;
 
 /**
  * Base abstract query
@@ -10,7 +14,7 @@ abstract class Query
     /**
      * The database adapter for this query
      *
-     * @var \zsql\Database
+     * @var Adapter
      */
     protected $database;
 
@@ -98,13 +102,13 @@ abstract class Query
      */
     public function __construct($queryCallback = null)
     {
-        if( $queryCallback instanceof \zsql\Database ) {
+        if( $queryCallback instanceof Adapter ) {
             $this->database = $queryCallback;
             $this->interpolation();
         } else if( is_callable($queryCallback) ) {
             $this->queryCallback = $queryCallback;
         } else if( $queryCallback !== null ) {
-            throw new \zsql\Exception('Invalid query executor');
+            throw new Exception('Invalid query executor');
         }
     }
 
@@ -127,7 +131,7 @@ abstract class Query
      * A callback to execute when the query is executed
      *
      * @param callable $callable
-     * @return self
+     * @return $this
      */
     public function after($callable)
     {
@@ -146,7 +150,7 @@ abstract class Query
      * A callback to execute before the query is executed
      *
      * @param callable $callable
-     * @return self
+     * @return $this
      */
     public function before($callable)
     {
@@ -159,7 +163,7 @@ abstract class Query
     /**
      * Interpolate parameters into query
      *
-     * @throws \zsql\Exception
+     * @throws Exception
      */
     protected function interpolateParams()
     {
@@ -171,11 +175,11 @@ abstract class Query
         } else if( $this->database ) {
             $cb = array($this->database, 'quote');
         } else {
-            throw new \zsql\Exception('Interpolation not available without '
+            throw new Exception('Interpolation not available without '
             . 'setting a quote callback or database adapter');
         }
         if( substr_count($this->query, '?') != count($this->params) ) {
-            throw new \zsql\Exception('Parameter count mismatch: ' . $this->query);
+            throw new Exception('Parameter count mismatch: ' . $this->query);
         }
 
         $parts = explode('?', $this->query);
@@ -189,7 +193,8 @@ abstract class Query
     /**
      * Toggle whether to interpolate parameters into the query
      *
-     * @return \zsql\Query
+     * @param boolean $interpolation
+     * @return $this
      */
     public function interpolation($interpolation = true)
     {
@@ -221,7 +226,7 @@ abstract class Query
      * Push an arbitrary string onto parts
      *
      * @param string $string
-     * @return \zsql\Query
+     * @return $this
      */
     protected function push($string)
     {
@@ -232,13 +237,13 @@ abstract class Query
     /**
      * Push table onto parts
      *
-     * @return \zsql\Query
-     * @throws \zsql\Exception
+     * @return $this
+     * @throws Exception
      */
     protected function pushTable()
     {
         if( empty($this->table) ) {
-            throw new \zsql\Exception('No table specified');
+            throw new Exception('No table specified');
         }
         $this->parts[] = $this->quoteIdentifierIfNotExpression($this->table);
         return $this;
@@ -247,13 +252,13 @@ abstract class Query
     /**
      * Push values onto parts
      *
-     * @return \zsql\Query
-     * @throws \zsql\Exception
+     * @return $this
+     * @throws Exception
      */
     protected function pushValues()
     {
         if( empty($this->values) ) {
-            throw new \zsql\Exception('No values specified');
+            throw new Exception('No values specified');
         }
         foreach( $this->values as $key => $value ) {
             if( !is_int($key) ) {
@@ -276,8 +281,8 @@ abstract class Query
     /**
      * Proxy to query callback
      *
-     * @return \zsql\Result|boolean
-     * @throws \zsql\Exception
+     * @return Result|boolean
+     * @throws Exception
      */
     public function query()
     {
@@ -300,7 +305,7 @@ abstract class Query
                 $result = call_user_func($this->queryCallback, $query, $params);
             }
         } else {
-            throw new \zsql\Exception('query() called when no callback or database adapter set');
+            throw new Exception('query() called when no callback or database adapter set');
         }
         // Post-execute callbacks
         if( !empty($this->postExecuteCallbacks) ) {
@@ -345,14 +350,14 @@ abstract class Query
     /**
      * Set the function to use to quote strings
      *
-     * @param type $callback
-     * @return \zsql\Query
-     * @throws \zsql\Exception
+     * @param callable $callback
+     * @return $this
+     * @throws Exception
      */
     public function setQuoteCallback($callback)
     {
         if( !is_callable($callback) ) {
-            throw new \zsql\Exception('Invalid callback specified');
+            throw new Exception('Invalid callback specified');
         }
         $this->quoteCallback = $callback;
         return $this;
@@ -362,7 +367,7 @@ abstract class Query
      * Set the table
      *
      * @param mixed $table
-     * @return \zsql\Query
+     * @return $this
      */
     public function table($table)
     {

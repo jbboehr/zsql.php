@@ -1,11 +1,17 @@
 <?php
 
-namespace zsql;
+namespace zsql\Table;
 
-class Model
+use zsql\Adapter\Adapter;
+use zsql\QueryBuilder\Delete;
+use zsql\QueryBuilder\Insert;
+use zsql\QueryBuilder\Select;
+use zsql\QueryBuilder\Update;
+
+class DefaultTable
 {
     /**
-     * @var \zsql\Database
+     * @var Adapter
      */
     protected $database;
 
@@ -31,9 +37,9 @@ class Model
     protected $tableName;
 
     /**
-     * @param \zsql\Database $database
+     * @param Adapter $database
      */
-    public function __construct(Database $database)
+    public function __construct(Adapter $database)
     {
         $this->setDatabase($database)
             ->init();
@@ -87,7 +93,7 @@ class Model
     /**
      * Getter method for the database adapter
      *
-     * @return \zsql\Database
+     * @return Adapter
      */
     public function getDatabase()
     {
@@ -97,10 +103,10 @@ class Model
     /**
      * Setter method for the database adapter
      *
-     * @param \zsql\Database $database
-     * @return \zsql\Model
+     * @param Adapter $database
+     * @return $this
      */
-    public function setDatabase(Database $database)
+    public function setDatabase(Adapter $database)
     {
         $this->database = $database;
         return $this;
@@ -120,7 +126,7 @@ class Model
      * Setter method for the $tableName property.
      *
      * @param string $table
-     * @return \zsql\Model
+     * @return $this
      */
     public function setTableName($table)
     {
@@ -142,7 +148,7 @@ class Model
      * Setter method for the $primaryKey property
      *
      * @param string $primaryKey
-     * @return \zsql\Model
+     * @return $this
      */
     public function setPrimaryKey($primaryKey)
     {
@@ -154,7 +160,7 @@ class Model
      * Helper function the provides the \zsql\Select object with the table name
      * pre-populated.
      *
-     * @return \zsql\Select
+     * @return Select
      */
     public function select()
     {
@@ -174,7 +180,7 @@ class Model
      * Insert a row into the model's table. If no table name is specified an
      * exception will be thrown
      *
-     * @return \zsql\Insert
+     * @return Insert
      */
     public function insert()
     {
@@ -190,7 +196,7 @@ class Model
      * Update existing rows in the model's table. If no table name is specified an
      * exception will be thrown
      *
-     * @return \zsql\Update
+     * @return Update
      */
     public function update()
     {
@@ -206,7 +212,7 @@ class Model
      * Deletes existing rows from the model's table. If no table name is specified
      * an exception will be thrown
      *
-     * @return \zsql\Delete
+     * @return Delete
      */
     public function delete()
     {

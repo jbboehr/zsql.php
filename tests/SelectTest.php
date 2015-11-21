@@ -388,7 +388,7 @@ class SelectTest extends CommonQuery
         $database = $this->databaseFactory();
         $query = new \zsql\Select($database);
         $expectedClass = PHP_VERSION_ID < 50500 || defined('HHVM_VERSION') ?
-            '\\zsql\\ScannerIterator' : '\\zsql\\ScannerGenerator';
+            '\\zsql\\Scanner\\ScannerIterator' : '\\zsql\\Scanner\\ScannerGenerator';
         $this->assertInstanceOf($expectedClass, $query->scan());
     }
 }

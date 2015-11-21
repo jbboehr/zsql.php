@@ -1,6 +1,6 @@
 <?php
 
-namespace zsql;
+namespace zsql\Scanner;
 
 /**
  * Table scanner (generator implementation)

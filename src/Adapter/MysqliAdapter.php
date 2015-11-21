@@ -1,15 +1,20 @@
 <?php
 
-namespace zsql;
+namespace zsql\Adapter;
 
-/**
- * Import classes from the global namespace
- */
 use mysqli;
 use mysqli_result;
 use Psr\Log\LoggerInterface;
 
-class Database
+use zsql\Expression;
+use zsql\QueryBuilder\Delete;
+use zsql\QueryBuilder\Insert;
+use zsql\QueryBuilder\Query;
+use zsql\QueryBuilder\Select;
+use zsql\QueryBuilder\Update;
+use zsql\Result\MysqliResult as Result;
+
+class MysqliAdapter implements Adapter
 {
     /**
      * @var integer
@@ -113,7 +118,8 @@ class Database
     /**
      * Set a query logger
      *
-     * @return self
+     * @param LoggerInterface $logger
+     * @return $this
      */
     public function setLogger(LoggerInterface $logger)
     {
@@ -122,9 +128,9 @@ class Database
     }
 
     /**
-     * Wrapper for \zsql\Select
+     * Wrapper for Select
      *
-     * @return \zsql\Select
+     * @return Select
      */
     public function select()
     {
@@ -132,9 +138,9 @@ class Database
     }
 
     /**
-     * Wrapper for \zsql\Insert
+     * Wrapper for Insert
      *
-     * @return \zsql\Insert
+     * @return Insert
      */
     public function insert()
     {
@@ -142,9 +148,9 @@ class Database
     }
 
     /**
-     * Wrapper for \zsql\Update
+     * Wrapper for Update
      *
-     * @return \zsql\Update
+     * @return Update
      */
     public function update()
     {
@@ -152,9 +158,9 @@ class Database
     }
 
     /**
-     * Wrapper for \zsql\Delete
+     * Wrapper for Delete
      *
-     * @return \zsql\Delete
+     * @return Delete
      */
     public function delete()
     {
@@ -164,11 +170,10 @@ class Database
     /**
      * Executes an SQL query
      *
-     * @param string|\zsql\Query $query
-     * @param string $resultmode
-     * @return \zsql\Result|mixed
+     * @param string|Query $query
+     * @return Result|mixed
      */
-    public function query($query, $resultmode = MYSQLI_STORE_RESULT)
+    public function query($query)
     {
         $connection = $this->getConnection();
 
@@ -184,7 +189,7 @@ class Database
         }
 
         // Execute query
-        $ret = $connection->query($queryString, $resultmode);
+        $ret = $connection->query($queryString, MYSQLI_STORE_RESULT);
 
         // Save insert ID if instance of insert
         if( $query instanceof \zsql\Insert ) {

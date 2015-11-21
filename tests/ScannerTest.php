@@ -2,13 +2,16 @@
 
 namespace zsql\Tests;
 
+use zsql\Scanner\ScannerGenerator;
+use zsql\Scanner\ScannerIterator;
+
 class ScannerTest extends Common
 {
     public function testIterator()
     {
         foreach( array(1, 2, 3, 10, 15) as $limit ) {
             $database = $this->databaseFactory();
-            $scanner = new \zsql\ScannerIterator(
+            $scanner = new ScannerIterator(
                 $database->select()
                     ->from('fixture3')
                     ->order('id', 'ASC')
@@ -34,7 +37,7 @@ class ScannerTest extends Common
 
         foreach( array(1, 2, 10, 15) as $limit ) {
             $database = $this->databaseFactory();
-            $scanner = new \zsql\ScannerGenerator(
+            $scanner = new ScannerGenerator(
                 $database->select()
                     ->from('fixture3')
                     ->order('id', 'ASC')
@@ -55,7 +58,7 @@ class ScannerTest extends Common
     public function testMode()
     {
         $database = $this->databaseFactory();
-        $scanner = new \zsql\ScannerIterator(
+        $scanner = new ScannerIterator(
             $database->select()
                 ->from('fixture3')
                 ->order('id', 'ASC')

@@ -1,10 +1,10 @@
 <?php
 
-namespace zsql;
+namespace zsql\Result;
 
-use \mysqli_result;
+use mysqli_result;
 
-class Result
+class MysqliResult implements Result
 {
     /**
      * @var \mysqli_result
@@ -14,12 +14,17 @@ class Result
     /**
      * @var string
      */
-    protected $resultClass;
+    protected $resultClass = '\\zsql\\Row\\DefaultRow';
 
     /**
      * @var integer
      */
     protected $resultMode;
+
+    /**
+     * @var array
+     */
+    protected $resultParams;
     
     const FETCH_COLUMN = 0;
     const FETCH_OBJECT = 1;
@@ -47,7 +52,7 @@ class Result
     }
 
     /**
-     * Frees the local mysqli_result object, and unsetting it.
+     * Frees the local mysqli_result object, and unsets it.
      *
      * @return void
      */
@@ -63,6 +68,7 @@ class Result
      * Getter function for the local mysqli_result object.
      *
      * @return \mysqli_result
+     * @throws Exception
      */
     public function getResult()
     {
@@ -99,14 +105,26 @@ class Result
      *
      * @param string $class
      * @return \zsql\Result
-     * @throws \zsql\Exception
+     * @throws Exception
      */
     public function setResultClass($class)
     {
         if( !is_string($class) || !class_exists($class) ) {
-            throw new \zsql\Exception('Class not found');
+            throw new Exception('Class not found');
         }
         $this->resultClass = $class;
+        return $this;
+    }
+
+    /**
+     * Set result params
+     *
+     * @param array $params
+     * @return $this
+     */
+    public function setResultParams(array $params)
+    {
+        $this->resultParams = $params;
         return $this;
     }
 
@@ -125,7 +143,7 @@ class Result
      *
      * @param integer $mode
      * @return \zsql\Result
-     * @throws \zsql\Exception
+     * @throws Exception
      */
     public function setResultMode($mode)
     {
@@ -169,9 +187,15 @@ class Result
                 $data = $spec->fetch_row();
                 break;
             case self::FETCH_OBJECT:
-                $data = ($this->resultClass ?
-                        $spec->fetch_object($this->resultClass) :
-                        $spec->fetch_object());
+                if( null !== $this->resultClass ) {
+                    if( null !== $this->resultParams ) {
+                        $data = $spec->fetch_object($this->resultClass, $this->resultParams);
+                    } else {
+                        $data = $spec->fetch_object($this->resultClass);
+                    }
+                } else {
+                    $data = $spec->fetch_object();
+                }
                 break;
         }
 
@@ -215,9 +239,15 @@ class Result
                 }
                 break;
             case self::FETCH_OBJECT:
-                if( $this->resultClass ) {
-                    while( ($row = $spec->fetch_object($this->resultClass)) ) {
-                        $data[] = $row;
+                if( null !== $this->resultClass ) {
+                    if( null !== $this->resultParams ) {
+                        while( ($row = $spec->fetch_object($this->resultClass, $this->resultParams)) ) {
+                            $data[] = $row;
+                        }
+                    } else {
+                        while( ($row = $spec->fetch_object($this->resultClass)) ) {
+                            $data[] = $row;
+                        }
                     }
                 } else {
                     while( ($row = $spec->fetch_object()) ) {

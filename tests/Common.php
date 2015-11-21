@@ -5,6 +5,8 @@ namespace zsql\Tests;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 
+use zsql\Database;
+
 class Common extends PHPUnit_Framework_TestCase
 {
     protected $fixtureOneRowCount = 2;
@@ -32,11 +34,19 @@ class Common extends PHPUnit_Framework_TestCase
         return new Fixture\BasicModel($this->databaseFactory());
     }
 
+    /**
+     * @return Database
+     */
     protected function databaseFactory()
     {
         $mysql = new \mysqli();
-        $mysql->connect('127.0.0.1', 'zsql', 'nopass', 'zsql');
-        return new \zsql\Database($mysql);
+        $mysql->connect(
+            ZSQL_TEST_DATABASE_HOST,
+            ZSQL_TEST_DATABASE_USERNAME,
+            ZSQL_TEST_DATABASE_PASSWORD,
+            ZSQL_TEST_DATABASE_DBNAME
+        );
+        return new Database($mysql);
     }
 
     public function getReflectedPropertyValue($class, $propertyName)

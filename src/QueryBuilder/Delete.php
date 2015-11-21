@@ -1,6 +1,6 @@
 <?php
 
-namespace zsql;
+namespace zsql\QueryBuilder;
 
 /**
  * Delete query generator
@@ -27,7 +27,7 @@ class Delete extends ExtendedQuery
      * Alias for {@link Query::table()}
      *
      * @param string $table
-     * @return \zsql\Delete
+     * @return $this
      */
     public function from($table)
     {
