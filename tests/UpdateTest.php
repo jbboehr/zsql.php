@@ -34,14 +34,8 @@ class UpdateTest extends CommonQuery
         $bit = null;
         $bit2 = null;
         $cb = function ($query) use (&$bit, &$bit2) {
-            if( version_compare(phpversion(), '5.4', '<') ) {
-                if( $query instanceof \zsql\QueryBuilder\Query && !$bit2 ) {
-                    $bit = true;
-                }
-            } else {
-                if( $query instanceof \zsql\Query && !$bit2 ) {
-                    $bit = true;
-                }
+            if( $query instanceof \zsql\QueryBuilder\Query && !$bit2 ) {
+                $bit = true;
             }
         };
         $queryCallback = function () use (&$bit2) {
