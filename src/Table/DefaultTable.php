@@ -30,6 +30,11 @@ class DefaultTable
     protected $resultClass;
 
     /**
+     * @var array
+     */
+    protected $resultParams;
+
+    /**
      * Name of the table associated with the model
      *
      * @var string
@@ -172,6 +177,7 @@ class DefaultTable
             ->table($this->tableName);
         if( $this->resultClass ) {
             $q->setResultClass($this->resultClass);
+            $q->setResultParams($this->resultParams);
         }
         return $q;
     }

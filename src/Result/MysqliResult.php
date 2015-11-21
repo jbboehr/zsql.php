@@ -122,7 +122,7 @@ class MysqliResult implements Result
      * @param array $params
      * @return $this
      */
-    public function setResultParams(array $params)
+    public function setResultParams(array $params = null)
     {
         $this->resultParams = $params;
         return $this;

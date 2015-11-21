@@ -2,7 +2,9 @@
 
 namespace zsql\Tests\Fixture;
 
-class ModelWithResultClass extends \zsql\Model
+use zsql\Model;
+
+class ModelWithResultClass extends Model
 {
     protected $tableName = 'fixture1';
     protected $resultClass = '\\zsql\\Tests\\Fixture\\Result';

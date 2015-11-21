@@ -46,6 +46,12 @@ class Select extends ExtendedQuery
      * @var string
      */
     protected $resultClass;
+
+    /**
+     * @var array
+     */
+    protected $resultParams;
+
     protected $joins;
     private $currentJoin;
 
@@ -271,6 +277,28 @@ class Select extends ExtendedQuery
     }
 
     /**
+     * Get the result params
+     *
+     * @return array
+     */
+    public function getResultParams()
+    {
+        return $this->resultParams;
+    }
+
+    /**
+     * Set result params
+     *
+     * @param array $params
+     * @return $this
+     */
+    public function setResultParams(array $params = null)
+    {
+        $this->resultParams = $params;
+        return $this;
+    }
+
+    /**
      * Execute a query
      *
      * @return Result
@@ -280,6 +308,7 @@ class Select extends ExtendedQuery
         $result = parent::query();
         if( $this->resultClass ) {
             $result->setResultClass($this->getResultClass());
+            $result->setResultParams($this->getResultParams());
         }
         return $result;
     }

@@ -121,6 +121,16 @@ class ModelTest extends Common
         $this->assertInstanceOf('\\zsql\\Tests\\Fixture\\Result', $row);
     }
 
+    public function testSelectWithResultClassAndParams()
+    {
+        $model = new Fixture\ModelWithResultClassAndParams($this->databaseFactory());
+        $row = $model->select()
+            ->limit(1)
+            ->query()
+            ->fetchRow();
+        $this->assertEquals($row->params, $this->getReflectedPropertyValue($model, 'resultParams'));
+    }
+
     public function testSelectThrowsWithNoTable()
     {
         $this->setExpectedException('\\zsql\\Exception');
