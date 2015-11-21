@@ -7,7 +7,7 @@ use mysqli_result;
 class MysqliResult implements Result
 {
     /**
-     * @var \mysqli_result
+     * @var mysqli_result
      */
     protected $result;
 
@@ -25,11 +25,6 @@ class MysqliResult implements Result
      * @var array
      */
     protected $resultParams;
-    
-    const FETCH_COLUMN = 0;
-    const FETCH_OBJECT = 1;
-    const FETCH_ASSOC = 2;
-    const FETCH_NUM = 3;
 
     /**
      * Constructor
@@ -38,7 +33,7 @@ class MysqliResult implements Result
      */
     public function __construct($object)
     {
-        if( $object instanceof \mysqli_result ) {
+        if( $object instanceof mysqli_result ) {
             $this->setResult($object);
         }
     }
@@ -61,13 +56,15 @@ class MysqliResult implements Result
         if( $this->result ) {
             $this->result->free();
             $this->result = null;
+            // Could potentially contain an object reference
+            $this->resultParams = null;
         }
     }
 
     /**
      * Getter function for the local mysqli_result object.
      *
-     * @return \mysqli_result
+     * @return mysqli_result
      * @throws Exception
      */
     public function getResult()
@@ -81,8 +78,8 @@ class MysqliResult implements Result
     /**
      * Setter function for the local mysqli_result object.
      *
-     * @param \mysqli_result $object
-     * @return \zsql\Result
+     * @param mysqli_result $object
+     * @return $this
      */
     protected function setResult(mysqli_result $object)
     {
@@ -104,7 +101,7 @@ class MysqliResult implements Result
      * Set result class
      *
      * @param string $class
-     * @return \zsql\Result
+     * @return $this
      * @throws Exception
      */
     public function setResultClass($class)
@@ -114,6 +111,14 @@ class MysqliResult implements Result
         }
         $this->resultClass = $class;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getResultParams()
+    {
+        return $this->resultParams;
     }
 
     /**
@@ -142,7 +147,7 @@ class MysqliResult implements Result
      * Set result mode
      *
      * @param integer $mode
-     * @return \zsql\Result
+     * @return $this
      * @throws Exception
      */
     public function setResultMode($mode)

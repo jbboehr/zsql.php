@@ -8,7 +8,7 @@ use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Select;
 use zsql\QueryBuilder\Update;
 
-class DefaultTable
+class DefaultTable implements Table
 {
     /**
      * @var Adapter

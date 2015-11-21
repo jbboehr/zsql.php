@@ -7,7 +7,8 @@ use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Select;
 use zsql\QueryBuilder\Update;
 
-interface Adapter {
+interface Adapter
+{
     /**
      * Get affected rows
      *
