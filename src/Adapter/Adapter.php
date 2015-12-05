@@ -39,6 +39,14 @@ interface Adapter
     public function query($query);
 
     /**
+     * Quote a value
+     *
+     * @param $string
+     * @return string
+     */
+    public function quote($string);
+
+    /**
      * Wrapper for Select
      *
      * @return Select
