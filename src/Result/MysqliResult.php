@@ -4,6 +4,10 @@ namespace zsql\Result;
 
 use mysqli_result;
 
+/**
+ * Class MysqliResult
+ * @package zsql\Result
+ */
 class MysqliResult implements Result
 {
     /**
@@ -14,7 +18,7 @@ class MysqliResult implements Result
     /**
      * @var string
      */
-    protected $resultClass = '\\zsql\\Row\\DefaultRow';
+    protected $resultClass = 'zsql\\Row\\DefaultRow';
 
     /**
      * @var integer
@@ -29,11 +33,11 @@ class MysqliResult implements Result
     /**
      * Constructor
      *
-     * @param mixed $object
+     * @param mysqli_result $object
      */
-    public function __construct($object)
+    public function __construct(mysqli_result $object = null)
     {
-        if( $object instanceof mysqli_result ) {
+        if( null !== $object ) {
             $this->setResult($object);
         }
     }
@@ -81,7 +85,7 @@ class MysqliResult implements Result
      * @param mysqli_result $object
      * @return $this
      */
-    protected function setResult(mysqli_result $object)
+    protected function setResult(mysqli_result $object = null)
     {
         $this->result = $object;
         return $this;
@@ -114,7 +118,7 @@ class MysqliResult implements Result
     }
 
     /**
-     * @return array
+     * @return array|null
      */
     public function getResultParams()
     {
@@ -124,7 +128,7 @@ class MysqliResult implements Result
     /**
      * Set result params
      *
-     * @param array $params
+     * @param array|null $params
      * @return $this
      */
     public function setResultParams(array $params = null)
@@ -166,7 +170,7 @@ class MysqliResult implements Result
      * type of result should be produced from the current row data. The possible
      * values for this parameter are the constants FETCH_ASSOC, FETCH_OBJECT,
      * FETCH_COLUMN, or FETCH_NUM.
-     * @return mixed
+     * @return array|object
      */
     public function fetchRow($mode = null)
     {
@@ -216,7 +220,7 @@ class MysqliResult implements Result
      * values for this parameter are the constants FETCH_ASSOC, FETCH_OBJECT,
      * FETCH_COLUMN, or FETCH_NUM.
      *
-     * @return mixed
+     * @return array
      */
     public function fetchAll($mode = null)
     {
@@ -269,7 +273,7 @@ class MysqliResult implements Result
     /**
      * Returns a single value from the first result row.
      *
-     * @return mixed
+     * @return string|integer|float|null
      */
     public function fetchColumn()
     {

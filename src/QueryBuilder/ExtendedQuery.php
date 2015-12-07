@@ -5,8 +5,10 @@ namespace zsql\QueryBuilder;
 use zsql\Expression;
 
 /**
+ * Class ExtendedQuery
  * Abstract class for queries that support select-like functionality (delete,
  * select, update)
+ * @package zsql\QueryBuilder
  */
 abstract class ExtendedQuery extends Query
 {
@@ -55,7 +57,7 @@ abstract class ExtendedQuery extends Query
     /**
      * Get the specified where
      *
-     * @param mixed $key
+     * @param string $key
      * @return mixed
      */
     public function getWhere($key)
@@ -119,7 +121,7 @@ abstract class ExtendedQuery extends Query
      * @param string $direction
      * @return $this
      */
-    public function order($order, $direction = 'ASC')
+    public function order($order, $direction = self::ASC)
     {
         $this->order = $order;
         $this->direction = $direction;
@@ -170,7 +172,7 @@ abstract class ExtendedQuery extends Query
         if( $this->order ) {
             $this->parts[] = 'ORDER BY';
             $this->parts[] = $this->quoteIdentifierIfNotExpression($this->order);
-            $this->parts[] = $this->direction == 'DESC' ? 'DESC' : 'ASC';
+            $this->parts[] = $this->direction == self::DESC ? self::DESC : self::ASC;
         }
         return $this;
     }

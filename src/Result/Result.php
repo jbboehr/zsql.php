@@ -11,18 +11,18 @@ interface Result
 
     /**
      * @param integer $mode
-     * @return mixed
+     * @return array
      */
     public function fetchAll($mode = null);
 
     /**
-     * @return mixed
+     * @return string|integer|float|null
      */
     public function fetchColumn();
 
     /**
      * @param integer $mode
-     * @return mixed
+     * @return array|object
      */
     public function fetchRow($mode = null);
 

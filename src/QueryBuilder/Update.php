@@ -5,7 +5,9 @@ namespace zsql\QueryBuilder;
 use zsql\Expression;
 
 /**
- * Update query generator
+ * Class Update
+ * Update query builder
+ * @package zsql\QueryBuilder
  */
 class Update extends ExtendedQuery
 {
@@ -35,7 +37,7 @@ class Update extends ExtendedQuery
     /**
      * Clear current values
      *
-     * @return \zsql\Update
+     * @return $this
      */
     public function clearValues()
     {
@@ -63,15 +65,16 @@ class Update extends ExtendedQuery
      *
      * @param mixed $key
      * @param mixed $value
-     * @return \zsql\Update
+     * @return $this
      */
     public function set($key, $value = null)
     {
         if( is_array($key) ) {
-            return $this->values($key);
+            $this->values($key);
         } else {
-            return $this->value($key, $value);
+            $this->value($key, $value);
         }
+        return $this;
     }
 
     /**
@@ -79,7 +82,7 @@ class Update extends ExtendedQuery
      *
      * @param string $table
      * @param array $values
-     * @return \zsql\Update
+     * @return $this
      */
     public function update($table, array $values = null)
     {
@@ -95,7 +98,7 @@ class Update extends ExtendedQuery
      *
      * @param mixed $key
      * @param mixed $value
-     * @return \zsql\Update
+     * @return $this
      */
     public function value($key, $value = null)
     {
@@ -111,7 +114,7 @@ class Update extends ExtendedQuery
      * Set values. Merges into existing values.
      *
      * @param array $values
-     * @return \zsql\Update
+     * @return $this
      */
     public function values(array $values)
     {

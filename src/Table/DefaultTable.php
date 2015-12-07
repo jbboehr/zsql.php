@@ -7,7 +7,12 @@ use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Select;
 use zsql\QueryBuilder\Update;
+use zsql\Row\Row;
 
+/**
+ * Class DefaultTable
+ * @package zsql\Table
+ */
 class DefaultTable implements Table
 {
     /**
@@ -27,10 +32,10 @@ class DefaultTable implements Table
      *
      * @var string
      */
-    protected $resultClass;
+    protected $resultClass = 'zsql\\Row\\DefaultRow';
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $resultParams;
 
@@ -64,7 +69,7 @@ class DefaultTable implements Table
      * Find a record by primary key
      *
      * @param mixed $identity
-     * @return \stdClass
+     * @return Row
      */
     public function find($identity)
     {
@@ -172,7 +177,7 @@ class DefaultTable implements Table
         if( !$this->tableName ) {
             throw new Exception('No table name specified');
         }
-        $q = $this->getDatabase()
+        $q = $this->database
             ->select()
             ->table($this->tableName);
         if( $this->resultClass ) {
@@ -193,8 +198,7 @@ class DefaultTable implements Table
         if( !$this->tableName ) {
             throw new Exception('No table name specified');
         }
-        return $this->getDatabase()
-                ->insert()
+        return $this->database->insert()
                 ->table($this->tableName);
     }
 
@@ -209,8 +213,7 @@ class DefaultTable implements Table
         if( !$this->tableName ) {
             throw new Exception('No table name specified');
         }
-        return $this->getDatabase()
-                ->update()
+        return $this->database->update()
                 ->table($this->tableName);
     }
 
@@ -225,8 +228,7 @@ class DefaultTable implements Table
         if( !$this->tableName ) {
             throw new Exception('No table name specified');
         }
-        return $this->getDatabase()
-                ->delete()
+        return $this->database->delete()
                 ->table($this->tableName);
     }
 }

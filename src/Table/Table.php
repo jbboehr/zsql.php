@@ -8,6 +8,10 @@ use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Select;
 use zsql\QueryBuilder\Update;
 
+/**
+ * Interface Table
+ * @package zsql\Table
+ */
 interface Table
 {
     /**

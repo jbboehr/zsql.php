@@ -2,11 +2,11 @@
 
 namespace zsql\Tests\Fixture;
 
-use zsql\Model;
+use zsql\Table\DefaultTable;
 
-class ModelWithResultClass extends Model
+class ModelWithResultClass extends DefaultTable
 {
     protected $tableName = 'fixture1';
-    protected $resultClass = '\\zsql\\Tests\\Fixture\\Result';
+    protected $resultClass = 'zsql\\Tests\\Fixture\\Result';
     protected $primaryKey = 'id';
 }

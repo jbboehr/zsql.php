@@ -8,7 +8,9 @@ use zsql\Scanner\ScannerGenerator;
 use zsql\Scanner\ScannerIterator;
 
 /**
- * Select query generator
+ * Class Select
+ * Select query builder
+ * @package zsql\QueryBuilder
  */
 class Select extends ExtendedQuery
 {

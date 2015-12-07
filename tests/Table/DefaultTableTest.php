@@ -1,24 +1,28 @@
 <?php
 
-namespace zsql\Tests;
+namespace zsql\Tests\Table;
 
-class ModelTest extends Common
+use zsql\Tests\Common;
+use zsql\Tests\Fixture\ModelWithoutTableOrPrimaryKey;
+use zsql\Tests\Fixture\ModelWithResultClass;
+use zsql\Tests\Fixture\ModelWithResultClassAndParams;
+
+class DefaultTableTest extends Common
 {
-
     public function testFind()
     {
         $model = $this->fixtureModelOneFactory();
 
         $row = $model->find(1);
 
-        $this->assertInstanceOf('\\stdClass', $row);
+        $this->assertInstanceOf('zsql\\Row\\Row', $row);
     }
 
     public function testFindThrowsWithNoPrimaryKey()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\Table\\Exception');
         
-        $model = new Fixture\ModelWithoutTableOrPrimaryKey($this->databaseFactory());
+        $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
         $model->find(1);
     }
 
@@ -33,9 +37,9 @@ class ModelTest extends Common
 
     public function testFindManyThrowsWithNoPrimaryKey()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\Table\\Exception');
         
-        $model = new Fixture\ModelWithoutTableOrPrimaryKey($this->databaseFactory());
+        $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
         $model->findMany(array(1));
     }
 
@@ -43,7 +47,7 @@ class ModelTest extends Common
     {
         $model = $this->fixtureModelOneFactory();
 
-        $this->assertInstanceOf('\\zsql\\Database', $model->getDatabase());
+        $this->assertInstanceOf('zsql\\Adapter\\Adapter', $model->getDatabase());
     }
 
     public function testSetDatabase()
@@ -100,30 +104,29 @@ class ModelTest extends Common
     public function testSelect()
     {
         $model = $this->fixtureModelOneFactory();
-        $class = '\\zsql\\Select';
         $query = $model->select();
         $string = (string) $query;
 
-        $this->assertInstanceOf($class, $query);
+        $this->assertInstanceOf('zsql\\QueryBuilder\\Select', $query);
         $this->assertContains($model->getTableName(), $string);
-        $this->assertInstanceOf('\\zsql\\Database', $this->getReflectedPropertyValue($query, 'database'));
+        $this->assertInstanceOf('zsql\\Adapter\\Adapter', $this->getReflectedPropertyValue($query, 'database'));
     }
 
     public function testSelectWithResultClass()
     {
-        $model = new Fixture\ModelWithResultClass($this->databaseFactory());
+        $model = new ModelWithResultClass($this->databaseFactory());
 
         $row = $model->select()
             ->limit(1)
             ->query()
             ->fetchRow();
 
-        $this->assertInstanceOf('\\zsql\\Tests\\Fixture\\Result', $row);
+        $this->assertInstanceOf('zsql\\Tests\\Fixture\\Result', $row);
     }
 
     public function testSelectWithResultClassAndParams()
     {
-        $model = new Fixture\ModelWithResultClassAndParams($this->databaseFactory());
+        $model = new ModelWithResultClassAndParams($this->databaseFactory());
         $row = $model->select()
             ->limit(1)
             ->query()
@@ -133,69 +136,66 @@ class ModelTest extends Common
 
     public function testSelectThrowsWithNoTable()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\Table\\Exception');
         
-        $model = new Fixture\ModelWithoutTableOrPrimaryKey($this->databaseFactory());
+        $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
         $model->select();
     }
 
     public function testInsert()
     {
         $model = $this->fixtureModelOneFactory();
-        $class = '\\zsql\\Insert';
         $query = $model->insert()->value('double', '2');
         $string = (string) $query;
 
-        $this->assertInstanceOf($class, $query);
+        $this->assertInstanceOf('zsql\\QueryBuilder\\Insert', $query);
         $this->assertContains($model->getTableName(), $string);
-        $this->assertInstanceOf('\\zsql\\Database', $this->getReflectedPropertyValue($query, 'database'));
+        $this->assertInstanceOf('zsql\\Adapter\\Adapter', $this->getReflectedPropertyValue($query, 'database'));
     }
 
     public function testInsertThrowsWithNoTable()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\Table\\Exception');
         
-        $model = new Fixture\ModelWithoutTableOrPrimaryKey($this->databaseFactory());
+        $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
         $model->insert();
     }
 
     public function testUpdate()
     {
         $model = $this->fixtureModelOneFactory();
-        $class = '\\zsql\\Update';
         $query = $model->update()->value('double', '2')->where('id', 54);
         $string = (string) $query;
 
-        $this->assertInstanceOf($class, $query);
+        $this->assertInstanceOf('zsql\\QueryBuilder\\Update', $query);
         $this->assertContains($model->getTableName(), $string);
-        $this->assertInstanceOf('\\zsql\\Database', $this->getReflectedPropertyValue($query, 'database'));
+        $this->assertInstanceOf('zsql\\Adapter\\Adapter', $this->getReflectedPropertyValue($query, 'database'));
     }
 
     public function testUpdateThrowsWithNoTable()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\Table\\Exception');
         
-        $model = new Fixture\ModelWithoutTableOrPrimaryKey($this->databaseFactory());
+        $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
         $model->update();
     }
 
     public function testDelete()
     {
         $model = $this->fixtureModelOneFactory();
-        $class = '\\zsql\\Delete';
         $query = $model->delete()->where('id', 54);
         $string = (string) $query;
 
-        $this->assertInstanceOf($class, $query);
+        $this->assertInstanceOf('zsql\\QueryBuilder\\Delete', $query);
         $this->assertContains($model->getTableName(), $string);
-        $this->assertInstanceOf('\\zsql\\Database', $this->getReflectedPropertyValue($query, 'database'));
+        $this->assertInstanceOf('zsql\\Adapter\\Adapter', $this->getReflectedPropertyValue($query, 'database'));
     }
 
     public function testDeleteThrowsWithNoTable()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\Table\\Exception');
         
-        $model = new Fixture\ModelWithoutTableOrPrimaryKey($this->databaseFactory());
+        $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
         $model->delete();
     }
 }

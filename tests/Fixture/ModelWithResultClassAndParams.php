@@ -2,12 +2,12 @@
 
 namespace zsql\Tests\Fixture;
 
-use zsql\Model;
+use zsql\Table\DefaultTable;
 
-class ModelWithResultClassAndParams extends Model
+class ModelWithResultClassAndParams extends DefaultTable
 {
     protected $tableName = 'fixture1';
-    protected $resultClass = '\\zsql\\Tests\\Fixture\\RowWithConstructor';
+    protected $resultClass = 'zsql\\Tests\\Fixture\\RowWithConstructor';
     protected $resultParams = array('param1', 'param2');
     protected $primaryKey = 'id';
 }

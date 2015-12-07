@@ -5,7 +5,9 @@ namespace zsql\QueryBuilder;
 use zsql\Expression;
 
 /**
- * Insert query generator
+ * Class Insert
+ * Insert query builder
+ * @package zsql\QueryBuilder
  */
 class Insert extends Query
 {
@@ -112,7 +114,7 @@ class Insert extends Query
     /**
      * Alias for {@link Query::table()}
      *
-     * @param string $table
+     * @param string|Expression $table
      * @return $this
      */
     public function into($table)
@@ -124,7 +126,7 @@ class Insert extends Query
     /**
      * Get a value that has been set
      *
-     * @param $key
+     * @param string $key
      * @return mixed
      */
     public function get($key)
@@ -139,7 +141,7 @@ class Insert extends Query
     /**
      * Set on duplicate key update clause
      *
-     * @param mixed $key
+     * @param string|Expression $key
      * @param mixed $value
      * @return $this
      */
@@ -203,7 +205,7 @@ class Insert extends Query
     /**
      * Alias for {@link Insert::value()} or {@link Insert::values()}
      *
-     * @param mixed $key
+     * @param string|Expression $key
      * @param mixed $value
      * @return $this
      */
@@ -220,7 +222,7 @@ class Insert extends Query
     /**
      * Set a value
      *
-     * @param mixed $key
+     * @param string|Expression $key
      * @param mixed $value
      * @return $this
      */

@@ -6,7 +6,9 @@ use Iterator;
 use zsql\QueryBuilder\Select;
 
 /**
+ * Class ScannerIterator
  * Table scanner (iterator implementation)
+ * @package zsql\Scanner
  */
 class ScannerIterator implements Iterator
 {
@@ -43,7 +45,7 @@ class ScannerIterator implements Iterator
     {
         $this->query = $query;
 
-        // Get batcn size and cursor
+        // Get batch size and cursor
         $this->batchSize = (integer) $query->getLimit() ? : self::DEFAULT_BATCH_SIZE;
         $this->cursor = (integer) $query->getOffset();
     }

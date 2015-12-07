@@ -1,10 +1,19 @@
 <?php
 
-namespace zsql\Tests;
+namespace zsql\Tests\QueryBuilder;
 
-class UpdateTest extends CommonQuery
+use zsql\Expression;
+use zsql\QueryBuilder\Query;
+use zsql\QueryBuilder\Update;
+
+/**
+ * Class UpdateTest
+ * @package zsql\Tests\QueryBuilder
+ * @method Update queryFactory queryFactory($arg = null)
+ */
+class UpdateTest extends Common
 {
-    protected $className = '\\zsql\Update';
+    protected $className = 'zsql\\QueryBuilder\\Update';
 
     public function testAfter()
     {
@@ -19,7 +28,7 @@ class UpdateTest extends CommonQuery
             $bit2 = true;
             return 23;
         };
-        $query = new \zsql\Update($queryCallback);
+        $query = $this->queryFactory($queryCallback);
         $query
             ->table('tableName')
             ->set('a3', 'b4')
@@ -34,7 +43,7 @@ class UpdateTest extends CommonQuery
         $bit = null;
         $bit2 = null;
         $cb = function ($query) use (&$bit, &$bit2) {
-            if( $query instanceof \zsql\QueryBuilder\Query && !$bit2 ) {
+            if( $query instanceof Query && !$bit2 ) {
                 $bit = true;
             }
         };
@@ -42,7 +51,7 @@ class UpdateTest extends CommonQuery
             $bit2 = true;
             return 'fakeInsertId';
         };
-        $query = new \zsql\Update($queryCallback);
+        $query = $this->queryFactory($queryCallback);
         $query
             ->table('tableName')
             ->set('a3', 'b4')
@@ -54,7 +63,7 @@ class UpdateTest extends CommonQuery
 
     public function testClearValues()
     {
-        $query = new \zsql\Update();
+        $query = $this->queryFactory();
         $query
             ->update('tableName')
             ->set('a3', 'b4')
@@ -66,7 +75,7 @@ class UpdateTest extends CommonQuery
 
     public function testGet()
     {
-        $query = new \zsql\Update();
+        $query = $this->queryFactory();
         $query
             ->set('columnName', 'value');
         $this->assertEquals('value', $query->get('columnName'));
@@ -75,7 +84,7 @@ class UpdateTest extends CommonQuery
 
     public function testGetWhere()
     {
-        $query = new \zsql\Update();
+        $query = $this->queryFactory();
         $query
             ->set('columnName', 'value')
             ->where('otherColumnName', 'otherValue');
@@ -85,23 +94,23 @@ class UpdateTest extends CommonQuery
 
     public function testToStringThrowsExceptionWithNoTable()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
         
-        $query = new \zsql\Update();
+        $query = $this->queryFactory();
         $query->toString();
     }
 
     public function testToStringThrowsExceptionWithNoValues()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
         
-        $query = new \zsql\Update();
+        $query = $this->queryFactory();
         $query->table('tableName')->toString();
     }
 
     public function testUpdate()
     {
-        $query = new \zsql\Update();
+        $query = $this->queryFactory();
         $query
             ->update('tableName', array('columnName' => 'val'));
         $this->assertEquals('UPDATE `tableName` SET `columnName` = ?', $query->toString());
@@ -114,7 +123,7 @@ class UpdateTest extends CommonQuery
 
     public function testABunchOfStuffTogether()
     {
-        $query = new \zsql\Update();
+        $query = $this->queryFactory();
         $query
             ->update('tableName')
             ->set(array('a3' => 'b4')) // does not get ignored any more
@@ -123,8 +132,8 @@ class UpdateTest extends CommonQuery
                 'd' => 'e',
             ))
             ->set('f', 'g')
-            ->value('h', new \zsql\Expression('NOW()'))
-            ->value(new \zsql\Expression('z = SHA1(0)'))
+            ->value('h', new Expression('NOW()'))
+            ->value(new Expression('z = SHA1(0)'))
             ->where('i', 'j')
             ->whereIn('k', array('l', 'm', 'n'))
             ->whereExpr('LENGTH(o) > 0')
@@ -139,9 +148,9 @@ class UpdateTest extends CommonQuery
 
     public function testInterpolateThrowsException()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
         
-        $query = new \zsql\Update();
+        $query = $this->queryFactory();
         $query->table('tableName')->set('a', 'b')->where('c', 'd');
         $query->interpolation();
         $query->toString();
@@ -149,9 +158,9 @@ class UpdateTest extends CommonQuery
 
     public function testInterpolateThrowsException2()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
         
-        $query = new \zsql\Update();
+        $query = $this->queryFactory();
         $query->table('tableName')->set('a??', 'b')->where('c??', 'd');
         $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
         $query->toString();
@@ -165,7 +174,7 @@ class UpdateTest extends CommonQuery
             $testObject->assertEquals($expectedQuery, $actualQuery);
             return $actualQuery;
         };
-        $query = new \zsql\Update($callback);
+        $query = $this->queryFactory($callback);
         $query->table('tableName')->set('columnName', 'value');
         $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
         $this->assertEquals($expectedQuery, $query->query());
@@ -181,7 +190,7 @@ class UpdateTest extends CommonQuery
             $testObject->assertEquals($expectedParams, $actualParams);
             return $actualQuery;
         };
-        $query = new \zsql\Update($callback);
+        $query = $this->queryFactory($callback);
         $query->table('tableName')->set('columnName', 'value');
         $this->assertEquals($expectedQuery, $query->query());
         $this->assertEquals($expectedParams, $query->params());

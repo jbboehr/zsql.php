@@ -2,10 +2,13 @@
 
 namespace zsql\Adapter;
 
+use zsql\Expression;
+use zsql\QueryBuilder\Query;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Select;
 use zsql\QueryBuilder\Update;
+use zsql\Result\Result;
 
 interface Adapter
 {
@@ -34,14 +37,15 @@ interface Adapter
      * Executes an SQL query
      *
      * @param string|Query $query
-     * @return Result|mixed
+     * @return Result|integer|boolean
+     * @throws Exception
      */
     public function query($query);
 
     /**
      * Quote a value
      *
-     * @param $string
+     * @param string|Expression $string
      * @return string
      */
     public function quote($string);

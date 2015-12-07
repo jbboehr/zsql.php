@@ -3,7 +3,9 @@
 namespace zsql\QueryBuilder;
 
 /**
- * Delete query generator
+ * Class Delete
+ * Delete query builder
+ * @package zsql\QueryBuilder
  */
 class Delete extends ExtendedQuery
 {

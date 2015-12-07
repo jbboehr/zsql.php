@@ -2,7 +2,9 @@
 
 namespace zsql\Tests\Fixture;
 
-class RowWithConstructor extends \stdClass
+use zsql\Row\DefaultRow;
+
+class RowWithConstructor extends DefaultRow
 {
     public function __construct()
     {

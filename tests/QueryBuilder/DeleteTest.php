@@ -1,14 +1,22 @@
 <?php
 
-namespace zsql\Tests;
+namespace zsql\Tests\QueryBuilder;
 
-class DeleteTest extends CommonQuery
+use zsql\Expression;
+use zsql\QueryBuilder\Delete;
+
+/**
+ * Class DeleteTest
+ * @package zsql\Tests\QueryBuilder
+ * @method Delete queryFactory queryFactory($arg = null)
+ */
+class DeleteTest extends Common
 {
-    protected $className = '\\zsql\\Delete';
+    protected $className = 'zsql\\QueryBuilder\\Delete';
 
     public function testTableContainsDatabase()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('dbName.tableName');
         $this->assertEquals('DELETE FROM `dbName`.`tableName`', $query->toString());
         $this->assertEquals(array(), $query->params());
@@ -20,8 +28,8 @@ class DeleteTest extends CommonQuery
 
     public function testTableExpression()
     {
-        $query = new \zsql\Delete();
-        $query->table(new \zsql\Expression('`tableName` as `otherTableName`'));
+        $query = $this->queryFactory();
+        $query->table(new Expression('`tableName` as `otherTableName`'));
         $this->assertEquals('DELETE FROM `tableName` as `otherTableName`', $query->toString());
         $this->assertEquals(array(), $query->params());
 
@@ -32,7 +40,7 @@ class DeleteTest extends CommonQuery
 
     public function testTableString()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('tableName');
         $this->assertEquals('DELETE FROM `tableName`', $query->toString());
         $this->assertEquals(array(), $query->params());
@@ -44,9 +52,9 @@ class DeleteTest extends CommonQuery
 
     public function testWhereKeyIsExpr()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('tableName')
-            ->where(new \zsql\Expression('columnName < NOW()'));
+            ->where(new Expression('columnName < NOW()'));
         $this->assertEquals('DELETE FROM `tableName` WHERE columnName < NOW()', $query->toString());
         $this->assertEquals(array(), $query->params());
 
@@ -57,7 +65,7 @@ class DeleteTest extends CommonQuery
 
     public function testWhereKeyContainsQuestionMark()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('tableName')
             ->where('columnName > ?', 2);
         $this->assertEquals('DELETE FROM `tableName` WHERE columnName > ?', $query->toString());
@@ -70,7 +78,7 @@ class DeleteTest extends CommonQuery
 
     public function testWhereKeyContainsTable()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('tableName')
             ->where('tableName.columnName', 2);
         $this->assertEquals('DELETE FROM `tableName` WHERE `tableName`.`columnName` = ?', $query->toString());
@@ -83,9 +91,9 @@ class DeleteTest extends CommonQuery
 
     public function testWhereValueIsExpression()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('tableName')
-            ->where('columnName', new \zsql\Expression('NOW()'));
+            ->where('columnName', new Expression('NOW()'));
         $this->assertEquals('DELETE FROM `tableName` WHERE `columnName` = NOW()', $query->toString());
         $this->assertEquals(array(), $query->params());
 
@@ -96,7 +104,7 @@ class DeleteTest extends CommonQuery
 
     public function testWhereValueIsString()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('tableName')
             ->where('columnName', 'value');
         $this->assertEquals('DELETE FROM `tableName` WHERE `columnName` = ?', $query->toString());
@@ -109,7 +117,7 @@ class DeleteTest extends CommonQuery
 
     public function testWhereValueIsInteger()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('tableName')
             ->where('columnName', 2);
         $this->assertEquals('DELETE FROM `tableName` WHERE `columnName` = ?', $query->toString());
@@ -122,7 +130,7 @@ class DeleteTest extends CommonQuery
 
     public function testWhereIn()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('tableName')
             ->whereIn('columnName', array(2, 4, 6, 8));
         $this->assertEquals('DELETE FROM `tableName` WHERE `columnName` IN (?, ?, ?, ?)', $query->toString());
@@ -135,7 +143,7 @@ class DeleteTest extends CommonQuery
 
     public function testWhereExpr()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('tableName')
             ->whereExpr('columnName < NOW()');
         $this->assertEquals('DELETE FROM `tableName` WHERE columnName < NOW()', $query->toString());
@@ -148,7 +156,7 @@ class DeleteTest extends CommonQuery
 
     public function testOrderAsc()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('tableName')
             ->order('columnName', 'ASC');
         $this->assertEquals('DELETE FROM `tableName` ORDER BY `columnName` ASC', $query->toString());
@@ -161,7 +169,7 @@ class DeleteTest extends CommonQuery
 
     public function testOrderDesc()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('tableName')
             ->order('columnName', 'DESC');
         $this->assertEquals('DELETE FROM `tableName` ORDER BY `columnName` DESC', $query->toString());
@@ -174,7 +182,7 @@ class DeleteTest extends CommonQuery
 
     public function testLimitWithOffset()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('tableName')
             ->limit(10, 20);
         $this->assertEquals('DELETE FROM `tableName` LIMIT ?, ?', $query->toString());
@@ -187,7 +195,7 @@ class DeleteTest extends CommonQuery
 
     public function testLimitWithoutOffset()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('tableName')
             ->limit(30);
         $this->assertEquals('DELETE FROM `tableName` LIMIT ?', $query->toString());
@@ -200,7 +208,7 @@ class DeleteTest extends CommonQuery
 
     public function testOffset()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->table('tableName')
             ->offset(10, 20);
         $this->assertEquals('DELETE FROM `tableName` LIMIT ?, ?', $query->toString());
@@ -213,11 +221,11 @@ class DeleteTest extends CommonQuery
 
     public function testABunchOfStuffTogether()
     {
-        $query = new \zsql\Delete();
+        $query = $this->queryFactory();
         $query->from('tableName')
             ->where('columnOne', 1324)
             ->where('columnTwo < ?', 9)
-            ->where(new \zsql\Expression('LENGTH(columnThree) > 0'))
+            ->where(new Expression('LENGTH(columnThree) > 0'))
             ->whereExpr('columnFour IS NULL')
             ->whereIn('columnFive', array('red', 'blue', 'green'))
             ->limit(50, 100)
@@ -245,9 +253,9 @@ class DeleteTest extends CommonQuery
 
     public function testInterpolateThrowsException()
     {
-        $this->setExpectedException('\\zsql\\Exception');
-        
-        $query = new \zsql\Delete();
+        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
+
+        $query = $this->queryFactory();
         $query->table('tableName')->where('a', 'b');
         $query->interpolation();
         $query->toString();
@@ -255,9 +263,9 @@ class DeleteTest extends CommonQuery
 
     public function testInterpolateThrowsException2()
     {
-        $this->setExpectedException('\\zsql\\Exception');
-        
-        $query = new \zsql\Delete();
+        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
+
+        $query = $this->queryFactory();
         $query->table('tableName')->where('a??', 'b');
         $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
         $query->toString();
@@ -271,7 +279,7 @@ class DeleteTest extends CommonQuery
             $testObject->assertEquals($expectedQuery, $actualQuery);
             return $actualQuery;
         };
-        $query = new \zsql\Delete($callback);
+        $query = $this->queryFactory($callback);
         $query->from('tableName')->where('columnName', 'value');
         $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
         $this->assertEquals($expectedQuery, $query->query());
@@ -287,7 +295,7 @@ class DeleteTest extends CommonQuery
             $testObject->assertEquals($expectedParams, $actualParams);
             return $actualQuery;
         };
-        $query = new \zsql\Delete($callback);
+        $query = $this->queryFactory($callback);
         $query->from('tableName')->where('columnName', 'value');
         $this->assertEquals($expectedQuery, $query->query());
         $this->assertEquals($expectedParams, $query->params());

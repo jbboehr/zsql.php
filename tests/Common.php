@@ -2,10 +2,10 @@
 
 namespace zsql\Tests;
 
-use PHPUnit_Framework_TestCase;
+use mysqli;
 use ReflectionClass;
-
-use zsql\Database;
+use PHPUnit_Framework_TestCase;
+use zsql\Adapter\MysqliAdapter;
 
 class Common extends PHPUnit_Framework_TestCase
 {
@@ -35,18 +35,18 @@ class Common extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Database
+     * @return MysqliAdapter
      */
     protected function databaseFactory()
     {
-        $mysql = new \mysqli();
+        $mysql = new mysqli();
         $mysql->connect(
             ZSQL_TEST_DATABASE_HOST,
             ZSQL_TEST_DATABASE_USERNAME,
             ZSQL_TEST_DATABASE_PASSWORD,
             ZSQL_TEST_DATABASE_DBNAME
         );
-        return new Database($mysql);
+        return new MysqliAdapter($mysql);
     }
 
     public function getReflectedPropertyValue($class, $propertyName)

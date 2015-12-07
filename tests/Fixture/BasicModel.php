@@ -2,7 +2,9 @@
 
 namespace zsql\Tests\Fixture;
 
-class BasicModel extends \zsql\Model
+use zsql\Table\DefaultTable;
+
+class BasicModel extends DefaultTable
 {
     protected $tableName = 'fixture1';
     protected $primaryKey = 'id';

@@ -1,8 +1,10 @@
 <?php
 
-namespace zsql\Tests;
+namespace zsql\Tests\QueryBuilder;
 
-class CommonQuery extends Common
+use zsql\Tests\Common as BaseCommon;
+
+class Common extends BaseCommon
 {
     protected $className;
 
@@ -13,13 +15,13 @@ class CommonQuery extends Common
 
     public function testConstruction()
     {
-        $this->assertInstanceOf($this->className, $this->_factory());
+        $this->assertInstanceOf($this->className, $this->queryFactory());
     }
 
     public function testMagicToStringFails()
     {
         $reporting = error_reporting(0);
-        $this->assertEmpty((string) $this->_factory());
+        $this->assertEmpty((string) $this->queryFactory());
         error_reporting($reporting);
         $lastError = error_get_last();
         $this->assertEquals('No table specified', $lastError['message']);
@@ -27,40 +29,44 @@ class CommonQuery extends Common
 
     public function testParts()
     {
-        $this->assertEquals(true, is_array($this->_factory()->parts()));
+        $this->assertEquals(true, is_array($this->queryFactory()->parts()));
     }
 
     public function testParams()
     {
-        $this->assertEquals(true, is_array($this->_factory()->params()));
+        $this->assertEquals(true, is_array($this->queryFactory()->params()));
     }
 
     public function testQueryThrowsException()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\Exception');
         
-        $query = $this->_factory();
+        $query = $this->queryFactory();
         $query->query();
     }
 
     public function testSetQuoteCallbackThrowsException()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\Exception');
         
-        $query = $this->_factory();
+        $query = $this->queryFactory();
         $query->setQuoteCallback(false);
     }
 
     public function testInvalidConstructionArgThrowsException()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\Exception');
         
         new $this->className('blah');
     }
 
-    protected function _factory()
+    /**
+     * @param mixed $arg
+     * @return mixed
+     */
+    protected function queryFactory($arg = null)
     {
-        return new $this->className();
+        return new $this->className($arg);
     }
 
     protected function _getQuoteCallback()

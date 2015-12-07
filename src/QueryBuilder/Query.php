@@ -7,10 +7,15 @@ use zsql\Adapter\Adapter;
 use zsql\Result\Result;
 
 /**
- * Base abstract query
+ * Class Query
+ * Base query builder
+ * @package zsql\QueryBuilder
  */
 abstract class Query
 {
+    const ASC = 'ASC';
+    const DESC = 'DESC';
+
     /**
      * The database adapter for this query
      *
@@ -49,14 +54,14 @@ abstract class Query
     /**
      * Array of callbacks to execute after query is executed
      *
-     * @var array
+     * @var callable[]
      */
     protected $postExecuteCallbacks;
 
     /**
      * Array of callbacks to execute before the query is executed
      *
-     * @var array
+     * @var callable[]
      */
     protected $preExecuteCallbacks;
 
@@ -281,7 +286,7 @@ abstract class Query
     /**
      * Proxy to query callback
      *
-     * @return Result|boolean
+     * @return Result|integer|boolean
      * @throws Exception
      */
     public function query()

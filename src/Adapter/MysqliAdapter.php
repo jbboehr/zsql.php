@@ -32,7 +32,7 @@ class MysqliAdapter implements Adapter
     protected $insertId;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     protected $logger;
 
@@ -76,7 +76,7 @@ class MysqliAdapter implements Adapter
     /**
      * Exposes the local connection object
      *
-     * @return \mysqli
+     * @return mysqli
      */
     public function getConnection()
     {
@@ -86,8 +86,8 @@ class MysqliAdapter implements Adapter
     /**
      * Sets the local mysqli object
      *
-     * @param \mysqli $connection
-     * @return \zsql\Database
+     * @param mysqli $connection
+     * @return $this
      */
     public function setConnection(mysqli $connection = null)
     {
@@ -168,10 +168,17 @@ class MysqliAdapter implements Adapter
     }
 
     /**
-     * Executes an SQL query
+     * Executes an SQL query.
+     *
+     * When given a QueryBuilder instance as an argument, the return value is based on the class:
+     * Select queries produce an instance of Select
+     * Insert returns the insert ID
+     * Update and Delete return the affected rows
+     * string queries will return the value returned by the internal adapter
      *
      * @param string|Query $query
-     * @return Result|mixed
+     * @return Result|integer|boolean
+     * @throws Exception
      */
     public function query($query)
     {
@@ -192,7 +199,7 @@ class MysqliAdapter implements Adapter
         $ret = $connection->query($queryString, MYSQLI_STORE_RESULT);
 
         // Save insert ID if instance of insert
-        if( $query instanceof \zsql\Insert ) {
+        if( $query instanceof Insert ) {
             $this->insertId = $connection->insert_id;
         }
 
@@ -201,19 +208,14 @@ class MysqliAdapter implements Adapter
 
         // Handle result
         if( $ret !== false ) {
-            // Select -> \zsql\Result
-            // Insert -> insertId OR true
-            // Update/Delete -> affectedRows
             if( $ret instanceof mysqli_result ) {
-                // handle mysqli_result object
                 return new Result($ret);
-            } else if( $query instanceof \zsql\Insert ) {
+            } else if( $query instanceof Insert ) {
                 return $this->getInsertId();
-            } else if( $query instanceof \zsql\Update ||
-                $query instanceof \zsql\Delete ) {
+            } else if( $query instanceof Update ||
+                $query instanceof Delete ) {
                 return $this->getAffectedRows();
             }
-            // handle string update/delete/insert queries
             return $ret;
         } else {
             $message = sprintf(
@@ -250,7 +252,7 @@ class MysqliAdapter implements Adapter
         } else if( is_float($value) ) {
             return sprintf('%f', $value); // @todo make sure precision is right
         } else {
-            return "'" . $this->getConnection()->real_escape_string($value) . "'";
+            return "'" . $this->connection->real_escape_string($value) . "'";
         }
     }
 }

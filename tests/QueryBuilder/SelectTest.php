@@ -1,17 +1,25 @@
 <?php
 
-namespace zsql\Tests;
+namespace zsql\Tests\QueryBuilder;
 
-class SelectTest extends CommonQuery
+use zsql\Expression;
+use zsql\QueryBuilder\Select;
+
+/**
+ * Class SelectTest
+ * @package zsql\Tests\QueryBuilder
+ * @method Select queryFactory queryFactory($arg = null)
+ */
+class SelectTest extends Common
 {
-    protected $className = '\\zsql\\Select';
+    protected $className = 'zsql\\QueryBuilder\\Select';
 
     public function testColumnsExpression()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query
             ->from('tableName')
-            ->columns(new \zsql\Expression('SUM(number)'));
+            ->columns(new Expression('SUM(number)'));
         $this->assertEquals('SELECT SUM(number) FROM `tableName`', $query->toString());
         $this->assertEquals(array(), $query->params());
 
@@ -22,7 +30,7 @@ class SelectTest extends CommonQuery
 
     public function testColumnsString()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query
             ->from('tableName')
             ->columns('columnName');
@@ -36,15 +44,15 @@ class SelectTest extends CommonQuery
 
     public function testColumnsInvalidValueThrowsException()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
         
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query->columns(false);
     }
 
     public function testDistinct()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query
             ->from('tableName')
             ->distinct()
@@ -59,7 +67,7 @@ class SelectTest extends CommonQuery
 
     public function testDistinctFalse()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query
             ->from('tableName')
             ->distinct(true)
@@ -75,7 +83,7 @@ class SelectTest extends CommonQuery
 
     public function testFromWithColumns()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query
             ->from('tableName', array('a', 'b', 'c'));
         $this->assertEquals('SELECT `a`, `b`, `c` FROM `tableName`', $query->toString());
@@ -88,7 +96,7 @@ class SelectTest extends CommonQuery
 
     public function testGetWhere()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query
             ->where('ab', 'cd');
         $this->assertEquals('cd', $query->getWhere('ab'));
@@ -97,7 +105,7 @@ class SelectTest extends CommonQuery
 
     public function testGroup()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query
             ->from('tableName')
             ->where('a', 'b')
@@ -113,7 +121,7 @@ class SelectTest extends CommonQuery
 
     public function testHint()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query
             ->from('tableName')
             ->where('columnOne', 'a')
@@ -131,7 +139,7 @@ class SelectTest extends CommonQuery
 
     public function testHintArray()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query
             ->from('tableName')
             ->where('columnOne', 'a')
@@ -150,7 +158,7 @@ class SelectTest extends CommonQuery
     public function testJoin()
     {
         foreach( array('left', 'right', 'inner', 'outer') as $dir ) {
-            $query = new \zsql\Select();
+            $query = $this->queryFactory();
             $query
                 ->from('tableA')
                 ->join('tableB')
@@ -176,7 +184,7 @@ class SelectTest extends CommonQuery
 
     public function testJoinOnOneArgument()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query
             ->from('tableA')
             ->join('tableB')
@@ -192,7 +200,7 @@ class SelectTest extends CommonQuery
 
     public function testJoinOnThreeArguments()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query
             ->from('tableA')
             ->join('tableB')
@@ -208,9 +216,9 @@ class SelectTest extends CommonQuery
 
     public function testJoinThrowsWithInvalidArgNumber()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
         
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query
             ->from('tableA')
             ->join('tableB')
@@ -220,7 +228,7 @@ class SelectTest extends CommonQuery
 
     public function testJoinWithTwoJoins()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query
             ->from('tableA')
             ->join('tableB')
@@ -248,7 +256,7 @@ class SelectTest extends CommonQuery
 
     public function testSelect()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query->select('columnName')
             ->from('tableName')
             ->where('columnName', 'columnValue');
@@ -264,7 +272,7 @@ class SelectTest extends CommonQuery
 
     public function testWhereInEmpty()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query->select('columnName')
             ->from('tableName')
             ->whereIn('columnName', array());
@@ -275,7 +283,7 @@ class SelectTest extends CommonQuery
 
     public function testWhereInString()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query->select('columnName')
             ->from('tableName')
             ->whereIn('columnName', 'columnValue');
@@ -291,7 +299,7 @@ class SelectTest extends CommonQuery
 
     public function testWhereNotInEmpty()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query->select('columnName')
             ->from('tableName')
             ->whereNotIn('columnName', array());
@@ -302,7 +310,7 @@ class SelectTest extends CommonQuery
 
     public function testWhereNotInString()
     {
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query->select('columnName')
             ->from('tableName')
             ->whereNotIn('columnName', 'columnValue');
@@ -318,9 +326,9 @@ class SelectTest extends CommonQuery
 
     public function testInterpolateThrowsException()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
         
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query->table('tableName')->where('a', 'b');
         $query->interpolation();
         $query->toString();
@@ -328,9 +336,9 @@ class SelectTest extends CommonQuery
 
     public function testInterpolateThrowsException2()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
         
-        $query = new \zsql\Select();
+        $query = $this->queryFactory();
         $query->table('tableName')->where('a??', 'b');
         $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
         $query->toString();
@@ -344,7 +352,7 @@ class SelectTest extends CommonQuery
             $testObject->assertEquals($expectedQuery, $actualQuery);
             return $actualQuery;
         };
-        $query = new \zsql\Select($callback);
+        $query = $this->queryFactory($callback);
         $query->from('tableName')->where('columnName', 'value');
         $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
         $this->assertEquals($expectedQuery, $query->query());
@@ -360,7 +368,7 @@ class SelectTest extends CommonQuery
             $testObject->assertEquals($expectedParams, $actualParams);
             return $actualQuery;
         };
-        $query = new \zsql\Select($callback);
+        $query = $this->queryFactory($callback);
         $query->from('tableName')->where('columnName', 'value');
         $this->assertEquals($expectedQuery, $query->query());
         $this->assertEquals($expectedParams, $query->params());
@@ -373,7 +381,7 @@ class SelectTest extends CommonQuery
     public function testCallingToStringThenDatabaseQuery()
     {
         $database = $this->databaseFactory();
-        $query = new \zsql\Select($database);
+        $query = $this->queryFactory($database);
         $query->table('fixture1')
             ->where('id = ?', 102)
             ->limit(1);
@@ -386,7 +394,7 @@ class SelectTest extends CommonQuery
     public function testScan()
     {
         $database = $this->databaseFactory();
-        $query = new \zsql\Select($database);
+        $query = $this->queryFactory($database);
         $expectedClass = PHP_VERSION_ID < 50500 || defined('HHVM_VERSION') ?
             '\\zsql\\Scanner\\ScannerIterator' : '\\zsql\\Scanner\\ScannerGenerator';
         $this->assertInstanceOf($expectedClass, $query->scan());

@@ -1,9 +1,11 @@
 <?php
 
-namespace zsql\Tests;
+namespace zsql\TestsScanner;
 
+use zsql\Result\Result;
 use zsql\Scanner\ScannerGenerator;
 use zsql\Scanner\ScannerIterator;
+use zsql\Tests\Common;
 
 class ScannerTest extends Common
 {
@@ -32,7 +34,7 @@ class ScannerTest extends Common
     public function testGenerator()
     {
         if( PHP_VERSION_ID < 50500 || defined('HHVM_VERSION') ) {
-            return $this->markTestIncomplete('Generators are not supported on < PHP 5.5 or HHVM');
+            $this->markTestIncomplete('Generators are not supported on < PHP 5.5 or HHVM');
         }
 
         foreach( array(1, 2, 10, 15) as $limit ) {
@@ -64,7 +66,7 @@ class ScannerTest extends Common
                 ->order('id', 'ASC')
                 ->limit(3)
         );
-        $scanner->mode(\zsql\Result::FETCH_COLUMN);
+        $scanner->mode(Result::FETCH_COLUMN);
 
         $count = 0;
         $expected = '';
