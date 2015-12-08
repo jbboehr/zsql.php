@@ -16,11 +16,11 @@ class Delete extends ExtendedQuery
      */
     protected function assemble()
     {
-        $this->push('DELETE FROM')
-            ->pushTable()
-            ->pushWhere()
-            ->pushOrder()
-            ->pushLimit();
+        $this->push('DELETE FROM');
+        $this->pushTable();
+        $this->pushWhere();
+        $this->pushOrder();
+        $this->pushLimit();
 
         $this->query = join(' ', $this->parts);
     }

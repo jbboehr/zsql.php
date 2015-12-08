@@ -322,23 +322,23 @@ class Select extends ExtendedQuery
      */
     protected function assemble()
     {
-        $this->push('SELECT')
-            ->pushDistinct()
-            ->pushColumns()
-            ->push('FROM')
-            ->pushTable()
-            ->pushHint()
-            ->pushJoin()
-            ->pushWhere()
-            ->pushGroup()
-            ->pushOrder()
-            ->pushLimit();
+        $this->push('SELECT');
+        $this->pushDistinct();
+        $this->pushColumns();
+        $this->push('FROM');
+        $this->pushTable();
+        $this->pushHint();
+        $this->pushJoin();
+        $this->pushWhere();
+        $this->pushGroup();
+        $this->pushOrder();
+        $this->pushLimit();
     }
 
     /**
      * Push columns onto parts
      *
-     * @return $this
+     * @return void
      */
     protected function pushColumns()
     {
@@ -355,26 +355,24 @@ class Select extends ExtendedQuery
         } else if( $this->columns instanceof Expression ) {
             $this->parts[] = (string) $this->columns;
         }
-        return $this;
     }
 
     /**
      * Push distinct onto parts
      *
-     * @return $this
+     * @return void
      */
     protected function pushDistinct()
     {
         if( $this->distinct ) {
             $this->parts[] = 'DISTINCT';
         }
-        return $this;
     }
 
     /**
      * Push hint onto parts
      *
-     * @return $this
+     * @return void
      */
     protected function pushHint()
     {
@@ -387,11 +385,10 @@ class Select extends ExtendedQuery
                 $this->parts[] = '(' . $this->quoteIdentifierIfNotExpression($this->hint) . ')';
             }
         }
-        return $this;
     }
 
     /**
-     * @return $this
+     * @return void
      */
     protected function pushJoin()
     {
@@ -408,6 +405,5 @@ class Select extends ExtendedQuery
                 $this->parts[] = $join['expr'];
             }
         }
-        return $this;
     }
 }

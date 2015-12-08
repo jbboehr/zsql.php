@@ -25,13 +25,13 @@ class Update extends ExtendedQuery
      */
     protected function assemble()
     {
-        $this->push('UPDATE')
-            ->pushTable()
-            ->push('SET')
-            ->pushValues()
-            ->pushWhere()
-            ->pushOrder()
-            ->pushLimit();
+        $this->push('UPDATE');
+        $this->pushTable();
+        $this->push('SET');
+        $this->pushValues();
+        $this->pushWhere();
+        $this->pushOrder();
+        $this->pushLimit();
     }
 
     /**

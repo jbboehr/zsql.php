@@ -53,15 +53,13 @@ class Insert extends Query
      */
     protected function assemble()
     {
-        $this->push($this->replace ?
-                    'REPLACE' :
-                    'INSERT')
-            ->pushIgnoreDelayed()
-            ->push('INTO')
-            ->pushTable()
-            ->push('SET')
-            ->pushValues()
-            ->pushOnDuplicateKeyUpdate();
+        $this->push($this->replace ? 'REPLACE' : 'INSERT');
+        $this->pushIgnoreDelayed();
+        $this->push('INTO');
+        $this->pushTable();
+        $this->push('SET');
+        $this->pushValues();
+        $this->pushOnDuplicateKeyUpdate();
     }
 
     /**
@@ -160,7 +158,7 @@ class Insert extends Query
     /**
      * Push ignore or delayed onto parts
      *
-     * @return $this
+     * @return void
      */
     protected function pushIgnoreDelayed()
     {
@@ -170,13 +168,12 @@ class Insert extends Query
         if( $this->ignore && !$this->replace ) {
             $this->parts[] = 'IGNORE';
         }
-        return $this;
     }
 
     /**
      * Push on duplicate key update clause
      *
-     * @return $this
+     * @return void
      */
     protected function pushOnDuplicateKeyUpdate()
     {
@@ -187,7 +184,6 @@ class Insert extends Query
             $this->pushValues();
             $this->values = $tmp;
         }
-        return $this;
     }
 
     /**
@@ -205,7 +201,7 @@ class Insert extends Query
     /**
      * Alias for {@link Insert::value()} or {@link Insert::values()}
      *
-     * @param string|Expression $key
+     * @param string|Expression|array $key
      * @param mixed $value
      * @return $this
      */

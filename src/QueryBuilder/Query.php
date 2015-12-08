@@ -2,6 +2,8 @@
 
 namespace zsql\QueryBuilder;
 
+use Exception as BaseException;
+use Throwable;
 use zsql\Expression;
 use zsql\Adapter\Adapter;
 use zsql\Result\Result;
@@ -103,7 +105,7 @@ abstract class Query
     /**
      * Constructor
      *
-     * @param callback $queryCallback
+     * @param callback|Adapter|null $queryCallback
      */
     public function __construct($queryCallback = null)
     {
@@ -126,7 +128,10 @@ abstract class Query
     {
         try {
             return $this->toString();
-        } catch( Exception $e ) {
+        } catch( BaseException $e ) {
+            trigger_error($e->getMessage(), E_USER_WARNING);
+            return '';
+        } catch( Throwable $e ) {
             trigger_error($e->getMessage(), E_USER_WARNING);
             return '';
         }
@@ -231,18 +236,17 @@ abstract class Query
      * Push an arbitrary string onto parts
      *
      * @param string $string
-     * @return $this
+     * @return void
      */
     protected function push($string)
     {
         $this->parts[] = $string;
-        return $this;
     }
 
     /**
      * Push table onto parts
      *
-     * @return $this
+     * @return void
      * @throws Exception
      */
     protected function pushTable()
@@ -251,13 +255,12 @@ abstract class Query
             throw new Exception('No table specified');
         }
         $this->parts[] = $this->quoteIdentifierIfNotExpression($this->table);
-        return $this;
     }
 
     /**
      * Push values onto parts
      *
-     * @return $this
+     * @return void
      * @throws Exception
      */
     protected function pushValues()
@@ -279,8 +282,6 @@ abstract class Query
             $this->parts[] = ',';
         }
         array_pop($this->parts);
-
-        return $this;
     }
 
     /**

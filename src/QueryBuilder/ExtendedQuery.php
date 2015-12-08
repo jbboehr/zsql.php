@@ -131,7 +131,7 @@ abstract class ExtendedQuery extends Query
     /**
      * Push limit clause onto parts
      *
-     * @return $this
+     * @return void
      */
     protected function pushLimit()
     {
@@ -145,13 +145,12 @@ abstract class ExtendedQuery extends Query
                 $this->params[] = $this->limit;
             }
         }
-        return $this;
     }
 
     /**
      * Push group by clause onto parts
      *
-     * @return $this
+     * @return void
      */
     protected function pushGroup()
     {
@@ -159,13 +158,12 @@ abstract class ExtendedQuery extends Query
             $this->parts[] = 'GROUP BY';
             $this->parts[] = $this->quoteIdentifierIfNotExpression($this->group);
         }
-        return $this;
     }
 
     /**
      * Push order by clause onto parts
      *
-     * @return $this
+     * @return void
      */
     protected function pushOrder()
     {
@@ -174,18 +172,17 @@ abstract class ExtendedQuery extends Query
             $this->parts[] = $this->quoteIdentifierIfNotExpression($this->order);
             $this->parts[] = $this->direction == self::DESC ? self::DESC : self::ASC;
         }
-        return $this;
     }
 
     /**
      * Push where clause onto parts
      *
-     * @return $this
+     * @return void
      */
     protected function pushWhere()
     {
         if( empty($this->where) ) {
-            return $this;
+            return;
         }
 
         $this->parts[] = 'WHERE';
@@ -220,7 +217,6 @@ abstract class ExtendedQuery extends Query
             $this->parts[] = '&&';
         }
         array_pop($this->parts);
-        return $this;
     }
 
     /**

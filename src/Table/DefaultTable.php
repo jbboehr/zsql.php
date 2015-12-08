@@ -177,9 +177,8 @@ class DefaultTable implements Table
         if( !$this->tableName ) {
             throw new Exception('No table name specified');
         }
-        $q = $this->database
-            ->select()
-            ->table($this->tableName);
+        $q = $this->database->select();
+        $q->table($this->tableName);
         if( $this->resultClass ) {
             $q->setResultClass($this->resultClass);
             $q->setResultParams($this->resultParams);
