@@ -1,10 +1,14 @@
 <?php
 
-namespace zsql;
+namespace zsql\QueryBuilder;
+
+use zsql\Expression;
 
 /**
+ * Class ExtendedQuery
  * Abstract class for queries that support select-like functionality (delete,
  * select, update)
+ * @package zsql\QueryBuilder
  */
 abstract class ExtendedQuery extends Query
 {
@@ -53,7 +57,7 @@ abstract class ExtendedQuery extends Query
     /**
      * Get the specified where
      *
-     * @param mixed $key
+     * @param string $key
      * @return mixed
      */
     public function getWhere($key)
@@ -70,7 +74,7 @@ abstract class ExtendedQuery extends Query
      * Set group by
      *
      * @param string $column
-     * @return \zsql\ExtendedQuery
+     * @return $this
      */
     public function group($column)
     {
@@ -83,7 +87,7 @@ abstract class ExtendedQuery extends Query
      *
      * @param integer $limit
      * @param integer $offset
-     * @return \zsql\ExtendedQuery
+     * @return $this
      */
     public function limit($limit, $offset = null)
     {
@@ -99,7 +103,7 @@ abstract class ExtendedQuery extends Query
      *
      * @param integer $offset
      * @param integer $limit
-     * @return \zsql\ExtendedQuery
+     * @return $this
      */
     public function offset($offset, $limit = null)
     {
@@ -115,9 +119,9 @@ abstract class ExtendedQuery extends Query
      *
      * @param string $order
      * @param string $direction
-     * @return \zsql\ExtendedQuery
+     * @return $this
      */
-    public function order($order, $direction = 'ASC')
+    public function order($order, $direction = self::ASC)
     {
         $this->order = $order;
         $this->direction = $direction;
@@ -127,7 +131,7 @@ abstract class ExtendedQuery extends Query
     /**
      * Push limit clause onto parts
      *
-     * @return \zsql\ExtendedQuery
+     * @return void
      */
     protected function pushLimit()
     {
@@ -141,13 +145,12 @@ abstract class ExtendedQuery extends Query
                 $this->params[] = $this->limit;
             }
         }
-        return $this;
     }
 
     /**
      * Push group by clause onto parts
      *
-     * @return \zsql\ExtendedQuery
+     * @return void
      */
     protected function pushGroup()
     {
@@ -155,33 +158,31 @@ abstract class ExtendedQuery extends Query
             $this->parts[] = 'GROUP BY';
             $this->parts[] = $this->quoteIdentifierIfNotExpression($this->group);
         }
-        return $this;
     }
 
     /**
      * Push order by clause onto parts
      *
-     * @return \zsql\ExtendedQuery
+     * @return void
      */
     protected function pushOrder()
     {
         if( $this->order ) {
             $this->parts[] = 'ORDER BY';
             $this->parts[] = $this->quoteIdentifierIfNotExpression($this->order);
-            $this->parts[] = $this->direction == 'DESC' ? 'DESC' : 'ASC';
+            $this->parts[] = $this->direction == self::DESC ? self::DESC : self::ASC;
         }
-        return $this;
     }
 
     /**
      * Push where clause onto parts
      *
-     * @return \zsql\ExtendedQuery
+     * @return void
      */
     protected function pushWhere()
     {
         if( empty($this->where) ) {
-            return $this;
+            return;
         }
 
         $this->parts[] = 'WHERE';
@@ -216,7 +217,6 @@ abstract class ExtendedQuery extends Query
             $this->parts[] = '&&';
         }
         array_pop($this->parts);
-        return $this;
     }
 
     /**
@@ -224,7 +224,7 @@ abstract class ExtendedQuery extends Query
      *
      * @param mixed $where
      * @param mixed $value
-     * @return \zsql\ExtendedQuery
+     * @return $this
      */
     public function where($where, $value = null)
     {
@@ -242,7 +242,7 @@ abstract class ExtendedQuery extends Query
      * where(new Expression('string'))
      *
      * @param string $where
-     * @return \zsql\ExtendedQuery
+     * @return $this
      */
     public function whereExpr($where)
     {
@@ -255,7 +255,7 @@ abstract class ExtendedQuery extends Query
      *
      * @param mixed $where
      * @param array $value
-     * @return \zsql\ExtendedQuery
+     * @return $this
      */
     public function whereIn($where, $value)
     {
@@ -275,7 +275,7 @@ abstract class ExtendedQuery extends Query
      *
      * @param mixed $where
      * @param array $value
-     * @return \zsql\ExtendedQuery
+     * @return $this
      */
     public function whereNotIn($where, $value)
     {

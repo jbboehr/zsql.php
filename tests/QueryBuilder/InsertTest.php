@@ -1,10 +1,18 @@
 <?php
 
-namespace zsql\Tests;
+namespace zsql\Tests\QueryBuilder;
 
-class InsertTest extends CommonQuery
+use zsql\Expression;
+use zsql\QueryBuilder\Insert;
+
+/**
+ * Class InsertTest
+ * @package zsql\Tests\QueryBuilder
+ * @method Insert queryFactory queryFactory($arg = null)
+ */
+class InsertTest extends Common
 {
-    protected $className = '\\zsql\\Insert';
+    protected $className = 'zsql\\QueryBuilder\\Insert';
 
     public function testAfter()
     {
@@ -19,7 +27,7 @@ class InsertTest extends CommonQuery
             $bit2 = true;
             return 'fakeInsertId';
         };
-        $query = new \zsql\Insert($queryCallback);
+        $query = $this->queryFactory($queryCallback);
         $query
             ->into('tableName')
             ->set('a3', 'b4')
@@ -34,7 +42,7 @@ class InsertTest extends CommonQuery
         $bit = null;
         $bit2 = null;
         $cb = function ($query) use (&$bit, &$bit2) {
-            if( $query instanceof \zsql\Insert && !$bit2 ) {
+            if( $query instanceof Insert && !$bit2 ) {
                 $bit = true;
             }
         };
@@ -42,7 +50,7 @@ class InsertTest extends CommonQuery
             $bit2 = true;
             return 'fakeInsertId';
         };
-        $query = new \zsql\Insert($queryCallback);
+        $query = $this->queryFactory($queryCallback);
         $query
             ->into('tableName')
             ->set('a3', 'b4')
@@ -54,7 +62,7 @@ class InsertTest extends CommonQuery
 
     public function testClearValues()
     {
-        $query = new \zsql\Insert();
+        $query = $this->queryFactory();
         $query
             ->into('tableName')
             ->set('a3', 'b4')
@@ -66,7 +74,7 @@ class InsertTest extends CommonQuery
 
     public function testDelayed()
     {
-        $query = new \zsql\Insert();
+        $query = $this->queryFactory();
         $query
             ->into('tableName')
             ->delayed()
@@ -81,7 +89,7 @@ class InsertTest extends CommonQuery
 
     public function testDelayedFalse()
     {
-        $query = new \zsql\Insert();
+        $query = $this->queryFactory();
         $query
             ->into('tableName')
             ->delayed(true)
@@ -97,7 +105,7 @@ class InsertTest extends CommonQuery
 
     public function testGet()
     {
-        $query = new \zsql\Insert();
+        $query = $this->queryFactory();
         $query
             ->set('columnName', 'value');
         $this->assertEquals('value', $query->get('columnName'));
@@ -106,7 +114,7 @@ class InsertTest extends CommonQuery
 
     public function testIgnore()
     {
-        $query = new \zsql\Insert();
+        $query = $this->queryFactory();
         $query
             ->into('tableName')
             ->ignore()
@@ -121,7 +129,7 @@ class InsertTest extends CommonQuery
 
     public function testIgnoreFalse()
     {
-        $query = new \zsql\Insert();
+        $query = $this->queryFactory();
         $query
             ->into('tableName')
             ->ignore(true)
@@ -137,12 +145,12 @@ class InsertTest extends CommonQuery
 
     public function testOnDuplicateKeyUpdate()
     {
-        $query = new \zsql\Insert();
+        $query = $this->queryFactory();
         $query
             ->into('tableName')
             ->set('columnName', 'value')
             ->onDuplicateKeyUpdate(array('a' => 'b'))
-            ->onDuplicateKeyUpdate(new \zsql\Expression('columnName = VALUE(columnName)'))
+            ->onDuplicateKeyUpdate(new Expression('columnName = VALUE(columnName)'))
             ->onDuplicateKeyUpdate('c', 'd');
         $this->assertEquals('INSERT INTO `tableName` SET `columnName` = ? '
             . 'ON DUPLICATE KEY UPDATE '
@@ -158,7 +166,7 @@ class InsertTest extends CommonQuery
 
     public function testReplace()
     {
-        $query = new \zsql\Insert();
+        $query = $this->queryFactory();
         $query
             ->into('tableName')
             ->replace()
@@ -173,7 +181,7 @@ class InsertTest extends CommonQuery
 
     public function testReplaceFalse()
     {
-        $query = new \zsql\Insert();
+        $query = $this->queryFactory();
         $query
             ->into('tableName')
             ->replace(true)
@@ -189,23 +197,23 @@ class InsertTest extends CommonQuery
 
     public function testToStringThrowsExceptionWithNoTable()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
         
-        $query = new \zsql\Insert();
+        $query = $this->queryFactory();
         $query->toString();
     }
 
     public function testToStringThrowsExceptionWithNoValues()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
         
-        $query = new \zsql\Insert();
+        $query = $this->queryFactory();
         $query->into('tableName')->toString();
     }
 
     public function testABunchOfStuffTogether()
     {
-        $query = new \zsql\Insert();
+        $query = $this->queryFactory();
         $query
             ->into('tableName')
             ->ignore()
@@ -216,8 +224,8 @@ class InsertTest extends CommonQuery
                 'd' => 'e',
             ))
             ->set('f', 'g')
-            ->value('h', new \zsql\Expression('NOW()'))
-            ->value(new \zsql\Expression('z = SHA1(0)'))
+            ->value('h', new Expression('NOW()'))
+            ->value(new Expression('z = SHA1(0)'))
         ;
         $this->assertEquals('INSERT IGNORE INTO `tableName` SET `a1` = ? , `c3` = ? , `a` = ? , `d` = ? , `f` = ? , `h` = NOW() , z = SHA1(0)', $query->toString());
         $this->assertEquals(array('b2', 'd4', 'b', 'e', 'g'), $query->params());
@@ -229,9 +237,9 @@ class InsertTest extends CommonQuery
 
     public function testInterpolateThrowsException()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
         
-        $query = new \zsql\Insert();
+        $query = $this->queryFactory();
         $query->table('tableName')->set('a', 'b');
         $query->interpolation();
         $query->toString();
@@ -239,9 +247,9 @@ class InsertTest extends CommonQuery
 
     public function testInterpolateThrowsException2()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\QueryBuilder\Exception');
         
-        $query = new \zsql\Insert();
+        $query = $this->queryFactory();
         $query->table('tableName')->set('a??', 'b');
         $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
         $query->toString();
@@ -255,7 +263,7 @@ class InsertTest extends CommonQuery
             $testObject->assertEquals($expectedQuery, $actualQuery);
             return $actualQuery;
         };
-        $query = new \zsql\Insert($callback);
+        $query = $this->queryFactory($callback);
         $query->into('tableName')->set('columnName', 'value');
         $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
         $this->assertEquals($expectedQuery, $query->query());
@@ -271,7 +279,7 @@ class InsertTest extends CommonQuery
             $testObject->assertEquals($expectedParams, $actualParams);
             return $actualQuery;
         };
-        $query = new \zsql\Insert($callback);
+        $query = $this->queryFactory($callback);
         $query->into('tableName')->set('columnName', 'value');
         $this->assertEquals($expectedQuery, $query->query());
         $this->assertEquals($expectedParams, $query->params());

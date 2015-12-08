@@ -1,39 +1,43 @@
 <?php
 
-namespace zsql;
+namespace zsql\Result;
 
-use \mysqli_result;
+use mysqli_result;
 
-class Result
+/**
+ * Class MysqliResult
+ * @package zsql\Result
+ */
+class MysqliResult implements Result
 {
     /**
-     * @var \mysqli_result
+     * @var mysqli_result
      */
     protected $result;
 
     /**
      * @var string
      */
-    protected $resultClass;
+    protected $resultClass = 'zsql\\Row\\DefaultRow';
 
     /**
      * @var integer
      */
     protected $resultMode;
-    
-    const FETCH_COLUMN = 0;
-    const FETCH_OBJECT = 1;
-    const FETCH_ASSOC = 2;
-    const FETCH_NUM = 3;
+
+    /**
+     * @var array
+     */
+    protected $resultParams;
 
     /**
      * Constructor
      *
-     * @param mixed $object
+     * @param mysqli_result $object
      */
-    public function __construct($object)
+    public function __construct(mysqli_result $object = null)
     {
-        if( $object instanceof \mysqli_result ) {
+        if( null !== $object ) {
             $this->setResult($object);
         }
     }
@@ -47,7 +51,7 @@ class Result
     }
 
     /**
-     * Frees the local mysqli_result object, and unsetting it.
+     * Frees the local mysqli_result object, and unsets it.
      *
      * @return void
      */
@@ -56,13 +60,16 @@ class Result
         if( $this->result ) {
             $this->result->free();
             $this->result = null;
+            // Could potentially contain an object reference
+            $this->resultParams = null;
         }
     }
 
     /**
      * Getter function for the local mysqli_result object.
      *
-     * @return \mysqli_result
+     * @return mysqli_result
+     * @throws Exception
      */
     public function getResult()
     {
@@ -75,10 +82,10 @@ class Result
     /**
      * Setter function for the local mysqli_result object.
      *
-     * @param \mysqli_result $object
-     * @return \zsql\Result
+     * @param mysqli_result $object
+     * @return $this
      */
-    protected function setResult(mysqli_result $object)
+    protected function setResult(mysqli_result $object = null)
     {
         $this->result = $object;
         return $this;
@@ -98,15 +105,35 @@ class Result
      * Set result class
      *
      * @param string $class
-     * @return \zsql\Result
-     * @throws \zsql\Exception
+     * @return $this
+     * @throws Exception
      */
-    public function setResultClass($class)
+    public function setResultClass($class = null)
     {
-        if( !is_string($class) || !class_exists($class) ) {
-            throw new \zsql\Exception('Class not found');
+        if( null !== $class && (!is_string($class) || !class_exists($class)) ) {
+            throw new Exception('Class not found');
         }
         $this->resultClass = $class;
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getResultParams()
+    {
+        return $this->resultParams;
+    }
+
+    /**
+     * Set result params
+     *
+     * @param array|null $params
+     * @return $this
+     */
+    public function setResultParams(array $params = null)
+    {
+        $this->resultParams = $params;
         return $this;
     }
 
@@ -124,8 +151,8 @@ class Result
      * Set result mode
      *
      * @param integer $mode
-     * @return \zsql\Result
-     * @throws \zsql\Exception
+     * @return $this
+     * @throws Exception
      */
     public function setResultMode($mode)
     {
@@ -143,7 +170,7 @@ class Result
      * type of result should be produced from the current row data. The possible
      * values for this parameter are the constants FETCH_ASSOC, FETCH_OBJECT,
      * FETCH_COLUMN, or FETCH_NUM.
-     * @return mixed
+     * @return array|object
      */
     public function fetchRow($mode = null)
     {
@@ -169,9 +196,15 @@ class Result
                 $data = $spec->fetch_row();
                 break;
             case self::FETCH_OBJECT:
-                $data = ($this->resultClass ?
-                        $spec->fetch_object($this->resultClass) :
-                        $spec->fetch_object());
+                if( null !== $this->resultClass ) {
+                    if( null !== $this->resultParams ) {
+                        $data = $spec->fetch_object($this->resultClass, $this->resultParams);
+                    } else {
+                        $data = $spec->fetch_object($this->resultClass);
+                    }
+                } else {
+                    $data = $spec->fetch_object();
+                }
                 break;
         }
 
@@ -187,7 +220,7 @@ class Result
      * values for this parameter are the constants FETCH_ASSOC, FETCH_OBJECT,
      * FETCH_COLUMN, or FETCH_NUM.
      *
-     * @return mixed
+     * @return array
      */
     public function fetchAll($mode = null)
     {
@@ -215,9 +248,15 @@ class Result
                 }
                 break;
             case self::FETCH_OBJECT:
-                if( $this->resultClass ) {
-                    while( ($row = $spec->fetch_object($this->resultClass)) ) {
-                        $data[] = $row;
+                if( null !== $this->resultClass ) {
+                    if( null !== $this->resultParams ) {
+                        while( ($row = $spec->fetch_object($this->resultClass, $this->resultParams)) ) {
+                            $data[] = $row;
+                        }
+                    } else {
+                        while( ($row = $spec->fetch_object($this->resultClass)) ) {
+                            $data[] = $row;
+                        }
                     }
                 } else {
                     while( ($row = $spec->fetch_object()) ) {
@@ -234,7 +273,7 @@ class Result
     /**
      * Returns a single value from the first result row.
      *
-     * @return mixed
+     * @return string|integer|float|null
      */
     public function fetchColumn()
     {

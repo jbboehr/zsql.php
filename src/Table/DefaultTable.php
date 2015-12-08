@@ -1,11 +1,22 @@
 <?php
 
-namespace zsql;
+namespace zsql\Table;
 
-class Model
+use zsql\Adapter\Adapter;
+use zsql\QueryBuilder\Delete;
+use zsql\QueryBuilder\Insert;
+use zsql\QueryBuilder\Select;
+use zsql\QueryBuilder\Update;
+use zsql\Row\Row;
+
+/**
+ * Class DefaultTable
+ * @package zsql\Table
+ */
+class DefaultTable implements Table
 {
     /**
-     * @var \zsql\Database
+     * @var Adapter
      */
     protected $database;
 
@@ -21,7 +32,12 @@ class Model
      *
      * @var string
      */
-    protected $resultClass;
+    protected $resultClass = 'zsql\\Row\\DefaultRow';
+
+    /**
+     * @var array|null
+     */
+    protected $resultParams;
 
     /**
      * Name of the table associated with the model
@@ -31,9 +47,9 @@ class Model
     protected $tableName;
 
     /**
-     * @param \zsql\Database $database
+     * @param Adapter $database
      */
-    public function __construct(Database $database)
+    public function __construct(Adapter $database)
     {
         $this->setDatabase($database)
             ->init();
@@ -53,7 +69,7 @@ class Model
      * Find a record by primary key
      *
      * @param mixed $identity
-     * @return \stdClass
+     * @return Row
      */
     public function find($identity)
     {
@@ -87,7 +103,7 @@ class Model
     /**
      * Getter method for the database adapter
      *
-     * @return \zsql\Database
+     * @return Adapter
      */
     public function getDatabase()
     {
@@ -97,10 +113,10 @@ class Model
     /**
      * Setter method for the database adapter
      *
-     * @param \zsql\Database $database
-     * @return \zsql\Model
+     * @param Adapter $database
+     * @return $this
      */
-    public function setDatabase(Database $database)
+    public function setDatabase(Adapter $database)
     {
         $this->database = $database;
         return $this;
@@ -120,7 +136,7 @@ class Model
      * Setter method for the $tableName property.
      *
      * @param string $table
-     * @return \zsql\Model
+     * @return $this
      */
     public function setTableName($table)
     {
@@ -142,7 +158,7 @@ class Model
      * Setter method for the $primaryKey property
      *
      * @param string $primaryKey
-     * @return \zsql\Model
+     * @return $this
      */
     public function setPrimaryKey($primaryKey)
     {
@@ -154,18 +170,18 @@ class Model
      * Helper function the provides the \zsql\Select object with the table name
      * pre-populated.
      *
-     * @return \zsql\Select
+     * @return Select
      */
     public function select()
     {
         if( !$this->tableName ) {
             throw new Exception('No table name specified');
         }
-        $q = $this->getDatabase()
-            ->select()
-            ->table($this->tableName);
+        $q = $this->database->select();
+        $q->table($this->tableName);
         if( $this->resultClass ) {
             $q->setResultClass($this->resultClass);
+            $q->setResultParams($this->resultParams);
         }
         return $q;
     }
@@ -174,15 +190,14 @@ class Model
      * Insert a row into the model's table. If no table name is specified an
      * exception will be thrown
      *
-     * @return \zsql\Insert
+     * @return Insert
      */
     public function insert()
     {
         if( !$this->tableName ) {
             throw new Exception('No table name specified');
         }
-        return $this->getDatabase()
-                ->insert()
+        return $this->database->insert()
                 ->table($this->tableName);
     }
 
@@ -190,15 +205,14 @@ class Model
      * Update existing rows in the model's table. If no table name is specified an
      * exception will be thrown
      *
-     * @return \zsql\Update
+     * @return Update
      */
     public function update()
     {
         if( !$this->tableName ) {
             throw new Exception('No table name specified');
         }
-        return $this->getDatabase()
-                ->update()
+        return $this->database->update()
                 ->table($this->tableName);
     }
 
@@ -206,15 +220,14 @@ class Model
      * Deletes existing rows from the model's table. If no table name is specified
      * an exception will be thrown
      *
-     * @return \zsql\Delete
+     * @return Delete
      */
     public function delete()
     {
         if( !$this->tableName ) {
             throw new Exception('No table name specified');
         }
-        return $this->getDatabase()
-                ->delete()
+        return $this->database->delete()
                 ->table($this->tableName);
     }
 }

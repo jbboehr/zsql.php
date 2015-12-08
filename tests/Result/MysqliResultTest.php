@@ -1,20 +1,30 @@
 <?php
 
-namespace zsql\Tests;
+namespace zsql\Tests\Result;
 
+use zsql\Result\Result;
+use zsql\Result\MysqliResult;
+use zsql\Tests\Common;
+
+/**
+ * Class ResultTest
+ * @package zsql\Tests\Result
+ */
 class ResultTest extends Common
 {
     public function testConstructor()
     {
+        /** @var MysqliResult $result */
         $database = $this->databaseFactory();
         $result = $database->select()->from('fixture1')->query();
 
-        $this->assertInstanceOf('\\mysqli_result', $result->getResult());
+        $this->assertInstanceOf('mysqli_result', $result->getResult());
     }
 
     public function testFree()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        /** @var MysqliResult $result */
+        $this->setExpectedException('zsql\\Result\\Exception');
         
         $database = $this->databaseFactory();
         $result = $database->select()->from('fixture1')->query();
@@ -28,17 +38,41 @@ class ResultTest extends Common
         $database = $this->databaseFactory();
         $result = $database->select()->from('fixture1')->query();
 
-        $this->assertEquals(null, $result->getResultClass());
+        $this->assertEquals('zsql\\Row\\DefaultRow', $result->getResultClass());
         $result->setResultClass('ArrayObject');
         $this->assertEquals('ArrayObject', $result->getResultClass());
     }
 
     public function testSetResultClassThrowExceptionInvalidClass()
     {
-        $this->setExpectedException('\\zsql\\Exception');
-        
-        $result = new \zsql\Result(null);
+        $this->setExpectedException('zsql\\Result\\Exception');
+
+        $result = new MysqliResult(null);
         $result->setResultClass('InvalidClassNameNoob');
+    }
+
+    public function testSetResultParams()
+    {
+        $database = $this->databaseFactory();
+        $result = $database->select()->from('fixture1')->query();
+        $result->setResultClass('zsql\\Tests\\Fixture\\RowWithConstructor');
+
+        $params = array('param1', 'param2');
+        $result->setResultParams($params);
+
+        $r = $result->fetchRow();
+        $this->assertEquals($r->params, $params);
+    }
+
+    public function testGetResultParams()
+    {
+        $database = $this->databaseFactory();
+        $result = $database->select()->from('fixture1')->query();
+        $result->setResultClass('zsql\\Tests\\Fixture\\RowWithConstructor');
+
+        $params = array('param1', 'param2');
+        $result->setResultParams($params);
+        $this->assertSame($result->getResultParams(), $params);
     }
 
     public function testGetResultMode()
@@ -46,7 +80,7 @@ class ResultTest extends Common
         $database = $this->databaseFactory();
         $result = $database->select()->from('fixture1')->query();
 
-        $this->assertEquals(\zsql\Result::FETCH_OBJECT, $result->getResultMode());
+        $this->assertEquals(Result::FETCH_OBJECT, $result->getResultMode());
     }
 
     public function testSetResultMode()
@@ -54,15 +88,15 @@ class ResultTest extends Common
         $database = $this->databaseFactory();
         $result = $database->select()->from('fixture1')->query();
 
-        $result->setResultMode(\zsql\Result::FETCH_ASSOC);
-        $this->assertEquals(\zsql\Result::FETCH_ASSOC, $result->getResultMode());
+        $result->setResultMode(Result::FETCH_ASSOC);
+        $this->assertEquals(Result::FETCH_ASSOC, $result->getResultMode());
     }
 
     public function testSetResultModeThrowsOnInvalidMode()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\Result\\Exception');
         
-        $result = new \zsql\Result(null);
+        $result = new MysqliResult(null);
         $result->setResultMode(9001);
     }
 
@@ -73,7 +107,15 @@ class ResultTest extends Common
 
         $row = $result->fetchRow();
 
-        $this->assertInstanceOf('\\stdClass', $row);
+        $this->assertInstanceOf('zsql\\Row\\DefaultRow', $row);
+    }
+
+    public function testFetchRowWithNoResultClass()
+    {
+        $database = $this->databaseFactory();
+        $result = $database->select()->from('fixture1')->query();
+        $row = $result->setResultClass(null)->fetchRow(Result::FETCH_OBJECT);
+        $this->assertInstanceOf('stdClass', $row);
     }
 
     public function testFetchRowEmptyResult()
@@ -91,7 +133,7 @@ class ResultTest extends Common
         $database = $this->databaseFactory();
         $result = $database->select()->from('fixture1')->query();
 
-        $row = $result->fetchRow(\zsql\Result::FETCH_ASSOC);
+        $row = $result->fetchRow(Result::FETCH_ASSOC);
 
         $this->assertEquals(true, is_array($row));
     }
@@ -101,7 +143,7 @@ class ResultTest extends Common
         $database = $this->databaseFactory();
         $result = $database->select()->from('fixture1')->columns('id')->query();
 
-        $col = $result->fetchRow(\zsql\Result::FETCH_COLUMN);
+        $col = $result->fetchRow(Result::FETCH_COLUMN);
 
         $this->assertEquals(true, is_scalar($col));
     }
@@ -115,7 +157,7 @@ class ResultTest extends Common
             ->where('id', 123)
             ->query();
 
-        $col = $result->fetchRow(\zsql\Result::FETCH_COLUMN);
+        $col = $result->fetchRow(Result::FETCH_COLUMN);
 
         $this->assertEquals(true, null === $col);
     }
@@ -125,7 +167,7 @@ class ResultTest extends Common
         $database = $this->databaseFactory();
         $result = $database->select()->from('fixture1')->columns('id')->query();
 
-        $row = $result->fetchRow(\zsql\Result::FETCH_NUM);
+        $row = $result->fetchRow(Result::FETCH_NUM);
 
         foreach( $row as $k => $v ) {
             $this->assertEquals(true, is_int($k));
@@ -142,7 +184,7 @@ class ResultTest extends Common
         $this->assertCount($this->fixtureOneRowCount, $rows);
 
         foreach( $rows as $row ) {
-            $this->assertInstanceOf('\\stdClass', $row);
+            $this->assertInstanceOf('zsql\\Row\\DefaultRow', $row);
         }
     }
 
@@ -151,7 +193,7 @@ class ResultTest extends Common
         $database = $this->databaseFactory();
         $result = $database->select()->from('fixture1')->query();
 
-        $rows = $result->fetchAll(\zsql\Result::FETCH_ASSOC);
+        $rows = $result->fetchAll(Result::FETCH_ASSOC);
 
         $this->assertEquals(true, is_array($rows));
 
@@ -168,7 +210,7 @@ class ResultTest extends Common
         $database = $this->databaseFactory();
         $result = $database->select()->from('fixture1')->columns('id')->query();
 
-        $cols = $result->fetchAll(\zsql\Result::FETCH_COLUMN);
+        $cols = $result->fetchAll(Result::FETCH_COLUMN);
 
         $this->assertCount($this->fixtureOneRowCount, $cols);
 
@@ -182,7 +224,7 @@ class ResultTest extends Common
         $database = $this->databaseFactory();
         $result = $database->select()->from('fixture1')->query();
 
-        $rows = $result->fetchAll(\zsql\Result::FETCH_NUM);
+        $rows = $result->fetchAll(Result::FETCH_NUM);
 
         $this->assertCount($this->fixtureOneRowCount, $rows);
 
@@ -199,12 +241,43 @@ class ResultTest extends Common
         $database = $this->databaseFactory();
         $result = $database->select()->from('fixture1')->query();
 
-        $rows = $result->setResultClass('\\ArrayObject')->fetchAll(\zsql\Result::FETCH_OBJECT);
+        $rows = $result->setResultClass('ArrayObject')->fetchAll(Result::FETCH_OBJECT);
 
         $this->assertEquals(true, is_array($rows));
 
         foreach( $rows as $row ) {
-            $this->assertInstanceOf('\\ArrayObject', $row);
+            $this->assertInstanceOf('ArrayObject', $row);
+        }
+    }
+
+    public function testFetchAllFetchModeObjectWithNoResultClass()
+    {
+        $database = $this->databaseFactory();
+        $result = $database->select()->from('fixture1')->query();
+
+        $rows = $result->setResultClass(null)->fetchAll(Result::FETCH_OBJECT);
+
+        $this->assertEquals(true, is_array($rows));
+
+        foreach( $rows as $row ) {
+            $this->assertInstanceOf('stdClass', $row);
+        }
+    }
+
+    public function testFetchAllFetchModeObjectWithResultClassAndParams()
+    {
+        $database = $this->databaseFactory();
+        $result = $database->select()->from('fixture1')->query();
+
+        $rows = $result
+            ->setResultClass('zsql\\Tests\\Fixture\\RowWithConstructor')
+            ->setResultParams(array())
+            ->fetchAll(Result::FETCH_OBJECT);
+
+        $this->assertEquals(true, is_array($rows));
+
+        foreach( $rows as $row ) {
+            $this->assertInstanceOf('zsql\Tests\Fixture\RowWithConstructor', $row);
         }
     }
 

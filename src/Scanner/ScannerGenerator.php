@@ -1,9 +1,11 @@
 <?php
 
-namespace zsql;
+namespace zsql\Scanner;
 
 /**
+ * Class ScannerGenerator
  * Table scanner (generator implementation)
+ * @package zsql\Scanner
  */
 class ScannerGenerator extends ScannerIterator
 {

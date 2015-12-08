@@ -1,11 +1,16 @@
 <?php
 
-namespace zsql;
+namespace zsql\Scanner;
+
+use Iterator;
+use zsql\QueryBuilder\Select;
 
 /**
+ * Class ScannerIterator
  * Table scanner (iterator implementation)
+ * @package zsql\Scanner
  */
-class ScannerIterator implements \Iterator
+class ScannerIterator implements Iterator
 {
     const DEFAULT_BATCH_SIZE = 100;
     /**
@@ -24,7 +29,7 @@ class ScannerIterator implements \Iterator
     protected $mode;
 
     /**
-     * @var \zsql\Select
+     * @var Select
      */
     protected $query;
     protected $currentBatch;
@@ -34,13 +39,13 @@ class ScannerIterator implements \Iterator
     /**
      * Constructor
      *
-     * @param \zsql\Select $query
+     * @param Select $query
      */
     public function __construct(Select $query)
     {
         $this->query = $query;
 
-        // Get batcn size and cursor
+        // Get batch size and cursor
         $this->batchSize = (integer) $query->getLimit() ? : self::DEFAULT_BATCH_SIZE;
         $this->cursor = (integer) $query->getOffset();
     }

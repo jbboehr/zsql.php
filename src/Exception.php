@@ -3,9 +3,7 @@
 namespace zsql;
 
 /**
- * Query generation exception
+ * Interface Exception
+ * @package zsql
  */
-class Exception extends \Exception
-{
-    
-}
+interface Exception {}

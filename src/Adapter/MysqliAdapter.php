@@ -1,15 +1,20 @@
 <?php
 
-namespace zsql;
+namespace zsql\Adapter;
 
-/**
- * Import classes from the global namespace
- */
 use mysqli;
 use mysqli_result;
 use Psr\Log\LoggerInterface;
 
-class Database
+use zsql\Expression;
+use zsql\QueryBuilder\Delete;
+use zsql\QueryBuilder\Insert;
+use zsql\QueryBuilder\Query;
+use zsql\QueryBuilder\Select;
+use zsql\QueryBuilder\Update;
+use zsql\Result\MysqliResult as Result;
+
+class MysqliAdapter implements Adapter
 {
     /**
      * @var integer
@@ -27,7 +32,7 @@ class Database
     protected $insertId;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     protected $logger;
 
@@ -71,7 +76,7 @@ class Database
     /**
      * Exposes the local connection object
      *
-     * @return \mysqli
+     * @return mysqli
      */
     public function getConnection()
     {
@@ -81,8 +86,8 @@ class Database
     /**
      * Sets the local mysqli object
      *
-     * @param \mysqli $connection
-     * @return \zsql\Database
+     * @param mysqli $connection
+     * @return $this
      */
     public function setConnection(mysqli $connection = null)
     {
@@ -113,7 +118,8 @@ class Database
     /**
      * Set a query logger
      *
-     * @return self
+     * @param LoggerInterface $logger
+     * @return $this
      */
     public function setLogger(LoggerInterface $logger)
     {
@@ -122,9 +128,9 @@ class Database
     }
 
     /**
-     * Wrapper for \zsql\Select
+     * Wrapper for Select
      *
-     * @return \zsql\Select
+     * @return Select
      */
     public function select()
     {
@@ -132,9 +138,9 @@ class Database
     }
 
     /**
-     * Wrapper for \zsql\Insert
+     * Wrapper for Insert
      *
-     * @return \zsql\Insert
+     * @return Insert
      */
     public function insert()
     {
@@ -142,9 +148,9 @@ class Database
     }
 
     /**
-     * Wrapper for \zsql\Update
+     * Wrapper for Update
      *
-     * @return \zsql\Update
+     * @return Update
      */
     public function update()
     {
@@ -152,9 +158,9 @@ class Database
     }
 
     /**
-     * Wrapper for \zsql\Delete
+     * Wrapper for Delete
      *
-     * @return \zsql\Delete
+     * @return Delete
      */
     public function delete()
     {
@@ -162,13 +168,19 @@ class Database
     }
 
     /**
-     * Executes an SQL query
+     * Executes an SQL query.
      *
-     * @param string|\zsql\Query $query
-     * @param string $resultmode
-     * @return \zsql\Result|mixed
+     * When given a QueryBuilder instance as an argument, the return value is based on the class:
+     * Select queries produce an instance of Select
+     * Insert returns the insert ID
+     * Update and Delete return the affected rows
+     * string queries will return the value returned by the internal adapter
+     *
+     * @param string|Query $query
+     * @return Result|integer|boolean
+     * @throws Exception
      */
-    public function query($query, $resultmode = MYSQLI_STORE_RESULT)
+    public function query($query)
     {
         $connection = $this->getConnection();
 
@@ -184,10 +196,10 @@ class Database
         }
 
         // Execute query
-        $ret = $connection->query($queryString, $resultmode);
+        $ret = $connection->query($queryString, MYSQLI_STORE_RESULT);
 
         // Save insert ID if instance of insert
-        if( $query instanceof \zsql\Insert ) {
+        if( $query instanceof Insert ) {
             $this->insertId = $connection->insert_id;
         }
 
@@ -196,19 +208,14 @@ class Database
 
         // Handle result
         if( $ret !== false ) {
-            // Select -> \zsql\Result
-            // Insert -> insertId OR true
-            // Update/Delete -> affectedRows
             if( $ret instanceof mysqli_result ) {
-                // handle mysqli_result object
                 return new Result($ret);
-            } else if( $query instanceof \zsql\Insert ) {
+            } else if( $query instanceof Insert ) {
                 return $this->getInsertId();
-            } else if( $query instanceof \zsql\Update ||
-                $query instanceof \zsql\Delete ) {
+            } else if( $query instanceof Update ||
+                $query instanceof Delete ) {
                 return $this->getAffectedRows();
             }
-            // handle string update/delete/insert queries
             return $ret;
         } else {
             $message = sprintf(
@@ -245,7 +252,7 @@ class Database
         } else if( is_float($value) ) {
             return sprintf('%f', $value); // @todo make sure precision is right
         } else {
-            return "'" . $this->getConnection()->real_escape_string($value) . "'";
+            return "'" . $this->connection->real_escape_string($value) . "'";
         }
     }
 }

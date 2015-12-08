@@ -1,9 +1,13 @@
 <?php
 
-namespace zsql;
+namespace zsql\QueryBuilder;
+
+use zsql\Expression;
 
 /**
- * Insert query generator
+ * Class Insert
+ * Insert query builder
+ * @package zsql\QueryBuilder
  */
 class Insert extends Query
 {
@@ -49,21 +53,19 @@ class Insert extends Query
      */
     protected function assemble()
     {
-        $this->push($this->replace ?
-                    'REPLACE' :
-                    'INSERT')
-            ->pushIgnoreDelayed()
-            ->push('INTO')
-            ->pushTable()
-            ->push('SET')
-            ->pushValues()
-            ->pushOnDuplicateKeyUpdate();
+        $this->push($this->replace ? 'REPLACE' : 'INSERT');
+        $this->pushIgnoreDelayed();
+        $this->push('INTO');
+        $this->pushTable();
+        $this->push('SET');
+        $this->pushValues();
+        $this->pushOnDuplicateKeyUpdate();
     }
 
     /**
      * Clear current values
      *
-     * @return \zsql\Insert
+     * @return $this
      */
     public function clearValues()
     {
@@ -75,7 +77,7 @@ class Insert extends Query
      * Set delayed clause
      *
      * @param boolean $delayed
-     * @return \zsql\Insert
+     * @return $this
      */
     public function delayed($delayed = true)
     {
@@ -87,7 +89,7 @@ class Insert extends Query
      * Set ignore clause
      *
      * @param boolean $ignore
-     * @return \zsql\Insert
+     * @return $this
      */
     public function ignore($ignore = true)
     {
@@ -99,7 +101,7 @@ class Insert extends Query
      * Alias for {@link Insert::values()}
      *
      * @param array $values
-     * @return \zsql\Insert
+     * @return $this
      */
     public function insert($values)
     {
@@ -110,8 +112,8 @@ class Insert extends Query
     /**
      * Alias for {@link Query::table()}
      *
-     * @param string $table
-     * @return \zsql\Insert
+     * @param string|Expression $table
+     * @return $this
      */
     public function into($table)
     {
@@ -122,7 +124,7 @@ class Insert extends Query
     /**
      * Get a value that has been set
      *
-     * @param $key
+     * @param string $key
      * @return mixed
      */
     public function get($key)
@@ -137,7 +139,9 @@ class Insert extends Query
     /**
      * Set on duplicate key update clause
      *
-     * @param array $values
+     * @param string|Expression $key
+     * @param mixed $value
+     * @return $this
      */
     public function onDuplicateKeyUpdate($key, $value = null)
     {
@@ -154,7 +158,7 @@ class Insert extends Query
     /**
      * Push ignore or delayed onto parts
      *
-     * @return \zsql\Insert
+     * @return void
      */
     protected function pushIgnoreDelayed()
     {
@@ -164,13 +168,12 @@ class Insert extends Query
         if( $this->ignore && !$this->replace ) {
             $this->parts[] = 'IGNORE';
         }
-        return $this;
     }
 
     /**
      * Push on duplicate key update clause
      *
-     * @return \zsql\Insert
+     * @return void
      */
     protected function pushOnDuplicateKeyUpdate()
     {
@@ -181,14 +184,13 @@ class Insert extends Query
             $this->pushValues();
             $this->values = $tmp;
         }
-        return $this;
     }
 
     /**
      * Use replace instead of insert
      *
      * @param boolean $replace
-     * @return \zsql\Insert
+     * @return $this
      */
     public function replace($replace = true)
     {
@@ -199,9 +201,9 @@ class Insert extends Query
     /**
      * Alias for {@link Insert::value()} or {@link Insert::values()}
      *
-     * @param mixed $key
+     * @param string|Expression|array $key
      * @param mixed $value
-     * @return \zsql\Insert
+     * @return $this
      */
     public function set($key, $value = null)
     {
@@ -216,9 +218,9 @@ class Insert extends Query
     /**
      * Set a value
      *
-     * @param mixed $key
+     * @param string|Expression $key
      * @param mixed $value
-     * @return \zsql\Insert
+     * @return $this
      */
     public function value($key, $value = null)
     {
@@ -234,7 +236,7 @@ class Insert extends Query
      * Set values. Merges into existing values.
      *
      * @param array $values
-     * @return \zsql\Insert
+     * @return $this
      */
     public function values(array $values)
     {

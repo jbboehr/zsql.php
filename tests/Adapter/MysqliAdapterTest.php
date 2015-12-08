@@ -2,13 +2,17 @@
 
 namespace zsql\Tests;
 
-class DatabaseTest extends Common
+use Psr\Log\NullLogger;
+use zsql\Expression;
+
+class MysqliAdapterTest extends Common
 {
+
     public function testGetConnection()
     {
         $database = $this->databaseFactory();
 
-        $this->assertInstanceOf('\\mysqli', $database->getConnection());
+        $this->assertInstanceOf('mysqli', $database->getConnection());
     }
 
     public function testSetConnection()
@@ -43,7 +47,7 @@ class DatabaseTest extends Common
         $database = $this->databaseFactory();
 
         $query = $database->select();
-        $this->assertInstanceOf('\\zsql\\Select', $query);
+        $this->assertInstanceOf('zsql\\QueryBuilder\\Select', $query);
     }
 
     public function testSelectWithResultClass()
@@ -51,11 +55,11 @@ class DatabaseTest extends Common
         $database = $this->databaseFactory();
 
         $result = $database->select()
-            ->setResultClass('\\ArrayObject')
+            ->setResultClass('ArrayObject')
             ->from('fixture1')
             ->query()
             ->fetchRow();
-        $this->assertInstanceOf('\\ArrayObject', $result);
+        $this->assertInstanceOf('ArrayObject', $result);
     }
 
     public function testInsert()
@@ -63,9 +67,9 @@ class DatabaseTest extends Common
         $database = $this->databaseFactory();
 
         $query = $database->insert();
-        $this->assertInstanceOf('\\zsql\\Insert', $query);
+        $this->assertInstanceOf('zsql\\QueryBuilder\\Insert', $query);
 
-        $prev = $database->getConnection()->insert_id;
+        $prev = $database->getInsertId();
 
         $ret = $query->into('fixture2')->set('double', 0)->query();
 
@@ -78,15 +82,15 @@ class DatabaseTest extends Common
         $database = $this->databaseFactory();
 
         $query = $database->update();
-        $this->assertInstanceOf('\\zsql\\Update', $query);
+        $this->assertInstanceOf('zsql\\QueryBuilder\\Update', $query);
 
         $ret = $query->table('fixture2')
-            ->set('double', new \zsql\Expression('`double` + 1'))
+            ->set('double', new Expression('`double` + 1'))
             ->where('id', 2)
             ->query();
 
         $this->assertEquals(true, $ret);
-        $this->assertEquals(1, $database->getConnection()->affected_rows);
+        $this->assertEquals(1, $database->getAffectedRows());
     }
 
     public function testDelete()
@@ -94,7 +98,7 @@ class DatabaseTest extends Common
         $database = $this->databaseFactory();
 
         $query = $database->delete();
-        $this->assertInstanceOf('\\zsql\\Delete', $query);
+        $this->assertInstanceOf('zsql\\QueryBuilder\\Delete', $query);
 
 
         $id = $database->insert()
@@ -108,7 +112,7 @@ class DatabaseTest extends Common
             ->query();
 
         $this->assertEquals(true, $ret);
-        $this->assertEquals(1, $database->getConnection()->affected_rows);
+        $this->assertEquals(1, $database->getAffectedRows());
         $this->assertNotEmpty($id);
         $this->assertEquals($id, $idAlt);
     }
@@ -118,12 +122,12 @@ class DatabaseTest extends Common
         $database = $this->databaseFactory();
 
         $result = $database->query('SELECT TRUE');
-        $this->assertInstanceOf('\\zsql\\Result', $result);
+        $this->assertInstanceOf('zsql\\Result\\Result', $result);
     }
 
     public function testQueryThrowsExceptionOnFailure()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\Exception');
         
         $database = $this->databaseFactory();
         $database->query('SELECT foo FROM bar');
@@ -144,7 +148,7 @@ class DatabaseTest extends Common
         $this->assertEquals('NULL', $database->quote(null));
         $this->assertEquals('1', $database->quote(true));
         $this->assertEquals('0', $database->quote(false));
-        $this->assertEquals('"', $database->quote(new \zsql\Expression('"')));
+        $this->assertEquals('"', $database->quote(new Expression('"')));
         $this->assertEquals('100', $database->quote(100));
         $this->assertEquals('3.14', $database->quote(3.14));
         $this->assertEquals("'blah'", $database->quote('blah'));
@@ -162,7 +166,7 @@ class DatabaseTest extends Common
 
     public function testQueryWithLoggerWithFailedQuery()
     {
-        $this->setExpectedException('\\zsql\\Exception');
+        $this->setExpectedException('zsql\\Exception');
         $database = $this->databaseFactory();
         $logger = $this->getMock('Psr\Log\NullLogger', array('debug', 'error'));
         $logger->expects($this->once())
@@ -173,4 +177,3 @@ class DatabaseTest extends Common
         $database->query('SELECT fakesomething');
     }
 }
-

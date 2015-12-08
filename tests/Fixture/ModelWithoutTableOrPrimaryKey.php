@@ -2,7 +2,9 @@
 
 namespace zsql\Tests\Fixture;
 
-class ModelWithoutTableOrPrimaryKey extends \zsql\Model
+use zsql\Table\DefaultTable;
+
+class ModelWithoutTableOrPrimaryKey extends DefaultTable
 {
     
 }

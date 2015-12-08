@@ -1,9 +1,16 @@
 <?php
 
-namespace zsql;
+namespace zsql\QueryBuilder;
+
+use zsql\Expression;
+use zsql\Result\Result;
+use zsql\Scanner\ScannerGenerator;
+use zsql\Scanner\ScannerIterator;
 
 /**
- * Select query generator
+ * Class Select
+ * Select query builder
+ * @package zsql\QueryBuilder
  */
 class Select extends ExtendedQuery
 {
@@ -41,6 +48,12 @@ class Select extends ExtendedQuery
      * @var string
      */
     protected $resultClass;
+
+    /**
+     * @var array
+     */
+    protected $resultParams;
+
     protected $joins;
     private $currentJoin;
 
@@ -48,8 +61,8 @@ class Select extends ExtendedQuery
      * Set the columns
      *
      * @param mixed $columns
-     * @return \zsql\Select
-     * @throws \zsql\Exception
+     * @return $this
+     * @throws Exception
      */
     public function columns($columns)
     {
@@ -58,7 +71,7 @@ class Select extends ExtendedQuery
             $columns instanceof Expression ) {
             $this->columns = $columns;
         } else {
-            throw new \zsql\Exception('Invalid columns parameter');
+            throw new Exception('Invalid columns parameter');
         }
         return $this;
     }
@@ -66,7 +79,7 @@ class Select extends ExtendedQuery
     /**
      * Create a table scanner iterator object
      *
-     * @return \zsql\ScannerGenerator|\zsql\ScannerIterator
+     * @return ScannerGenerator|ScannerIterator
      */
     public function scan()
     {
@@ -81,8 +94,8 @@ class Select extends ExtendedQuery
     /**
      * Set distinct clause
      *
-     * @param type $distinct
-     * @return \zsql\Select
+     * @param boolean $distinct
+     * @return $this
      */
     public function distinct($distinct = true)
     {
@@ -95,7 +108,7 @@ class Select extends ExtendedQuery
      *
      * @param mixed $table
      * @param mixed $columns
-     * @return \zsql\Select
+     * @return $this
      */
     public function from($table, $columns = null)
     {
@@ -111,7 +124,7 @@ class Select extends ExtendedQuery
      *
      * @param mixed $columns
      * @param string $mode
-     * @return \zsql\Select
+     * @return $this
      */
     public function hint($columns, $mode = null)
     {
@@ -124,7 +137,7 @@ class Select extends ExtendedQuery
      * Join to a table
      *
      * @param string $table
-     * @return \zsql\Select
+     * @return $this
      */
     public function join($table)
     {
@@ -140,7 +153,7 @@ class Select extends ExtendedQuery
     /**
      * Set the current join direction to left
      *
-     * @return \zsql\Select
+     * @return $this
      */
     public function left()
     {
@@ -151,7 +164,7 @@ class Select extends ExtendedQuery
     /**
      * Set the current join direction to right
      *
-     * @return \zsql\Select
+     * @return $this
      */
     public function right()
     {
@@ -162,7 +175,7 @@ class Select extends ExtendedQuery
     /**
      * Set the current join direction to inner
      *
-     * @return \zsql\Select
+     * @return $this
      */
     public function inner()
     {
@@ -173,7 +186,7 @@ class Select extends ExtendedQuery
     /**
      * Set the current join direction to outer
      *
-     * @return \zsql\Select
+     * @return $this
      */
     public function outer()
     {
@@ -187,7 +200,7 @@ class Select extends ExtendedQuery
      *  - Two args: (tableA.columnA) = (tableB.columnB) (quoted)
      *  - Three args: (tableA.columnA) (operator) (tableB.columnB) (quoted)
      *
-     * @return \zsql\Select
+     * @return $this
      */
     public function on()
     {
@@ -215,7 +228,7 @@ class Select extends ExtendedQuery
      * Alias for {@link Select::columns()}
      *
      * @param mixed $columns
-     * @return \zsql\Select
+     * @return $this
      */
     public function select($columns)
     {
@@ -257,7 +270,7 @@ class Select extends ExtendedQuery
      * Set result class
      *
      * @param string $class
-     * @return \zsql\Select
+     * @return $this
      */
     public function setResultClass($class)
     {
@@ -266,15 +279,38 @@ class Select extends ExtendedQuery
     }
 
     /**
+     * Get the result params
+     *
+     * @return array
+     */
+    public function getResultParams()
+    {
+        return $this->resultParams;
+    }
+
+    /**
+     * Set result params
+     *
+     * @param array $params
+     * @return $this
+     */
+    public function setResultParams(array $params = null)
+    {
+        $this->resultParams = $params;
+        return $this;
+    }
+
+    /**
      * Execute a query
      *
-     * @return \zsql\Result
+     * @return Result
      */
     public function query()
     {
         $result = parent::query();
         if( $this->resultClass ) {
             $result->setResultClass($this->getResultClass());
+            $result->setResultParams($this->getResultParams());
         }
         return $result;
     }
@@ -286,23 +322,23 @@ class Select extends ExtendedQuery
      */
     protected function assemble()
     {
-        $this->push('SELECT')
-            ->pushDistinct()
-            ->pushColumns()
-            ->push('FROM')
-            ->pushTable()
-            ->pushHint()
-            ->pushJoin()
-            ->pushWhere()
-            ->pushGroup()
-            ->pushOrder()
-            ->pushLimit();
+        $this->push('SELECT');
+        $this->pushDistinct();
+        $this->pushColumns();
+        $this->push('FROM');
+        $this->pushTable();
+        $this->pushHint();
+        $this->pushJoin();
+        $this->pushWhere();
+        $this->pushGroup();
+        $this->pushOrder();
+        $this->pushLimit();
     }
 
     /**
      * Push columns onto parts
      *
-     * @return \zsql\Select
+     * @return void
      */
     protected function pushColumns()
     {
@@ -319,26 +355,24 @@ class Select extends ExtendedQuery
         } else if( $this->columns instanceof Expression ) {
             $this->parts[] = (string) $this->columns;
         }
-        return $this;
     }
 
     /**
      * Push distinct onto parts
      *
-     * @return \zsql\Select
+     * @return void
      */
     protected function pushDistinct()
     {
         if( $this->distinct ) {
             $this->parts[] = 'DISTINCT';
         }
-        return $this;
     }
 
     /**
      * Push hint onto parts
      *
-     * @return \zsql\Select
+     * @return void
      */
     protected function pushHint()
     {
@@ -351,9 +385,11 @@ class Select extends ExtendedQuery
                 $this->parts[] = '(' . $this->quoteIdentifierIfNotExpression($this->hint) . ')';
             }
         }
-        return $this;
     }
 
+    /**
+     * @return void
+     */
     protected function pushJoin()
     {
         if( !empty($this->currentJoin) ) {
@@ -369,6 +405,5 @@ class Select extends ExtendedQuery
                 $this->parts[] = $join['expr'];
             }
         }
-        return $this;
     }
 }

@@ -2,7 +2,9 @@
 
 namespace zsql\Tests\Fixture;
 
-class Result extends \stdClass
+use zsql\Row\DefaultRow;
+
+class Result extends DefaultRow
 {
     
 }

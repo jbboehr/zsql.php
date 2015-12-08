@@ -1,9 +1,11 @@
 <?php
 
-namespace zsql;
+namespace zsql\QueryBuilder;
 
 /**
- * Delete query generator
+ * Class Delete
+ * Delete query builder
+ * @package zsql\QueryBuilder
  */
 class Delete extends ExtendedQuery
 {
@@ -14,11 +16,11 @@ class Delete extends ExtendedQuery
      */
     protected function assemble()
     {
-        $this->push('DELETE FROM')
-            ->pushTable()
-            ->pushWhere()
-            ->pushOrder()
-            ->pushLimit();
+        $this->push('DELETE FROM');
+        $this->pushTable();
+        $this->pushWhere();
+        $this->pushOrder();
+        $this->pushLimit();
 
         $this->query = join(' ', $this->parts);
     }
@@ -27,7 +29,7 @@ class Delete extends ExtendedQuery
      * Alias for {@link Query::table()}
      *
      * @param string $table
-     * @return \zsql\Delete
+     * @return $this
      */
     public function from($table)
     {
