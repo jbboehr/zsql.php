@@ -131,9 +131,11 @@ abstract class Query
         } catch( BaseException $e ) {
             trigger_error($e->getMessage(), E_USER_WARNING);
             return '';
+            // @codeCoverageIgnoreStart
         } catch( Throwable $e ) {
             trigger_error($e->getMessage(), E_USER_WARNING);
             return '';
+            // @codeCoverageIgnoreEnd
         }
     }
 

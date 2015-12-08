@@ -108,9 +108,9 @@ class MysqliResult implements Result
      * @return $this
      * @throws Exception
      */
-    public function setResultClass($class)
+    public function setResultClass($class = null)
     {
-        if( !is_string($class) || !class_exists($class) ) {
+        if( null !== $class && (!is_string($class) || !class_exists($class)) ) {
             throw new Exception('Class not found');
         }
         $this->resultClass = $class;

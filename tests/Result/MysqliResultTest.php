@@ -64,6 +64,17 @@ class ResultTest extends Common
         $this->assertEquals($r->params, $params);
     }
 
+    public function testGetResultParams()
+    {
+        $database = $this->databaseFactory();
+        $result = $database->select()->from('fixture1')->query();
+        $result->setResultClass('zsql\\Tests\\Fixture\\RowWithConstructor');
+
+        $params = array('param1', 'param2');
+        $result->setResultParams($params);
+        $this->assertSame($result->getResultParams(), $params);
+    }
+
     public function testGetResultMode()
     {
         $database = $this->databaseFactory();
@@ -97,6 +108,14 @@ class ResultTest extends Common
         $row = $result->fetchRow();
 
         $this->assertInstanceOf('zsql\\Row\\DefaultRow', $row);
+    }
+
+    public function testFetchRowWithNoResultClass()
+    {
+        $database = $this->databaseFactory();
+        $result = $database->select()->from('fixture1')->query();
+        $row = $result->setResultClass(null)->fetchRow(Result::FETCH_OBJECT);
+        $this->assertInstanceOf('stdClass', $row);
     }
 
     public function testFetchRowEmptyResult()
@@ -228,6 +247,37 @@ class ResultTest extends Common
 
         foreach( $rows as $row ) {
             $this->assertInstanceOf('ArrayObject', $row);
+        }
+    }
+
+    public function testFetchAllFetchModeObjectWithNoResultClass()
+    {
+        $database = $this->databaseFactory();
+        $result = $database->select()->from('fixture1')->query();
+
+        $rows = $result->setResultClass(null)->fetchAll(Result::FETCH_OBJECT);
+
+        $this->assertEquals(true, is_array($rows));
+
+        foreach( $rows as $row ) {
+            $this->assertInstanceOf('stdClass', $row);
+        }
+    }
+
+    public function testFetchAllFetchModeObjectWithResultClassAndParams()
+    {
+        $database = $this->databaseFactory();
+        $result = $database->select()->from('fixture1')->query();
+
+        $rows = $result
+            ->setResultClass('zsql\\Tests\\Fixture\\RowWithConstructor')
+            ->setResultParams(array())
+            ->fetchAll(Result::FETCH_OBJECT);
+
+        $this->assertEquals(true, is_array($rows));
+
+        foreach( $rows as $row ) {
+            $this->assertInstanceOf('zsql\Tests\Fixture\RowWithConstructor', $row);
         }
     }
 
