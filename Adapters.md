@@ -65,7 +65,7 @@ class Database
 #### Delete
 
 ```php
-$delete = new zsql\Delete();
+$delete = new zsql\QueryBuilder\Delete();
 $delete
   ->from('tableName')
   ->where('columnName', 'value')
@@ -87,7 +87,7 @@ array (
 ### Insert
 
 ```php
-$insert = new zsql\Insert();
+$insert = new zsql\QueryBuilder\Insert();
 $insert
   ->ignore()
   ->into('tableName')
@@ -110,7 +110,7 @@ array (
 ### Select
 
 ```php
-$select = new zsql\Select();
+$select = new zsql\QueryBuilder\Select();
 $select
   ->from('tableName')
   ->where('columnName', 'value')
@@ -135,7 +135,7 @@ array (
 ### Update
 
 ```php
-$update = new zsql\Update();
+$update = new zsql\QueryBuilder\Update();
 $update
   ->table('tableName')
   ->set('columnName', 'value')

@@ -23,7 +23,7 @@ composer require jbboehr/zsql
 ### Delete
 
 ```php
-$database = new \zsql\Database($mysqli);
+$database = new zsql\Adapter\MysqliAdapter($mysqli);
 $database->delete()
   ->from('tableName')
   ->where('columnName', 'value')
@@ -34,7 +34,7 @@ $database->delete()
 ### Insert
 
 ```php
-$database = new \zsql\Database($mysqli);
+$database = new zsql\Adapter\MysqliAdapter($mysqli);
 $id = $database->insert()
   ->ignore()
   ->into('tableName')
@@ -46,7 +46,7 @@ $id = $database->insert()
 ### Select
 
 ```php
-$database = new \zsql\Database($mysqli);
+$database = new zsql\Adapter\MysqliAdapter($mysqli);
 $rows = $database->select()
   ->from('tableName')
   ->where('columnName', 'value')
@@ -60,7 +60,7 @@ $rows = $database->select()
 ### Update
 
 ```php
-$database = new \zsql\Database($mysqli);
+$database = new zsql\Adapter\MysqliAdapter($mysqli);
 $database->update()
   ->table('tableName')
   ->set('columnName', 'value')
