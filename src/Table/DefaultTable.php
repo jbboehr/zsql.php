@@ -2,6 +2,7 @@
 
 namespace zsql\Table;
 
+use zsql\IllegalStateException;
 use zsql\Adapter\Adapter;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
@@ -70,11 +71,12 @@ class DefaultTable implements Table
      *
      * @param mixed $identity
      * @return Row
+     * @throws IllegalStateException
      */
     public function find($identity)
     {
         if( !$this->primaryKey ) {
-            throw new Exception('No primary key!');
+            throw new IllegalStateException('No primary key!');
         }
         return $this->select()
                 ->where($this->primaryKey, $identity)
@@ -88,11 +90,12 @@ class DefaultTable implements Table
      *
      * @param array $identities
      * @return array
+     * @throws IllegalStateException
      */
     public function findMany(array $identities)
     {
         if( !$this->primaryKey ) {
-            throw new Exception('No primary key!');
+            throw new IllegalStateException('No primary key!');
         }
         return $this->select()
                 ->whereIn($this->primaryKey, $identities)
@@ -171,11 +174,12 @@ class DefaultTable implements Table
      * pre-populated.
      *
      * @return Select
+     * @throws IllegalStateException
      */
     public function select()
     {
         if( !$this->tableName ) {
-            throw new Exception('No table name specified');
+            throw new IllegalStateException('No table name specified');
         }
         $q = $this->database->select();
         $q->table($this->tableName);
@@ -191,11 +195,12 @@ class DefaultTable implements Table
      * exception will be thrown
      *
      * @return Insert
+     * @throws IllegalStateException
      */
     public function insert()
     {
         if( !$this->tableName ) {
-            throw new Exception('No table name specified');
+            throw new IllegalStateException('No table name specified');
         }
         return $this->database->insert()
                 ->table($this->tableName);
@@ -206,11 +211,12 @@ class DefaultTable implements Table
      * exception will be thrown
      *
      * @return Update
+     * @throws IllegalStateException
      */
     public function update()
     {
         if( !$this->tableName ) {
-            throw new Exception('No table name specified');
+            throw new IllegalStateException('No table name specified');
         }
         return $this->database->update()
                 ->table($this->tableName);
@@ -221,11 +227,12 @@ class DefaultTable implements Table
      * an exception will be thrown
      *
      * @return Delete
+     * @throws IllegalStateException
      */
     public function delete()
     {
         if( !$this->tableName ) {
-            throw new Exception('No table name specified');
+            throw new IllegalStateException('No table name specified');
         }
         return $this->database->delete()
                 ->table($this->tableName);

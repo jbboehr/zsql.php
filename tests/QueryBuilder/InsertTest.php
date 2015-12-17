@@ -197,7 +197,7 @@ class InsertTest extends Common
 
     public function testToStringThrowsExceptionWithNoTable()
     {
-        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
+        $this->setExpectedException('zsql\\InvalidArgumentException');
         
         $query = $this->queryFactory();
         $query->toString();
@@ -205,7 +205,7 @@ class InsertTest extends Common
 
     public function testToStringThrowsExceptionWithNoValues()
     {
-        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
+        $this->setExpectedException('zsql\\InvalidArgumentException');
         
         $query = $this->queryFactory();
         $query->into('tableName')->toString();
@@ -237,7 +237,7 @@ class InsertTest extends Common
 
     public function testInterpolateThrowsException()
     {
-        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
+        $this->setExpectedException('zsql\\IllegalStateException');
         
         $query = $this->queryFactory();
         $query->table('tableName')->set('a', 'b');
@@ -247,7 +247,7 @@ class InsertTest extends Common
 
     public function testInterpolateThrowsException2()
     {
-        $this->setExpectedException('zsql\\QueryBuilder\Exception');
+        $this->setExpectedException('zsql\\RuntimeException');
         
         $query = $this->queryFactory();
         $query->table('tableName')->set('a??', 'b');

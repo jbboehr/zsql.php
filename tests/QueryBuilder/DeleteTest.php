@@ -253,7 +253,7 @@ class DeleteTest extends Common
 
     public function testInterpolateThrowsException()
     {
-        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
+        $this->setExpectedException('zsql\\IllegalStateException');
 
         $query = $this->queryFactory();
         $query->table('tableName')->where('a', 'b');
@@ -263,7 +263,7 @@ class DeleteTest extends Common
 
     public function testInterpolateThrowsException2()
     {
-        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
+        $this->setExpectedException('zsql\\RuntimeException');
 
         $query = $this->queryFactory();
         $query->table('tableName')->where('a??', 'b');

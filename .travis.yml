@@ -13,7 +13,7 @@ php:
 branches:
   only:
     - master
-    - 0.4.x
+    - develop
 
 sudo: false
 

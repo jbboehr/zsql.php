@@ -3,6 +3,8 @@
 namespace zsql\Result;
 
 use mysqli_result;
+use zsql\IllegalStateException;
+use zsql\InvalidArgumentException;
 
 /**
  * Class MysqliResult
@@ -69,12 +71,12 @@ class MysqliResult implements Result
      * Getter function for the local mysqli_result object.
      *
      * @return mysqli_result
-     * @throws Exception
+     * @throws IllegalStateException
      */
     public function getResult()
     {
         if( !$this->result ) {
-            throw new Exception('No result!');
+            throw new IllegalStateException('No result!');
         }
         return $this->result;
     }
@@ -106,12 +108,12 @@ class MysqliResult implements Result
      *
      * @param string $class
      * @return $this
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function setResultClass($class = null)
     {
         if( null !== $class && (!is_string($class) || !class_exists($class)) ) {
-            throw new Exception('Class not found');
+            throw new InvalidArgumentException('Class not found');
         }
         $this->resultClass = $class;
         return $this;
@@ -152,12 +154,12 @@ class MysqliResult implements Result
      *
      * @param integer $mode
      * @return $this
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function setResultMode($mode)
     {
         if( !is_int($mode) || $mode < 0 || $mode > 3 ) {
-            throw new Exception("Invalid result mode");
+            throw new InvalidArgumentException("Invalid result mode");
         }
         $this->resultMode = $mode;
         return $this;

@@ -20,7 +20,7 @@ class DefaultTableTest extends Common
 
     public function testFindThrowsWithNoPrimaryKey()
     {
-        $this->setExpectedException('zsql\\Table\\Exception');
+        $this->setExpectedException('zsql\\IllegalStateException');
         
         $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
         $model->find(1);
@@ -37,7 +37,7 @@ class DefaultTableTest extends Common
 
     public function testFindManyThrowsWithNoPrimaryKey()
     {
-        $this->setExpectedException('zsql\\Table\\Exception');
+        $this->setExpectedException('zsql\\IllegalStateException');
         
         $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
         $model->findMany(array(1));
@@ -136,7 +136,7 @@ class DefaultTableTest extends Common
 
     public function testSelectThrowsWithNoTable()
     {
-        $this->setExpectedException('zsql\\Table\\Exception');
+        $this->setExpectedException('zsql\\IllegalStateException');
         
         $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
         $model->select();
@@ -155,7 +155,7 @@ class DefaultTableTest extends Common
 
     public function testInsertThrowsWithNoTable()
     {
-        $this->setExpectedException('zsql\\Table\\Exception');
+        $this->setExpectedException('zsql\\IllegalStateException');
         
         $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
         $model->insert();
@@ -174,7 +174,7 @@ class DefaultTableTest extends Common
 
     public function testUpdateThrowsWithNoTable()
     {
-        $this->setExpectedException('zsql\\Table\\Exception');
+        $this->setExpectedException('zsql\\IllegalStateException');
         
         $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
         $model->update();
@@ -193,7 +193,7 @@ class DefaultTableTest extends Common
 
     public function testDeleteThrowsWithNoTable()
     {
-        $this->setExpectedException('zsql\\Table\\Exception');
+        $this->setExpectedException('zsql\\IllegalStateException');
         
         $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
         $model->delete();

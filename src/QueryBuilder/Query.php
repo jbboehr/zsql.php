@@ -5,6 +5,9 @@ namespace zsql\QueryBuilder;
 use Exception as BaseException;
 use Throwable;
 use zsql\Expression;
+use zsql\IllegalStateException;
+use zsql\InvalidArgumentException;
+use zsql\RuntimeException;
 use zsql\Adapter\Adapter;
 use zsql\Result\Result;
 
@@ -115,7 +118,7 @@ abstract class Query
         } else if( is_callable($queryCallback) ) {
             $this->queryCallback = $queryCallback;
         } else if( $queryCallback !== null ) {
-            throw new Exception('Invalid query executor');
+            throw new InvalidArgumentException('Invalid query executor');
         }
     }
 
@@ -175,7 +178,8 @@ abstract class Query
     /**
      * Interpolate parameters into query
      *
-     * @throws Exception
+     * @throws IllegalStateException
+     * @throws RuntimeException
      */
     protected function interpolateParams()
     {
@@ -187,11 +191,11 @@ abstract class Query
         } else if( $this->database ) {
             $cb = array($this->database, 'quote');
         } else {
-            throw new Exception('Interpolation not available without '
+            throw new IllegalStateException('Interpolation not available without '
             . 'setting a quote callback or database adapter');
         }
         if( substr_count($this->query, '?') != count($this->params) ) {
-            throw new Exception('Parameter count mismatch: ' . $this->query);
+            throw new RuntimeException('Parameter count mismatch: ' . $this->query);
         }
 
         $parts = explode('?', $this->query);
@@ -249,12 +253,12 @@ abstract class Query
      * Push table onto parts
      *
      * @return void
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     protected function pushTable()
     {
         if( empty($this->table) ) {
-            throw new Exception('No table specified');
+            throw new InvalidArgumentException('No table specified');
         }
         $this->parts[] = $this->quoteIdentifierIfNotExpression($this->table);
     }
@@ -263,12 +267,12 @@ abstract class Query
      * Push values onto parts
      *
      * @return void
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     protected function pushValues()
     {
         if( empty($this->values) ) {
-            throw new Exception('No values specified');
+            throw new InvalidArgumentException('No values specified');
         }
         foreach( $this->values as $key => $value ) {
             if( !is_int($key) ) {
@@ -290,7 +294,7 @@ abstract class Query
      * Proxy to query callback
      *
      * @return Result|integer|boolean
-     * @throws Exception
+     * @throws IllegalStateException
      */
     public function query()
     {
@@ -313,7 +317,7 @@ abstract class Query
                 $result = call_user_func($this->queryCallback, $query, $params);
             }
         } else {
-            throw new Exception('query() called when no callback or database adapter set');
+            throw new IllegalStateException('query() called when no callback or database adapter set');
         }
         // Post-execute callbacks
         if( !empty($this->postExecuteCallbacks) ) {
@@ -360,12 +364,12 @@ abstract class Query
      *
      * @param callable $callback
      * @return $this
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function setQuoteCallback($callback)
     {
         if( !is_callable($callback) ) {
-            throw new Exception('Invalid callback specified');
+            throw new InvalidArgumentException('Invalid callback specified');
         }
         $this->quoteCallback = $callback;
         return $this;

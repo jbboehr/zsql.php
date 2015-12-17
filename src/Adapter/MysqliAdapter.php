@@ -7,6 +7,8 @@ use mysqli_result;
 use Psr\Log\LoggerInterface;
 
 use zsql\Expression;
+use zsql\InvalidArgumentException;
+use zsql\QueryException;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Query;
@@ -178,7 +180,7 @@ class MysqliAdapter implements Adapter
      *
      * @param string|Query $query
      * @return Result|integer|boolean
-     * @throws Exception
+     * @throws QueryException
      */
     public function query($query)
     {
@@ -229,7 +231,7 @@ class MysqliAdapter implements Adapter
                 $this->logger->error($message);
             }
             // Query failed, throw exception
-            throw new Exception($message);
+            throw new QueryException($message);
         }
     }
 
@@ -238,21 +240,35 @@ class MysqliAdapter implements Adapter
      *
      * @param string $value
      * @return string
+     * @throws InvalidArgumentException
      */
     public function quote($value)
     {
-        if( null === $value ) {
-            return 'NULL';
-        } else if( is_bool($value) ) {
-            return ( $value ? '1' : '0' );
-        } else if( $value instanceof Expression ) {
-            return (string) $value;
-        } else if( is_integer($value) ) {
-            return sprintf('%d', $value);
-        } else if( is_float($value) ) {
-            return sprintf('%f', $value); // @todo make sure precision is right
-        } else {
-            return "'" . $this->connection->real_escape_string($value) . "'";
+        $type = gettype($value);
+        switch( $type ) {
+            case 'NULL':
+                return 'NULL';
+            case 'boolean':
+                return ( $value ? '1' : '0' );
+            case 'integer':
+                return sprintf('%d', $value);
+            case 'double':
+            case 'float':
+                return sprintf('%f', $value); // @todo make sure precision is right
+            case 'array':
+                throw new InvalidArgumentException('Array to string conversion');
+            case 'object':
+                if( $value instanceof Expression ) {
+                    return (string) $value;
+                } else if( !method_exists($value, '__toString') ) {
+                    throw new InvalidArgumentException('Object to string conversion');
+                }
+                settype($value, 'string');
+                // fall-through
+            case 'string':
+                return "'" . $this->connection->real_escape_string($value) . "'";
+            default:
+                throw new InvalidArgumentException('Cannot quote unknown type: ' . $type);
         }
     }
 }
