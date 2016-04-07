@@ -210,8 +210,8 @@ class MysqliAdapter implements Adapter
         do {
             $retry = false;
             $ret = $connection->query($queryString, MYSQLI_STORE_RESULT);
-            // Handle "MySQL server has gone away"
-            if( $ret === false && $connection->errno === 2006 && ++$counter <= $this->retryCount ) {
+            // Handle "MySQL server has gone away" and "Lost connection to MySQL server during query"
+            if( in_array($connection->errno, array(2006, 2013)) && ++$counter <= $this->retryCount ) {
                 if( $this->connectionFactory ) {
                     $connection = $this->connection = call_user_func($this->connectionFactory);
                     $retry = true;
