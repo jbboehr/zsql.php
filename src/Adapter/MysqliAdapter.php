@@ -27,6 +27,11 @@ class MysqliAdapter implements Adapter
     protected $connection;
 
     /**
+     * @var callable Connection factory function. Will be called on connection timeout to establish a new connection.
+     */
+    public $connectionFactory;
+
+    /**
      * @var integer
      */
     protected $insertId;
@@ -42,6 +47,11 @@ class MysqliAdapter implements Adapter
      * @var integer
      */
     protected $queryCount = 0;
+
+    /**
+     * @var integer The number of times reconnection should be attempted
+     */
+    public $retryCount = 1;
 
     /**
      * Construct a new database object.
@@ -94,7 +104,7 @@ class MysqliAdapter implements Adapter
         $this->connection = $connection;
         return $this;
     }
-
+    
     /**
      * Get the last insert ID
      *
@@ -196,7 +206,18 @@ class MysqliAdapter implements Adapter
         }
 
         // Execute query
-        $ret = $connection->query($queryString, MYSQLI_STORE_RESULT);
+        $counter = 0;
+        do {
+            $retry = false;
+            $ret = $connection->query($queryString, MYSQLI_STORE_RESULT);
+            // Handle "MySQL server has gone away" and "Lost connection to MySQL server during query"
+            if( in_array($connection->errno, array(2006, 2013)) && ++$counter <= $this->retryCount ) {
+                if( $this->connectionFactory ) {
+                    $connection = $this->connection = call_user_func($this->connectionFactory);
+                    $retry = true;
+                }
+            }
+        } while( $retry );
 
         // Save insert ID if instance of insert
         if( $query instanceof Insert ) {

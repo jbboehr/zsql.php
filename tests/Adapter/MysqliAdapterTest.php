@@ -176,4 +176,16 @@ class MysqliAdapterTest extends Common
         $database->setLogger($logger);
         $database->query('SELECT fakesomething');
     }
+
+    public function testReconnect()
+    {
+        $database = $this->databaseFactory();
+        $mysqli = $database->getConnection();
+
+        // Please kill yourself
+        $mysqli->kill($mysqli->thread_id);
+
+        $database->connectionFactory = $this->getMysqliFactory();
+        $this->assertEquals(true, $database->query('SELECT TRUE')->fetchColumn());
+    }
 }
