@@ -1,8 +1,8 @@
 # zsql.php
 
 [![Build Status](https://travis-ci.org/jbboehr/zsql.php.svg?branch=master)](https://travis-ci.org/jbboehr/zsql.php)
-[![HHVM Status](http://hhvm.h4cc.de/badge/jbboehr/zsql.png)](http://hhvm.h4cc.de/package/jbboehr/zsql)
-[![Code Coverage](https://scrutinizer-ci.com/g/jbboehr/zsql.php/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/jbboehr/zsql.php/?branch=master)
+[![HHVM Status](http://hhvm.h4cc.de/badge/jbboehr/zsql.svg?style=flat)](http://hhvm.h4cc.de/package/jbboehr/zsql)
+[![Coverage Status](https://coveralls.io/repos/jbboehr/zsql.php/badge.svg?branch=master&service=github)](https://coveralls.io/github/jbboehr/zsql.php?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/jbboehr/zsql/v/stable.svg)](https://packagist.org/packages/jbboehr/zsql)
 [![License](https://poser.pugx.org/jbboehr/zsql/license.svg)](https://packagist.org/packages/jbboehr/zsql)
 

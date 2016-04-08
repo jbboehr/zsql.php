@@ -13,6 +13,7 @@ php:
 branches:
   only:
     - master
+    - travis
     - 0.4.x
 
 sudo: false
@@ -21,9 +22,10 @@ before_script:
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction
   - mysql -uroot < tests/fixtures.sql
+  - mkdir -p build/logs/
 
 script:
   - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
 
-after_script:
-  - sh -c 'if [ "hhvm" != $TRAVIS_PHP_VERSION ] && [ "7.0" != $TRAVIS_PHP_VERSION ]; then php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover; fi;'
+after_success:
+  - sh -c 'if [ "hhvm" != $TRAVIS_PHP_VERSION ] && [ "7.0" != $TRAVIS_PHP_VERSION ]; then php vendor/bin/coveralls -x coverage.clover; fi;'
