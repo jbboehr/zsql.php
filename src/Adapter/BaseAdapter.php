@@ -15,6 +15,12 @@ abstract class BaseAdapter implements Adapter
      * @var integer
      */
     protected $affectedRows;
+
+    /**
+     * @var callable Connection factory function. Will be called on connection timeout to establish a new connection.
+     */
+    public $connectionFactory;
+
     /**
      * @var integer
      */
@@ -31,6 +37,12 @@ abstract class BaseAdapter implements Adapter
      * @var integer
      */
     protected $queryCount = 0;
+
+    /**
+     * @var integer The number of times reconnection should be attempted
+     */
+    public $retryCount = 1;
+
 
     /**
      * Get affected rows

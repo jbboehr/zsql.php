@@ -39,14 +39,21 @@ class Common extends PHPUnit_Framework_TestCase
      */
     protected function databaseFactory()
     {
-        $mysql = new mysqli();
-        $mysql->connect(
-            ZSQL_TEST_DATABASE_HOST,
-            ZSQL_TEST_DATABASE_USERNAME,
-            ZSQL_TEST_DATABASE_PASSWORD,
-            ZSQL_TEST_DATABASE_DBNAME
-        );
-        return new MysqliAdapter($mysql);
+        return new MysqliAdapter(call_user_func($this->getMysqliFactory()));
+    }
+
+    protected function getMysqliFactory()
+    {
+        return function() {
+            $mysql = new mysqli();
+            $mysql->connect(
+                ZSQL_TEST_DATABASE_HOST,
+                ZSQL_TEST_DATABASE_USERNAME,
+                ZSQL_TEST_DATABASE_PASSWORD,
+                ZSQL_TEST_DATABASE_DBNAME
+            );
+            return $mysql;
+        };
     }
 
     public function getReflectedPropertyValue($class, $propertyName)
