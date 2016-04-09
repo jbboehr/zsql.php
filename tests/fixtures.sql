@@ -11,9 +11,9 @@ GRANT ALL ON zsql.* TO 'zsql'@'localhost';
 DROP TABLE IF EXISTS `zsql`.`fixture1`;
 CREATE TABLE `zsql`.`fixture1` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `varchar` varchar(255) NOT NULL default '',
-  `double` double NOT NULL default '0',
-  `null` tinyint(1) default NULL,
+  `strval` varchar(255) NOT NULL default '',
+  `dval` double NOT NULL default '0',
+  `unused` tinyint(1) default NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 

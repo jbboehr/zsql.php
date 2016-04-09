@@ -332,12 +332,16 @@ abstract class Query
      */
     protected function quoteIdentifier($identifier)
     {
-        $c = $this->quoteIdentifierChar;
-        return $c . str_replace(
-            '.',
-            $c . '.' . $c,
-            str_replace($c, $c . $c, $identifier)
-        ) . $c;
+        if( $this->database ) {
+            return $this->database->quoteIdentifier($identifier);
+        } else {
+            $c = $this->quoteIdentifierChar;
+            return $c . str_replace(
+                '.',
+                $c . '.' . $c,
+                str_replace($c, $c . $c, $identifier)
+            ) . $c;
+        }
     }
 
     /**

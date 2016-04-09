@@ -15,11 +15,14 @@ use zsql\Result\PDOResult as Result;
 
 class PDOAdapter extends BaseAdapter
 {
+    private $driverName;
 
     /**
      * @var PDO
      */
     protected $connection;
+
+    protected $quoteIdentifierChar;
     
     /**
      * Construct a new database object.
@@ -60,6 +63,12 @@ class PDOAdapter extends BaseAdapter
     public function setConnection(PDO $connection = null)
     {
         $this->connection = $connection;
+        $this->driverName = $connection ? $connection->getAttribute(PDO::ATTR_DRIVER_NAME) : null;
+        if( $this->driverName === 'mysql' ) {
+            $this->quoteIdentifierChar = '`';
+        } else {
+            $this->quoteIdentifierChar = '"';
+        }
         return $this;
     }
 
@@ -134,5 +143,15 @@ class PDOAdapter extends BaseAdapter
             default: $type = PDO::PARAM_STR; break;
         }
         return $this->connection->quote($value, $type);
+    }
+
+    public function quoteIdentifier($identifier)
+    {
+        $c = $this->quoteIdentifierChar;
+        return $c . str_replace(
+            '.',
+            $c . '.' . $c,
+            str_replace($c, $c . $c, $identifier)
+        ) . $c;
     }
 }

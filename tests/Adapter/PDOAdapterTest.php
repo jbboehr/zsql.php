@@ -82,7 +82,7 @@ class PDOAdapterTest extends Common
 
         $prev = $database->getInsertId();
 
-        $ret = $query->into('fixture2')->set('double', 0)->query();
+        $ret = $query->into('fixture2')->set('dval', 0)->query();
 
         $this->assertTrue(is_numeric($ret));
         $this->assertNotEquals($ret, $prev);
@@ -98,7 +98,7 @@ class PDOAdapterTest extends Common
         $this->assertInstanceOf('zsql\\QueryBuilder\\Update', $query);
 
         $ret = $query->table('fixture2')
-            ->set('double', new Expression('`double` + 1'))
+            ->set('dval', new Expression('dval + 1'))
             ->where('id', 2)
             ->query();
 
@@ -117,7 +117,7 @@ class PDOAdapterTest extends Common
 
         $id = $database->insert()
             ->into('fixture2')
-            ->set('double', 0)
+            ->set('dval', 0)
             ->query();
         $idAlt = $database->getInsertId();
 
@@ -212,10 +212,14 @@ class PDOAdapterTest extends Common
 
     public function adapterProvider()
     {
+        if( defined('HHVM_VERSION') ) {
+            $this->markTestSkipped('HHVM does not support PDO?');
+        }
+
         $pdo1 = new PDOAdapter(new PDO(sprintf('mysql:host=%s;dbname=%s;', ZSQL_TEST_DATABASE_HOST, ZSQL_TEST_DATABASE_DBNAME),
             ZSQL_TEST_DATABASE_USERNAME, ZSQL_TEST_DATABASE_PASSWORD));
         $pdo2 = new PDOAdapter(new PDO(sprintf('pgsql:host=%s;dbname=%s;', ZSQL_TEST_DATABASE_HOST, ZSQL_TEST_DATABASE_DBNAME),
             ZSQL_TEST_DATABASE_USERNAME, ZSQL_TEST_DATABASE_PASSWORD));
-        return array(array($pdo1));
+        return array(array($pdo1), array($pdo2));
     }
 }

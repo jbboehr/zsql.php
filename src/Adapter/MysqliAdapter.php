@@ -15,6 +15,13 @@ use zsql\Result\MysqliResult as Result;
 class MysqliAdapter extends BaseAdapter
 {
     /**
+     * The character to use to quote identifiers
+     *
+     * @var string
+     */
+    protected $quoteIdentifierChar = '`';
+
+    /**
      * @var mysqli
      */
     protected $connection;
@@ -159,5 +166,15 @@ class MysqliAdapter extends BaseAdapter
         } else {
             return "'" . $this->connection->real_escape_string($value) . "'";
         }
+    }
+
+    public function quoteIdentifier($identifier)
+    {
+        $c = $this->quoteIdentifierChar;
+        return $c . str_replace(
+            '.',
+            $c . '.' . $c,
+            str_replace($c, $c . $c, $identifier)
+        ) . $c;
     }
 }

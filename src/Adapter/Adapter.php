@@ -51,6 +51,14 @@ interface Adapter
     public function quote($string);
 
     /**
+     * Quote an identifier
+     *
+     * @param $identifier
+     * @return string
+     */
+    public function quoteIdentifier($identifier);
+
+    /**
      * Wrapper for Select
      *
      * @return Select
