@@ -67,6 +67,11 @@ class MysqliAdapter extends BaseAdapter
         $this->connection = $connection;
         return $this;
     }
+
+    public function getDriverName()
+    {
+        return 'mysqli';
+    }
     
     /**
      * Executes an SQL query.

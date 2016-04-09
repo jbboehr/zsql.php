@@ -2,6 +2,7 @@
 
 namespace zsql\QueryBuilder;
 
+use zsql\Adapter\PDOAdapter;
 use zsql\Expression;
 
 /**

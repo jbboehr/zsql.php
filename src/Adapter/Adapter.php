@@ -19,6 +19,8 @@ interface Adapter
      */
     public function getAffectedRows();
 
+    public function getDriverName();
+
     /**
      * Get the last insert ID
      *

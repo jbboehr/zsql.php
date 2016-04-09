@@ -54,6 +54,15 @@ class PDOAdapter extends BaseAdapter
         return $this->connection;
     }
 
+    public function getDriverName()
+    {
+        if( $this->connection ) {
+            return 'pdo_' . strtolower($this->connection->getAttribute(PDO::ATTR_DRIVER_NAME));
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Sets the local mysqli object
      *
@@ -63,8 +72,7 @@ class PDOAdapter extends BaseAdapter
     public function setConnection(PDO $connection = null)
     {
         $this->connection = $connection;
-        $this->driverName = $connection ? $connection->getAttribute(PDO::ATTR_DRIVER_NAME) : null;
-        if( $this->driverName === 'mysql' ) {
+        if( $this->getDriverName() === 'pdo_mysql' ) {
             $this->quoteIdentifierChar = '`';
         } else {
             $this->quoteIdentifierChar = '"';
