@@ -4,54 +4,33 @@ namespace zsql\Adapter;
 
 use mysqli;
 use mysqli_result;
-use Psr\Log\LoggerInterface;
 
 use zsql\Expression;
+use zsql\Feature;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Query;
-use zsql\QueryBuilder\Select;
 use zsql\QueryBuilder\Update;
 use zsql\Result\MysqliResult as Result;
 
-class MysqliAdapter implements Adapter
+class MysqliAdapter extends BaseAdapter
 {
+    static private $features = array(
+        Feature::INSERT_SET => true,
+        Feature::ON_DUPLICATE_KEY_UPDATE => true,
+    );
+
     /**
-     * @var integer
+     * The character to use to quote identifiers
+     *
+     * @var string
      */
-    protected $affectedRows;
+    protected $quoteIdentifierChar = '`';
 
     /**
      * @var mysqli
      */
     protected $connection;
-
-    /**
-     * @var callable Connection factory function. Will be called on connection timeout to establish a new connection.
-     */
-    public $connectionFactory;
-
-    /**
-     * @var integer
-     */
-    protected $insertId;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * Holds the total number of queries ran for the database object's lifetime.
-     *
-     * @var integer
-     */
-    protected $queryCount = 0;
-
-    /**
-     * @var integer The number of times reconnection should be attempted
-     */
-    public $retryCount = 1;
 
     /**
      * Construct a new database object.
@@ -71,16 +50,6 @@ class MysqliAdapter implements Adapter
         if( $this->getConnection() ) {
             $this->getConnection()->close();
         }
-    }
-
-    /**
-     * Get affected rows
-     *
-     * @return integer
-     */
-    public function getAffectedRows()
-    {
-        return $this->affectedRows;
     }
 
     /**
@@ -104,79 +73,22 @@ class MysqliAdapter implements Adapter
         $this->connection = $connection;
         return $this;
     }
+
+    public function getDriverName()
+    {
+        return 'mysqli';
+    }
+
+    public function getFeatures()
+    {
+        return self::$features;
+    }
+
+    public function hasFeature($feature)
+    {
+        return isset(self::$features[$feature]);
+    }
     
-    /**
-     * Get the last insert ID
-     *
-     * @return integer
-     */
-    public function getInsertId()
-    {
-        return $this->insertId;
-    }
-
-    /**
-     * Gets number of queries run using this adapter.
-     *
-     * @return integer
-     */
-    public function getQueryCount()
-    {
-        return $this->queryCount;
-    }
-
-    /**
-     * Set a query logger
-     *
-     * @param LoggerInterface $logger
-     * @return $this
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-        return $this;
-    }
-
-    /**
-     * Wrapper for Select
-     *
-     * @return Select
-     */
-    public function select()
-    {
-        return new Select($this);
-    }
-
-    /**
-     * Wrapper for Insert
-     *
-     * @return Insert
-     */
-    public function insert()
-    {
-        return new Insert($this);
-    }
-
-    /**
-     * Wrapper for Update
-     *
-     * @return Update
-     */
-    public function update()
-    {
-        return new Update($this);
-    }
-
-    /**
-     * Wrapper for Delete
-     *
-     * @return Delete
-     */
-    public function delete()
-    {
-        return new Delete($this);
-    }
-
     /**
      * Executes an SQL query.
      *
@@ -198,7 +110,12 @@ class MysqliAdapter implements Adapter
         $this->insertId = null;
         $this->queryCount++;
 
-        $queryString = (string) $query;
+        // __toString is not allowed to throw exceptions
+        if( $query instanceof Query ) {
+            $queryString = $query->toString();
+        } else {
+            $queryString = (string) $query;
+        }
 
         // Log query
         if( $this->logger ) {
@@ -275,5 +192,15 @@ class MysqliAdapter implements Adapter
         } else {
             return "'" . $this->connection->real_escape_string($value) . "'";
         }
+    }
+
+    public function quoteIdentifier($identifier)
+    {
+        $c = $this->quoteIdentifierChar;
+        return $c . str_replace(
+            '.',
+            $c . '.' . $c,
+            str_replace($c, $c . $c, $identifier)
+        ) . $c;
     }
 }

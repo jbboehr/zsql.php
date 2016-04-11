@@ -12,12 +12,18 @@ use zsql\Result\Result;
 
 interface Adapter
 {
+    public function hasFeature($feature);
+
+    public function getFeatures();
+
     /**
      * Get affected rows
      *
      * @return integer
      */
     public function getAffectedRows();
+
+    public function getDriverName();
 
     /**
      * Get the last insert ID
@@ -49,6 +55,14 @@ interface Adapter
      * @return string
      */
     public function quote($string);
+
+    /**
+     * Quote an identifier
+     *
+     * @param $identifier
+     * @return string
+     */
+    public function quoteIdentifier($identifier);
 
     /**
      * Wrapper for Select

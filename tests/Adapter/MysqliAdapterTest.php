@@ -71,7 +71,7 @@ class MysqliAdapterTest extends Common
 
         $prev = $database->getInsertId();
 
-        $ret = $query->into('fixture2')->set('double', 0)->query();
+        $ret = $query->into('fixture2')->set('dval', 0)->query();
 
         $this->assertEquals(true, $ret);
         $this->assertNotEquals($ret, $prev);
@@ -85,7 +85,7 @@ class MysqliAdapterTest extends Common
         $this->assertInstanceOf('zsql\\QueryBuilder\\Update', $query);
 
         $ret = $query->table('fixture2')
-            ->set('double', new Expression('`double` + 1'))
+            ->set('dval', new Expression('`dval` + 1'))
             ->where('id', 2)
             ->query();
 
@@ -103,7 +103,7 @@ class MysqliAdapterTest extends Common
 
         $id = $database->insert()
             ->into('fixture2')
-            ->set('double', 0)
+            ->set('dval', 0)
             ->query();
         $idAlt = $database->getInsertId();
 

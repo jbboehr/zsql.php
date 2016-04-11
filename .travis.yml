@@ -1,6 +1,8 @@
 language: php
 
-services: mysql
+services:
+  - mysql
+  - postgresql
 
 php:
   - 5.3
@@ -22,6 +24,7 @@ before_script:
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction
   - mysql -uroot < tests/fixtures.sql
+  - psql -U postgres < tests/pg.sql
   - mkdir -p build/logs/
 
 script:

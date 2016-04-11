@@ -4,6 +4,8 @@ namespace zsql\Tests\QueryBuilder;
 
 use zsql\Tests\Common as BaseCommon;
 
+use zsql\Feature;
+
 class Common extends BaseCommon
 {
     protected $className;
@@ -66,7 +68,11 @@ class Common extends BaseCommon
      */
     protected function queryFactory($arg = null)
     {
-        return new $this->className($arg);
+        $query = new $this->className($arg);
+        $this->assertInstanceOf('\\zsql\\QueryBuilder\\Query', $query);
+        $query->feature(Feature::INSERT_SET);
+        $query->feature(Feature::ON_DUPLICATE_KEY_UPDATE);
+        return $query;
     }
 
     protected function _getQuoteCallback()
