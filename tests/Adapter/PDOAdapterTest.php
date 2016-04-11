@@ -82,10 +82,15 @@ class PDOAdapterTest extends Common
 
         $prev = $database->getInsertId();
 
-        $ret = $query->into('fixture2')->set('dval', 0)->query();
+        $ret = $query->into('fixture2')
+            ->set('dval', 0)
+            ->query();
 
-        $this->assertTrue(is_numeric($ret));
-        $this->assertNotEquals($ret, $prev);
+        // @todo fixme
+        //if( $database->getDriverName() !== 'pdo_pgsql' ) {
+            $this->assertTrue(is_numeric($ret));
+            $this->assertNotEquals($ret, $prev);
+        //}
     }
 
     /**

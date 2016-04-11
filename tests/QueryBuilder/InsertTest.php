@@ -3,6 +3,7 @@
 namespace zsql\Tests\QueryBuilder;
 
 use zsql\Expression;
+use zsql\Feature;
 use zsql\QueryBuilder\Insert;
 
 /**
@@ -225,7 +226,7 @@ class InsertTest extends Common
             ))
             ->set('f', 'g')
             ->value('h', new Expression('NOW()'))
-            ->value(new Expression('z = SHA1(0)'))
+            ->value(new Expression('z = SHA1(0)')) // dangerious
         ;
         $this->assertEquals('INSERT IGNORE INTO `tableName` SET `a1` = ? , `c3` = ? , `a` = ? , `d` = ? , `f` = ? , `h` = NOW() , z = SHA1(0)', $query->toString());
         $this->assertEquals(array('b2', 'd4', 'b', 'e', 'g'), $query->params());
@@ -264,7 +265,9 @@ class InsertTest extends Common
             return $actualQuery;
         };
         $query = $this->queryFactory($callback);
-        $query->into('tableName')->set('columnName', 'value');
+        $query->into('tableName')
+            ->set('columnName', 'value')
+            ->feature(Feature::INSERT_SET);
         $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();
         $this->assertEquals($expectedQuery, $query->query());
     }
@@ -280,7 +283,8 @@ class InsertTest extends Common
             return $actualQuery;
         };
         $query = $this->queryFactory($callback);
-        $query->into('tableName')->set('columnName', 'value');
+        $query->into('tableName')
+            ->set('columnName', 'value');
         $this->assertEquals($expectedQuery, $query->query());
         $this->assertEquals($expectedParams, $query->params());
     }

@@ -6,6 +6,7 @@ use mysqli;
 use mysqli_result;
 
 use zsql\Expression;
+use zsql\Feature;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Query;
@@ -14,6 +15,11 @@ use zsql\Result\MysqliResult as Result;
 
 class MysqliAdapter extends BaseAdapter
 {
+    static private $features = array(
+        Feature::INSERT_SET => true,
+        Feature::ON_DUPLICATE_KEY_UPDATE => true,
+    );
+
     /**
      * The character to use to quote identifiers
      *
@@ -72,6 +78,16 @@ class MysqliAdapter extends BaseAdapter
     {
         return 'mysqli';
     }
+
+    public function getFeatures()
+    {
+        return self::$features;
+    }
+
+    public function hasFeature($feature)
+    {
+        return isset(self::$features[$feature]);
+    }
     
     /**
      * Executes an SQL query.
@@ -94,7 +110,12 @@ class MysqliAdapter extends BaseAdapter
         $this->insertId = null;
         $this->queryCount++;
 
-        $queryString = (string) $query;
+        // __toString is not allowed to throw exceptions
+        if( $query instanceof Query ) {
+            $queryString = $query->toString();
+        } else {
+            $queryString = (string) $query;
+        }
 
         // Log query
         if( $this->logger ) {

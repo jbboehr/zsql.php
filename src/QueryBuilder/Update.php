@@ -28,7 +28,7 @@ class Update extends ExtendedQuery
         $this->push('UPDATE');
         $this->pushTable();
         $this->push('SET');
-        $this->pushValues();
+        $this->pushSetValues();
         $this->pushWhere();
         $this->pushOrder();
         $this->pushLimit();

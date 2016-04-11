@@ -4,6 +4,7 @@ namespace zsql\QueryBuilder;
 
 use zsql\Adapter\PDOAdapter;
 use zsql\Expression;
+use zsql\Feature;
 
 /**
  * Class Insert
@@ -58,9 +59,19 @@ class Insert extends Query
         $this->pushIgnoreDelayed();
         $this->push('INTO');
         $this->pushTable();
-        $this->push('SET');
-        $this->pushValues();
-        $this->pushOnDuplicateKeyUpdate();
+        if( !empty($this->features[Feature::INSERT_SET]) ) {
+            $this->push('SET');
+            $this->pushSetValues();
+        } else {
+            $this->pushKeys();
+            $this->push('VALUES');
+            $this->pushValues();
+        }
+        if( !empty($this->features[Feature::ON_DUPLICATE_KEY_UPDATE]) ) {
+            $this->pushOnDuplicateKeyUpdate();
+        } else if( !empty($this->onDuplicateKeyUpdate) ) {
+            throw new Exception('onDuplicateKeyUpdate used when feature is not available');
+        }
     }
 
     /**
@@ -182,7 +193,7 @@ class Insert extends Query
             $this->parts[] = 'ON DUPLICATE KEY UPDATE';
             $tmp = $this->values;
             $this->values = $this->onDuplicateKeyUpdate;
-            $this->pushValues();
+            $this->pushSetValues();
             $this->values = $tmp;
         }
     }
@@ -245,5 +256,38 @@ class Insert extends Query
             $this->value($k, $v);
         }
         return $this;
+    }
+
+    protected function pushKeys()
+    {
+        if( empty($this->values) ) {
+            throw new Exception('No values specified');
+        }
+        $this->parts[] = '(';
+        foreach( $this->values as $key => $value ) {
+            $this->parts[] = $this->quoteIdentifier($key);
+            $this->parts[] = ',';
+        }
+        array_pop($this->parts);
+        $this->parts[] = ')';
+    }
+
+    protected function pushValues()
+    {
+        if( empty($this->values) ) {
+            throw new Exception('No values specified');
+        }
+        $this->parts[] = '(';
+        foreach( $this->values as $key => $value ) {
+            if( $value instanceof Expression ) {
+                $this->parts[] = (string) $value;
+            } else if( !is_int($key) ) {
+                $this->parts[] = '?';
+                $this->params[] = $value;
+            }
+            $this->parts[] = ',';
+        }
+        array_pop($this->parts);
+        $this->parts[] = ')';
     }
 }

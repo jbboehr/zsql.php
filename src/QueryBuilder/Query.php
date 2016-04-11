@@ -25,6 +25,8 @@ abstract class Query
      */
     protected $database;
 
+    protected $features = array();
+
     /**
      * Toggle whether to interpolate parameters into the query
      *
@@ -111,6 +113,7 @@ abstract class Query
     {
         if( $queryCallback instanceof Adapter ) {
             $this->database = $queryCallback;
+            $this->features = $this->database->getFeatures();
             $this->interpolation();
         } else if( is_callable($queryCallback) ) {
             $this->queryCallback = $queryCallback;
@@ -169,6 +172,19 @@ abstract class Query
         if( is_callable($callable) ) {
             $this->preExecuteCallbacks[] = $callable;
         }
+        return $this;
+    }
+
+    /**
+     * Enable or disable a feature
+     *
+     * @param $feature
+     * @param bool $flag
+     * @return $this
+     */
+    public function feature($feature, $flag = true)
+    {
+        $this->features[$feature] = $flag;
         return $this;
     }
 
@@ -265,7 +281,7 @@ abstract class Query
      * @return void
      * @throws Exception
      */
-    protected function pushValues()
+    protected function pushSetValues()
     {
         if( empty($this->values) ) {
             throw new Exception('No values specified');

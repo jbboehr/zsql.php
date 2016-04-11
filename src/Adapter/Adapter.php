@@ -12,6 +12,10 @@ use zsql\Result\Result;
 
 interface Adapter
 {
+    public function hasFeature($feature);
+
+    public function getFeatures();
+
     /**
      * Get affected rows
      *

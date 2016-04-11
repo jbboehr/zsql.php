@@ -6,6 +6,7 @@ use PDO;
 use PDOStatement;
 
 use zsql\Expression;
+use zsql\Feature;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Query;
@@ -15,7 +16,12 @@ use zsql\Result\PDOResult as Result;
 
 class PDOAdapter extends BaseAdapter
 {
-    private $driverName;
+    static private $features = array(
+        'mysql' => array(
+            Feature::INSERT_SET => true,
+            Feature::ON_DUPLICATE_KEY_UPDATE => true,
+        )
+    );
 
     /**
      * @var PDO
@@ -61,6 +67,22 @@ class PDOAdapter extends BaseAdapter
         } else {
             return null;
         }
+    }
+
+    public function getFeatures()
+    {
+        $driver = $this->connection->getAttribute(PDO::ATTR_DRIVER_NAME);
+        if( isset(self::$features[$driver]) ) {
+            return self::$features[$driver];
+        } else {
+            return array();
+        }
+    }
+
+    public function hasFeature($feature)
+    {
+        $driver = $this->connection->getAttribute(PDO::ATTR_DRIVER_NAME);
+        return isset(self::$features[$driver][$feature]);
     }
 
     /**
