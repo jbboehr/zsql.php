@@ -2,11 +2,11 @@
 DROP DATABASE IF EXISTS `zsql`;
 CREATE DATABASE IF NOT EXISTS `zsql`;
 
-GRANT USAGE ON *.* TO 'zsql'@'localhost';
-DROP USER 'zsql'@'localhost';
+GRANT USAGE ON *.* TO 'zsql'@'localhost' IDENTIFIED BY 'zsql';
+-- DROP USER 'zsql'@'localhost';
 
-CREATE USER 'zsql'@'localhost' IDENTIFIED BY 'zsql';
-GRANT ALL ON zsql.* TO 'zsql'@'localhost';
+-- CREATE USER 'zsql'@'localhost' IDENTIFIED BY 'zsql';
+GRANT ALL ON zsql.* TO 'zsql'@'localhost' IDENTIFIED BY 'zsql';
 
 DROP TABLE IF EXISTS `zsql`.`fixture1`;
 CREATE TABLE `zsql`.`fixture1` (
