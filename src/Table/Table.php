@@ -3,6 +3,7 @@
 namespace zsql\Table;
 
 use zsql\Adapter\Adapter;
+use zsql\Adapter\AdapterAwareInterface;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Select;
@@ -12,7 +13,7 @@ use zsql\QueryBuilder\Update;
  * Interface Table
  * @package zsql\Table
  */
-interface Table
+interface Table extends AdapterAwareInterface
 {
     /**
      * Getter method for the database adapter

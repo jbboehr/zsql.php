@@ -3,6 +3,7 @@
 namespace zsql\Table;
 
 use zsql\Adapter\Adapter;
+use zsql\Adapter\AdapterAwareInterface;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Select;
@@ -49,20 +50,23 @@ class DefaultTable implements Table
     /**
      * @param Adapter $database
      */
-    public function __construct(Adapter $database)
+    public function __construct(Adapter $database = null)
     {
-        $this->setDatabase($database)
-            ->init();
+        if( $database ) {
+            $this->setDatabase($database);
+        }
+        $this->init();
     }
 
     /**
      * Post initialization hook
      *
+     * @deprecated
      * @return void
      */
     public function init()
     {
-        
+
     }
 
     /**
