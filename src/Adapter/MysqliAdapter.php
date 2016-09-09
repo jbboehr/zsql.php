@@ -6,6 +6,7 @@ use mysqli;
 use mysqli_result;
 use Psr\Log\LoggerInterface;
 
+use zsql\Connection\MysqliFactoryInterface;
 use zsql\Expression;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
@@ -14,53 +15,33 @@ use zsql\QueryBuilder\Select;
 use zsql\QueryBuilder\Update;
 use zsql\Result\MysqliResult as Result;
 
-class MysqliAdapter implements Adapter
+class MysqliAdapter extends AbstractAdapter
 {
-    /**
-     * @var integer
-     */
-    protected $affectedRows;
-
     /**
      * @var mysqli
      */
     protected $connection;
 
     /**
-     * @var callable Connection factory function. Will be called on connection timeout to establish a new connection.
+     * @var MysqliFactoryInterface
      */
-    public $connectionFactory;
-
-    /**
-     * @var integer
-     */
-    protected $insertId;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * Holds the total number of queries ran for the database object's lifetime.
-     *
-     * @var integer
-     */
-    protected $queryCount = 0;
-
-    /**
-     * @var integer The number of times reconnection should be attempted
-     */
-    public $retryCount = 1;
+    protected $connectionFactory;
 
     /**
      * Construct a new database object.
      *
      * @param \mysqli $connection
      */
-    public function __construct(mysqli $connection)
+    public function __construct($connection)
     {
-        $this->setConnection($connection);
+        if( $connection instanceof mysqli ) {
+            $this->connection = $connection;
+        } else if( $connection instanceof MysqliFactoryInterface ) {
+            $this->connectionFactory = $connection;
+            $this->connection = $connection->createMysqli();
+        } else {
+            throw new \InvalidArgumentException('Argument must be instance of mysqli or MysqliFactoryInterface');
+        }
     }
 
     /**
@@ -71,16 +52,6 @@ class MysqliAdapter implements Adapter
         if( $this->getConnection() ) {
             $this->getConnection()->close();
         }
-    }
-
-    /**
-     * Get affected rows
-     *
-     * @return integer
-     */
-    public function getAffectedRows()
-    {
-        return $this->affectedRows;
     }
 
     /**
@@ -104,77 +75,11 @@ class MysqliAdapter implements Adapter
         $this->connection = $connection;
         return $this;
     }
-    
-    /**
-     * Get the last insert ID
-     *
-     * @return integer
-     */
-    public function getInsertId()
-    {
-        return $this->insertId;
-    }
 
-    /**
-     * Gets number of queries run using this adapter.
-     *
-     * @return integer
-     */
-    public function getQueryCount()
+    public function setConnectionFactory(MysqliFactoryInterface $connectionFactory)
     {
-        return $this->queryCount;
-    }
-
-    /**
-     * Set a query logger
-     *
-     * @param LoggerInterface $logger
-     * @return $this
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+        $this->connectionFactory = $connectionFactory;
         return $this;
-    }
-
-    /**
-     * Wrapper for Select
-     *
-     * @return Select
-     */
-    public function select()
-    {
-        return new Select($this);
-    }
-
-    /**
-     * Wrapper for Insert
-     *
-     * @return Insert
-     */
-    public function insert()
-    {
-        return new Insert($this);
-    }
-
-    /**
-     * Wrapper for Update
-     *
-     * @return Update
-     */
-    public function update()
-    {
-        return new Update($this);
-    }
-
-    /**
-     * Wrapper for Delete
-     *
-     * @return Delete
-     */
-    public function delete()
-    {
-        return new Delete($this);
     }
 
     /**
@@ -206,18 +111,17 @@ class MysqliAdapter implements Adapter
         }
 
         // Execute query
-        $counter = 0;
-        do {
-            $retry = false;
-            $ret = $connection->query($queryString, MYSQLI_STORE_RESULT);
-            // Handle "MySQL server has gone away" and "Lost connection to MySQL server during query"
-            if( in_array($connection->errno, array(2006, 2013)) && ++$counter <= $this->retryCount ) {
-                if( $this->connectionFactory ) {
-                    $connection = $this->connection = call_user_func($this->connectionFactory);
-                    $retry = true;
-                }
+        $ret = $connection->query($queryString, MYSQLI_STORE_RESULT);
+        if( ($connection->errno === 2006 || $connection->errno === 2013) && $this->connectionFactory ) {
+            // Log the connection error
+            if( $this->logger ) {
+                $this->logger->debug('Attempting to reconnect after error: ' . $connection->error);
             }
-        } while( $retry );
+            // Reconnect
+            $connection = $this->connection = $this->connectionFactory->createMysqli();
+            // Retry once
+            $ret = $connection->query($queryString, MYSQLI_STORE_RESULT);
+        }
 
         // Save insert ID if instance of insert
         if( $query instanceof Insert ) {

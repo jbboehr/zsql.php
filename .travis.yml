@@ -18,6 +18,10 @@ branches:
 
 sudo: false
 
+env:
+    global:
+        - ZSQL_LONG_TESTS=1
+
 before_script:
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction

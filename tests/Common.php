@@ -6,6 +6,7 @@ use mysqli;
 use ReflectionClass;
 use PHPUnit_Framework_TestCase;
 use zsql\Adapter\MysqliAdapter;
+use zsql\Connection\MysqliFactory;
 
 class Common extends PHPUnit_Framework_TestCase
 {
@@ -31,29 +32,30 @@ class Common extends PHPUnit_Framework_TestCase
 
     protected function fixtureModelOneFactory()
     {
-        return new Fixture\BasicModel($this->databaseFactory());
+        return new Fixture\BasicModel($this->createMysqliAdapter());
     }
 
     /**
      * @return MysqliAdapter
      */
-    protected function databaseFactory()
+    protected function createMysqliAdapter()
     {
-        return new MysqliAdapter(call_user_func($this->getMysqliFactory()));
+        return new MysqliAdapter($this->createMysqliFactory()->createMysqli());
     }
 
-    protected function getMysqliFactory()
+    protected function databaseFactory()
     {
-        return function() {
-            $mysql = new mysqli();
-            $mysql->connect(
-                ZSQL_TEST_DATABASE_HOST,
-                ZSQL_TEST_DATABASE_USERNAME,
-                ZSQL_TEST_DATABASE_PASSWORD,
-                ZSQL_TEST_DATABASE_DBNAME
-            );
-            return $mysql;
-        };
+        return $this->createMysqliAdapter();
+    }
+
+    protected function createMysqliFactory()
+    {
+        return new MysqliFactory(
+            ZSQL_TEST_DATABASE_HOST,
+            ZSQL_TEST_DATABASE_USERNAME,
+            ZSQL_TEST_DATABASE_PASSWORD,
+            ZSQL_TEST_DATABASE_DBNAME
+        );
     }
 
     public function getReflectedPropertyValue($class, $propertyName)

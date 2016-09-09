@@ -3,22 +3,29 @@
 namespace zsql\Tests;
 
 use Psr\Log\NullLogger;
+use zsql\Adapter\Exception;
+use zsql\Adapter\MysqliAdapter;
 use zsql\Expression;
 
 class MysqliAdapterTest extends Common
 {
+    public function testConstructInvalid()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        new MysqliAdapter('foo');
+    }
 
     public function testGetConnection()
     {
-        $database = $this->databaseFactory();
+        $database = $this->createMysqliAdapter();
 
         $this->assertInstanceOf('mysqli', $database->getConnection());
     }
 
     public function testSetConnection()
     {
-        $database1 = $this->databaseFactory();
-        $database2 = $this->databaseFactory();
+        $database1 = $this->createMysqliAdapter();
+        $database2 = $this->createMysqliAdapter();
         $database1Connection = $database1->getConnection();
         $database2Connection = $database2->getConnection();
 
@@ -33,7 +40,7 @@ class MysqliAdapterTest extends Common
 
     public function testGetQueryCount()
     {
-        $database = $this->databaseFactory();
+        $database = $this->createMysqliAdapter();
 
         $this->assertEquals(0, $database->getQueryCount());
 
@@ -44,7 +51,7 @@ class MysqliAdapterTest extends Common
 
     public function testSelect()
     {
-        $database = $this->databaseFactory();
+        $database = $this->createMysqliAdapter();
 
         $query = $database->select();
         $this->assertInstanceOf('zsql\\QueryBuilder\\Select', $query);
@@ -52,7 +59,7 @@ class MysqliAdapterTest extends Common
 
     public function testSelectWithResultClass()
     {
-        $database = $this->databaseFactory();
+        $database = $this->createMysqliAdapter();
 
         $result = $database->select()
             ->setResultClass('ArrayObject')
@@ -64,7 +71,7 @@ class MysqliAdapterTest extends Common
 
     public function testInsert()
     {
-        $database = $this->databaseFactory();
+        $database = $this->createMysqliAdapter();
 
         $query = $database->insert();
         $this->assertInstanceOf('zsql\\QueryBuilder\\Insert', $query);
@@ -79,7 +86,7 @@ class MysqliAdapterTest extends Common
 
     public function testUpdate()
     {
-        $database = $this->databaseFactory();
+        $database = $this->createMysqliAdapter();
 
         $query = $database->update();
         $this->assertInstanceOf('zsql\\QueryBuilder\\Update', $query);
@@ -95,7 +102,7 @@ class MysqliAdapterTest extends Common
 
     public function testDelete()
     {
-        $database = $this->databaseFactory();
+        $database = $this->createMysqliAdapter();
 
         $query = $database->delete();
         $this->assertInstanceOf('zsql\\QueryBuilder\\Delete', $query);
@@ -119,7 +126,7 @@ class MysqliAdapterTest extends Common
 
     public function testQuery()
     {
-        $database = $this->databaseFactory();
+        $database = $this->createMysqliAdapter();
 
         $result = $database->query('SELECT TRUE');
         $this->assertInstanceOf('zsql\\Result\\Result', $result);
@@ -128,14 +135,14 @@ class MysqliAdapterTest extends Common
     public function testQueryThrowsExceptionOnFailure()
     {
         $this->setExpectedException('zsql\\Exception');
-        
-        $database = $this->databaseFactory();
+
+        $database = $this->createMysqliAdapter();
         $database->query('SELECT foo FROM bar');
     }
 
     public function testQueryNotSelect()
     {
-        $database = $this->databaseFactory();
+        $database = $this->createMysqliAdapter();
 
         $result = $database->query('DELETE FROM fixture1 WHERE id = 234234');
         $this->assertEquals(true, $result);
@@ -143,7 +150,7 @@ class MysqliAdapterTest extends Common
 
     public function testQuote()
     {
-        $database = $this->databaseFactory();
+        $database = $this->createMysqliAdapter();
 
         $this->assertEquals('NULL', $database->quote(null));
         $this->assertEquals('1', $database->quote(true));
@@ -156,7 +163,7 @@ class MysqliAdapterTest extends Common
 
     public function testQueryWithLogger()
     {
-        $database = $this->databaseFactory();
+        $database = $this->createMysqliAdapter();
         $logger = $this->getMock('Psr\Log\NullLogger', array('debug'));
         $logger->expects($this->once())
             ->method('debug');
@@ -167,7 +174,7 @@ class MysqliAdapterTest extends Common
     public function testQueryWithLoggerWithFailedQuery()
     {
         $this->setExpectedException('zsql\\Exception');
-        $database = $this->databaseFactory();
+        $database = $this->createMysqliAdapter();
         $logger = $this->getMock('Psr\Log\NullLogger', array('debug', 'error'));
         $logger->expects($this->once())
             ->method('debug');
@@ -179,13 +186,37 @@ class MysqliAdapterTest extends Common
 
     public function testReconnect()
     {
-        $database = $this->databaseFactory();
+        $logger = $this->getMock('Psr\Log\NullLogger', array('debug'));
+        $logger->expects($this->atLeast(2))
+            ->method('debug');
+
+        $database = new MysqliAdapter($this->createMysqliFactory());
+        $database->setLogger($logger);
+
         $mysqli = $database->getConnection();
 
         // Please kill yourself
         $mysqli->kill($mysqli->thread_id);
 
-        $database->connectionFactory = $this->getMysqliFactory();
         $this->assertEquals(true, $database->query('SELECT TRUE')->fetchColumn());
+    }
+
+    public function testReconnect2()
+    {
+        if( !getenv('ZSQL_LONG_TESTS') ) {
+            $this->markTestSkipped();
+        }
+
+        //$database = new MysqliAdapter($this->createMysqliFactory());
+        $database = $this->createMysqliAdapter();
+        $database->setConnectionFactory($this->createMysqliFactory());
+
+        $database->query('SET @@session.wait_timeout=1');
+
+        $mysqli = $database->getConnection();
+        sleep(2);
+
+        $result = @$database->query('SELECT TRUE');
+        $this->assertEquals(true, $result->fetchColumn());
     }
 }

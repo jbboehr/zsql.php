@@ -332,6 +332,10 @@ abstract class Query
      */
     protected function quoteIdentifier($identifier)
     {
+        if( $this->database ) {
+            return $this->database->quoteIdentifier($identifier);
+        }
+        // default implementation
         $c = $this->quoteIdentifierChar;
         return $c . str_replace(
             '.',
