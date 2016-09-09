@@ -104,4 +104,33 @@ class MultiplexAdapterTest extends Common
         $this->assertEquals($reader->quote(new Expression('"')), $adapter->quote(new Expression('"')));
     }
 
+    public function testLogging()
+    {
+        $logger = $this->getMock('Psr\Log\NullLogger', array('debug', 'error'));
+        $logger->expects($this->once())
+            ->method('debug');
+        $logger->expects($this->once())
+            ->method('error');
+
+        $this->setExpectedException('zsql\\Adapter\\Exception');
+
+        $reader = $this->createMysqliAdapter();
+        $writer = $this->createMysqliAdapter();
+        $adapter = new MultiplexAdapter($reader, $writer);
+        $adapter->setLogger($logger);
+        $adapter->query('SKWLKEJFRKWKSEDRTJFKSDFR broken query');
+    }
+
+    public function testLogging2()
+    {
+        $logger = $this->getMock('Psr\Log\NullLogger', array('debug', 'error'));
+        $logger->expects($this->once())
+            ->method('debug');
+        
+        $reader = $this->createMysqliAdapter();
+        $writer = $this->createMysqliAdapter();
+        $adapter = new MultiplexAdapter($reader, $writer);
+        $adapter->setLogger($logger);
+        $adapter->query($adapter->select()->columns(new Expression('TRUE'))->table('fixture1'));
+    }
 }
