@@ -3,11 +3,11 @@
 namespace zsql\Tests;
 
 use Psr\Log\NullLogger;
+use zsql\Adapter\MysqliAdapter;
 use zsql\Expression;
 
 class MysqliAdapterTest extends Common
 {
-
     public function testGetConnection()
     {
         $database = $this->databaseFactory();
@@ -128,7 +128,7 @@ class MysqliAdapterTest extends Common
     public function testQueryThrowsExceptionOnFailure()
     {
         $this->setExpectedException('zsql\\Exception');
-        
+
         $database = $this->databaseFactory();
         $database->query('SELECT foo FROM bar');
     }
@@ -179,13 +179,31 @@ class MysqliAdapterTest extends Common
 
     public function testReconnect()
     {
-        $database = $this->databaseFactory();
+        $database = new MysqliAdapter($this->getMysqliFactory());
+
         $mysqli = $database->getConnection();
 
         // Please kill yourself
         $mysqli->kill($mysqli->thread_id);
 
-        $database->connectionFactory = $this->getMysqliFactory();
         $this->assertEquals(true, $database->query('SELECT TRUE')->fetchColumn());
+    }
+
+    public function testReconnect2()
+    {
+        if( !getenv('ZSQL_LONG_TESTS') ) {
+            $this->markTestSkipped();
+        }
+
+        $database = new MysqliAdapter($this->getMysqliFactory());
+        //$database = $this->databaseFactory();
+
+        $database->query('SET @@session.wait_timeout=1');
+
+        $mysqli = $database->getConnection();
+        sleep(2);
+
+        $result = @$database->query('SELECT TRUE');
+        $this->assertEquals(true, $result->fetchColumn());
     }
 }

@@ -6,6 +6,7 @@ use mysqli;
 use mysqli_result;
 use Psr\Log\LoggerInterface;
 
+use zsql\Connection\MysqliFactoryInterface;
 use zsql\Expression;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
@@ -27,9 +28,9 @@ class MysqliAdapter implements Adapter
     protected $connection;
 
     /**
-     * @var callable Connection factory function. Will be called on connection timeout to establish a new connection.
+     * @var MysqliFactoryInterface
      */
-    public $connectionFactory;
+    protected $connectionFactory;
 
     /**
      * @var integer
@@ -58,9 +59,16 @@ class MysqliAdapter implements Adapter
      *
      * @param \mysqli $connection
      */
-    public function __construct(mysqli $connection)
+    public function __construct($connection)
     {
-        $this->setConnection($connection);
+        if( $connection instanceof mysqli ) {
+            $this->connection = $connection;
+        } else if( $connection instanceof MysqliFactoryInterface ) {
+            $this->connectionFactory = $connection;
+            $this->connection = $connection->createMysqli();
+        } else {
+            throw new \InvalidArgumentException('Argument must be instance of mysqli or ' . MysqliFactoryInterface::class);
+        }
     }
 
     /**
@@ -104,7 +112,13 @@ class MysqliAdapter implements Adapter
         $this->connection = $connection;
         return $this;
     }
-    
+
+    public function setConnectionFactory(MysqliFactoryInterface $connectionFactory)
+    {
+        $this->connectionFactory = $connectionFactory;
+        return $this;
+    }
+
     /**
      * Get the last insert ID
      *
@@ -206,18 +220,13 @@ class MysqliAdapter implements Adapter
         }
 
         // Execute query
-        $counter = 0;
-        do {
-            $retry = false;
+        $ret = $connection->query($queryString, MYSQLI_STORE_RESULT);
+        if( $connection->errno === 2006 && $this->connectionFactory ) { // also 2013?
+            // Reconnect
+            $connection = $this->connection = $this->connectionFactory->createMysqli();
+            // Retry once
             $ret = $connection->query($queryString, MYSQLI_STORE_RESULT);
-            // Handle "MySQL server has gone away" and "Lost connection to MySQL server during query"
-            if( in_array($connection->errno, array(2006, 2013)) && ++$counter <= $this->retryCount ) {
-                if( $this->connectionFactory ) {
-                    $connection = $this->connection = call_user_func($this->connectionFactory);
-                    $retry = true;
-                }
-            }
-        } while( $retry );
+        }
 
         // Save insert ID if instance of insert
         if( $query instanceof Insert ) {
