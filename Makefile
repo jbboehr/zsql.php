@@ -9,7 +9,7 @@ clean:
 	rm -rf docs
 
 coverage: vendor
-	./vendor/bin/phpunit --coverage-text --coverage-html=reports
+	php -d zend_extension=xdebug.so ./vendor/bin/phpunit --coverage-text --coverage-html=reports
 
 cs: vendor
 	./vendor/bin/phpcs $(PHPCS_OPTS)
@@ -22,7 +22,7 @@ phpunit: vendor
 
 test: cs phpunit
 
-vendor: 
+vendor:
 	composer install --optimize-autoloader
 
 .PHONY: cbf clean coverage cs phpunit test

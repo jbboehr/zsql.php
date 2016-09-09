@@ -15,13 +15,8 @@ use zsql\QueryBuilder\Select;
 use zsql\QueryBuilder\Update;
 use zsql\Result\MysqliResult as Result;
 
-class MysqliAdapter implements Adapter
+class MysqliAdapter extends AbstractAdapter
 {
-    /**
-     * @var integer
-     */
-    protected $affectedRows;
-
     /**
      * @var mysqli
      */
@@ -31,28 +26,6 @@ class MysqliAdapter implements Adapter
      * @var MysqliFactoryInterface
      */
     protected $connectionFactory;
-
-    /**
-     * @var integer
-     */
-    protected $insertId;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * Holds the total number of queries ran for the database object's lifetime.
-     *
-     * @var integer
-     */
-    protected $queryCount = 0;
-
-    /**
-     * @var integer The number of times reconnection should be attempted
-     */
-    public $retryCount = 1;
 
     /**
      * Construct a new database object.
@@ -82,16 +55,6 @@ class MysqliAdapter implements Adapter
     }
 
     /**
-     * Get affected rows
-     *
-     * @return integer
-     */
-    public function getAffectedRows()
-    {
-        return $this->affectedRows;
-    }
-
-    /**
      * Exposes the local connection object
      *
      * @return mysqli
@@ -117,78 +80,6 @@ class MysqliAdapter implements Adapter
     {
         $this->connectionFactory = $connectionFactory;
         return $this;
-    }
-
-    /**
-     * Get the last insert ID
-     *
-     * @return integer
-     */
-    public function getInsertId()
-    {
-        return $this->insertId;
-    }
-
-    /**
-     * Gets number of queries run using this adapter.
-     *
-     * @return integer
-     */
-    public function getQueryCount()
-    {
-        return $this->queryCount;
-    }
-
-    /**
-     * Set a query logger
-     *
-     * @param LoggerInterface $logger
-     * @return $this
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-        return $this;
-    }
-
-    /**
-     * Wrapper for Select
-     *
-     * @return Select
-     */
-    public function select()
-    {
-        return new Select($this);
-    }
-
-    /**
-     * Wrapper for Insert
-     *
-     * @return Insert
-     */
-    public function insert()
-    {
-        return new Insert($this);
-    }
-
-    /**
-     * Wrapper for Update
-     *
-     * @return Update
-     */
-    public function update()
-    {
-        return new Update($this);
-    }
-
-    /**
-     * Wrapper for Delete
-     *
-     * @return Delete
-     */
-    public function delete()
-    {
-        return new Delete($this);
     }
 
     /**

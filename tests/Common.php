@@ -32,18 +32,23 @@ class Common extends PHPUnit_Framework_TestCase
 
     protected function fixtureModelOneFactory()
     {
-        return new Fixture\BasicModel($this->databaseFactory());
+        return new Fixture\BasicModel($this->createMysqliAdapter());
     }
 
     /**
      * @return MysqliAdapter
      */
-    protected function databaseFactory()
+    protected function createMysqliAdapter()
     {
-        return new MysqliAdapter($this->getMysqliFactory()->createMysqli());
+        return new MysqliAdapter($this->createMysqliFactory()->createMysqli());
     }
 
-    protected function getMysqliFactory()
+    protected function databaseFactory()
+    {
+        return $this->createMysqliAdapter();
+    }
+
+    protected function createMysqliFactory()
     {
         return new MysqliFactory(
             ZSQL_TEST_DATABASE_HOST,
