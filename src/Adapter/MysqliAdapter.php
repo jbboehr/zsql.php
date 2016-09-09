@@ -113,6 +113,10 @@ class MysqliAdapter extends AbstractAdapter
         // Execute query
         $ret = $connection->query($queryString, MYSQLI_STORE_RESULT);
         if( $connection->errno === 2006 && $this->connectionFactory ) { // also 2013?
+            // Log the connection error
+            if( $this->logger ) {
+                $this->logger->debug('Attempting to reconnect after error: ' . $connection->error);
+            }
             // Reconnect
             $connection = $this->connection = $this->connectionFactory->createMysqli();
             // Retry once
