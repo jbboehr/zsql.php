@@ -35,4 +35,11 @@ class NullAdapterTest extends Common
         $this->assertNull($result->fetchColumn());
         $this->assertNull($result->fetchColumn());
     }
+
+    public function testQuote()
+    {
+        $this->setExpectedException('Exception');
+        $database = new NullAdapter();
+        $database->quote('meh');
+    }
 }

@@ -126,7 +126,7 @@ class MultiplexAdapterTest extends Common
         $logger = $this->getMock('Psr\Log\NullLogger', array('debug', 'error'));
         $logger->expects($this->once())
             ->method('debug');
-        
+
         $reader = $this->createMysqliAdapter();
         $writer = $this->createMysqliAdapter();
         $adapter = new MultiplexAdapter($reader, $writer);
