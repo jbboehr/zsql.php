@@ -40,7 +40,7 @@ class MysqliAdapter extends AbstractAdapter
             $this->connectionFactory = $connection;
             $this->connection = $connection->createMysqli();
         } else {
-            throw new \InvalidArgumentException('Argument must be instance of mysqli or ' . MysqliFactoryInterface::class);
+            throw new \InvalidArgumentException('Argument must be instance of mysqli or MysqliFactoryInterface');
         }
     }
 
@@ -112,7 +112,7 @@ class MysqliAdapter extends AbstractAdapter
 
         // Execute query
         $ret = $connection->query($queryString, MYSQLI_STORE_RESULT);
-        if( $connection->errno === 2006 && $this->connectionFactory ) { // also 2013?
+        if( ($connection->errno === 2006 || $connection->errno === 2013) && $this->connectionFactory ) {
             // Log the connection error
             if( $this->logger ) {
                 $this->logger->debug('Attempting to reconnect after error: ' . $connection->error);

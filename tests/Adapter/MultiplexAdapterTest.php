@@ -48,11 +48,11 @@ class MultiplexAdapterTest extends Common
 
     public function testForceWriter()
     {
-        $reader = $this->getMock(NullAdapter::class, array('query'));
+        $reader = $this->getMock('zsql\\Adapter\\NullAdapter', array('query'));
         $reader->expects($this->never())
             ->method('query');
 
-        $writer = $this->getMock(NullAdapter::class, array('query'));
+        $writer = $this->getMock('zsql\\Adapter\\NullAdapter', array('query'));
         $writer->expects($this->once())
             ->method('query');
 
@@ -64,11 +64,11 @@ class MultiplexAdapterTest extends Common
 
     public function testSelect()
     {
-        $reader = $this->getMock(NullAdapter::class, array('query'));
+        $reader = $this->getMock('zsql\\Adapter\\NullAdapter', array('query'));
         $reader->expects($this->once())
             ->method('query');
 
-        $writer = $this->getMock(NullAdapter::class, array('query'));
+        $writer = $this->getMock('zsql\\Adapter\\NullAdapter', array('query'));
         $writer->expects($this->never())
             ->method('query');
 
@@ -79,11 +79,11 @@ class MultiplexAdapterTest extends Common
 
     public function testInsert()
     {
-        $reader = $this->getMock(NullAdapter::class, array('query'));
+        $reader = $this->getMock('zsql\\Adapter\\NullAdapter', array('query'));
         $reader->expects($this->never())
             ->method('query');
 
-        $writer = $this->getMock(NullAdapter::class, array('query'));
+        $writer = $this->getMock('zsql\\Adapter\\NullAdapter', array('query'));
         $writer->expects($this->once())
             ->method('query');
 
@@ -92,4 +92,16 @@ class MultiplexAdapterTest extends Common
         $adapter->useWriter();
         $adapter->query($adapter->insert());
     }
+
+    public function testQuote()
+    {
+        $reader = $this->createMysqliAdapter();
+        $writer = $this->createMysqliAdapter();
+        $adapter = new MultiplexAdapter($reader, $writer);
+
+        $this->assertEquals($reader->quote(null), $adapter->quote(null));
+        $this->assertEquals($reader->quote('1'), $adapter->quote('1'));
+        $this->assertEquals($reader->quote(new Expression('"')), $adapter->quote(new Expression('"')));
+    }
+
 }

@@ -11,7 +11,7 @@ class MysqliAdapterTest extends Common
 {
     public function testConstructInvalid()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->setExpectedException('InvalidArgumentException');
         new MysqliAdapter('foo');
     }
 
@@ -186,7 +186,12 @@ class MysqliAdapterTest extends Common
 
     public function testReconnect()
     {
+        $logger = $this->getMock('Psr\Log\NullLogger', array('debug'));
+        $logger->expects($this->atLeast(2))
+            ->method('debug');
+
         $database = new MysqliAdapter($this->createMysqliFactory());
+        $database->setLogger($logger);
 
         $mysqli = $database->getConnection();
 
