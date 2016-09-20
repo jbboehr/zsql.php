@@ -32,6 +32,15 @@ class MultiplexAdapter extends AbstractAdapter
         $this->writer = $writer;
     }
 
+    public function ping()
+    {
+        $ret = $this->reader->ping();
+        if( $this->writer ) {
+            $ret = $ret && $this->writer->ping();
+        }
+        return $ret;
+    }
+
     /**
      * @inheritdoc
      */

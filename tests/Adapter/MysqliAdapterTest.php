@@ -219,4 +219,32 @@ class MysqliAdapterTest extends Common
         $result = @$database->query('SELECT TRUE');
         $this->assertEquals(true, $result->fetchColumn());
     }
+
+    public function testPing()
+    {
+        $database = $this->createMysqliAdapter();
+        $this->assertTrue($database->ping());
+    }
+
+    public function testPing_DisconnectFailure()
+    {
+        $mysqli = $this->createMysqliFactory()->createMysqli();
+        $database = new MysqliAdapter($mysqli);
+
+        // Please kill yourself
+        $mysqli->kill($mysqli->thread_id);
+
+        $this->assertFalse($database->ping());
+    }
+
+    public function testPing_WithReconnect()
+    {
+        $database = new MysqliAdapter($this->createMysqliFactory());
+        $mysqli = $database->getConnection();
+
+        // Please kill yourself
+        $mysqli->kill($mysqli->thread_id);
+
+        $this->assertTrue($database->ping());
+    }
 }

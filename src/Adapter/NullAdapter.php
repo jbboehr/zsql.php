@@ -9,6 +9,11 @@ use zsql\Result\NullResult;
 
 class NullAdapter extends AbstractAdapter
 {
+    public function ping()
+    {
+        return true;
+    }
+
     /**
      * @inheritdoc
      */

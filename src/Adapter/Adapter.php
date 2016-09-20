@@ -85,4 +85,9 @@ interface Adapter
      * @return Delete
      */
     public function delete();
+
+    /**
+     * @return boolean
+     */
+    public function ping();
 }

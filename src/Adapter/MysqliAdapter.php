@@ -84,6 +84,19 @@ class MysqliAdapter extends AbstractAdapter
         return $this;
     }
 
+    public function ping()
+    {
+        $ret = $this->connection->ping();
+
+        // Try to reconnect
+        if( !$ret && $this->connectionFactory ) {
+            $this->connection = $this->connectionFactory->createMysqli();
+            $ret = $this->ping();
+        }
+
+        return $ret;
+    }
+
     /**
      * Executes an SQL query.
      *

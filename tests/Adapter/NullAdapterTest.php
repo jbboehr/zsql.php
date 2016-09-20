@@ -42,4 +42,10 @@ class NullAdapterTest extends Common
         $database = new NullAdapter();
         $database->quote('meh');
     }
+
+    public function testPing()
+    {
+        $database = new NullAdapter();
+        $this->assertTrue($database->ping());
+    }
 }
