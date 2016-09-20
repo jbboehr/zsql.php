@@ -3,6 +3,7 @@
 namespace zsql\Tests;
 
 use zsql\Adapter\MultiplexAdapter;
+use zsql\Adapter\MysqliAdapter;
 use zsql\Adapter\NullAdapter;
 use zsql\Expression;
 
@@ -132,5 +133,37 @@ class MultiplexAdapterTest extends Common
         $adapter = new MultiplexAdapter($reader, $writer);
         $adapter->setLogger($logger);
         $adapter->query($adapter->select()->columns(new Expression('TRUE'))->table('fixture1'));
+    }
+
+    public function testPing()
+    {
+        $reader = $this->createMysqliAdapter();
+        $writer = $this->createMysqliAdapter();
+        $adapter = new MultiplexAdapter($reader, $writer);
+        $this->assertTrue($adapter->ping());
+    }
+
+    public function testPing_DisconnectFailure()
+    {
+        $reader = $this->createMysqliAdapter();
+        $writer = $this->createMysqliAdapter();
+        $adapter = new MultiplexAdapter($reader, $writer);
+
+        $mysqliReader = $reader->getConnection();
+        $mysqliReader->kill($mysqliReader->thread_id);
+
+        $this->assertFalse($adapter->ping());
+    }
+
+    public function testPing_WithReconnect()
+    {
+        $reader = new MysqliAdapter($this->createMysqliFactory());
+        $writer = new MysqliAdapter($this->createMysqliFactory());
+        $adapter = new MultiplexAdapter($reader, $writer);
+
+        $mysqli = $reader->getConnection();
+        $mysqli->kill($mysqli->thread_id);
+
+        $this->assertTrue($adapter->ping());
     }
 }
