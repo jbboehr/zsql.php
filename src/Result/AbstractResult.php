@@ -2,6 +2,9 @@
 
 namespace zsql\Result;
 
+use zsql\Exception\ClassNotFoundException;
+use zsql\Exception\InvalidArgumentException;
+
 abstract class AbstractResult implements Result
 {
     /**
@@ -34,12 +37,12 @@ abstract class AbstractResult implements Result
      *
      * @param string $class
      * @return $this
-     * @throws Exception
+     * @throws ClassNotFoundException
      */
     public function setResultClass($class = null)
     {
         if( null !== $class && (!is_string($class) || !class_exists($class)) ) {
-            throw new Exception('Class not found: ' . $class);
+            throw new ClassNotFoundException('Class not found: ' . $class);
         }
         $this->resultClass = $class;
         return $this;
@@ -80,12 +83,12 @@ abstract class AbstractResult implements Result
      *
      * @param integer $mode
      * @return $this
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function setResultMode($mode)
     {
         if( !is_int($mode) || $mode < 0 || $mode > 3 ) {
-            throw new Exception("Invalid result mode");
+            throw new InvalidArgumentException("Invalid result mode");
         }
         $this->resultMode = $mode;
         return $this;

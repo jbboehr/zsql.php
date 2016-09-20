@@ -3,7 +3,7 @@
 namespace zsql\Table;
 
 use zsql\Adapter\Adapter;
-use zsql\Adapter\AdapterAwareInterface;
+use zsql\Exception\LogicException;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Select;
@@ -74,11 +74,12 @@ class DefaultTable implements Table
      *
      * @param mixed $identity
      * @return Row
+     * @throws LogicException
      */
     public function find($identity)
     {
         if( !$this->primaryKey ) {
-            throw new Exception('No primary key!');
+            throw new LogicException('No primary key!');
         }
         return $this->select()
                 ->where($this->primaryKey, $identity)
@@ -92,11 +93,12 @@ class DefaultTable implements Table
      *
      * @param array $identities
      * @return array
+     * @throws LogicException
      */
     public function findMany(array $identities)
     {
         if( !$this->primaryKey ) {
-            throw new Exception('No primary key!');
+            throw new LogicException('No primary key!');
         }
         return $this->select()
                 ->whereIn($this->primaryKey, $identities)
@@ -175,11 +177,12 @@ class DefaultTable implements Table
      * pre-populated.
      *
      * @return Select
+     * @throws LogicException
      */
     public function select()
     {
         if( !$this->tableName ) {
-            throw new Exception('No table name specified');
+            throw new LogicException('No table name specified');
         }
         $q = $this->database->select();
         $q->table($this->tableName);
@@ -195,11 +198,12 @@ class DefaultTable implements Table
      * exception will be thrown
      *
      * @return Insert
+     * @throws LogicException
      */
     public function insert()
     {
         if( !$this->tableName ) {
-            throw new Exception('No table name specified');
+            throw new LogicException('No table name specified');
         }
         return $this->database->insert()
                 ->table($this->tableName);
@@ -210,11 +214,12 @@ class DefaultTable implements Table
      * exception will be thrown
      *
      * @return Update
+     * @throws LogicException
      */
     public function update()
     {
         if( !$this->tableName ) {
-            throw new Exception('No table name specified');
+            throw new LogicException('No table name specified');
         }
         return $this->database->update()
                 ->table($this->tableName);
@@ -225,11 +230,12 @@ class DefaultTable implements Table
      * an exception will be thrown
      *
      * @return Delete
+     * @throws LogicException
      */
     public function delete()
     {
         if( !$this->tableName ) {
-            throw new Exception('No table name specified');
+            throw new LogicException('No table name specified');
         }
         return $this->database->delete()
                 ->table($this->tableName);

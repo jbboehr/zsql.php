@@ -2,6 +2,7 @@
 
 namespace zsql\Adapter;
 
+use zsql\Exception\RuntimeException;
 use zsql\QueryBuilder\Query;
 use zsql\QueryBuilder\Select;
 use zsql\Result\NullResult;
@@ -35,6 +36,6 @@ class NullAdapter extends AbstractAdapter
      */
     public function quote($string)
     {
-        throw new Exception('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 }

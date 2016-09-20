@@ -94,16 +94,16 @@ class UpdateTest extends Common
 
     public function testToStringThrowsExceptionWithNoTable()
     {
-        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
-        
+        $this->setExpectedException('zsql\\Exception\\LogicException');
+
         $query = $this->queryFactory();
         $query->toString();
     }
 
     public function testToStringThrowsExceptionWithNoValues()
     {
-        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
-        
+        $this->setExpectedException('zsql\\Exception\\LogicException');
+
         $query = $this->queryFactory();
         $query->table('tableName')->toString();
     }
@@ -148,8 +148,8 @@ class UpdateTest extends Common
 
     public function testInterpolateThrowsException()
     {
-        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
-        
+        $this->setExpectedException('zsql\\Exception\\LogicException');
+
         $query = $this->queryFactory();
         $query->table('tableName')->set('a', 'b')->where('c', 'd');
         $query->interpolation();
@@ -158,8 +158,8 @@ class UpdateTest extends Common
 
     public function testInterpolateThrowsException2()
     {
-        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
-        
+        $this->setExpectedException('zsql\\Exception\\LogicException');
+
         $query = $this->queryFactory();
         $query->table('tableName')->set('a??', 'b')->where('c??', 'd');
         $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();

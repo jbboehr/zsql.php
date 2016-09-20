@@ -3,6 +3,7 @@
 namespace zsql\Result;
 
 use mysqli_result;
+use zsql\Exception\LogicException;
 
 /**
  * Class MysqliResult
@@ -50,12 +51,12 @@ class MysqliResult extends AbstractResult
      * Getter function for the local mysqli_result object.
      *
      * @return mysqli_result
-     * @throws Exception
+     * @throws LogicException
      */
     public function getResult()
     {
         if( !$this->result ) {
-            throw new Exception('No result!');
+            throw new LogicException('No result!');
         }
         return $this->result;
     }

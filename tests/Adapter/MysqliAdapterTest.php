@@ -11,7 +11,7 @@ class MysqliAdapterTest extends Common
 {
     public function testConstructInvalid()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('zsql\\Exception\\InvalidArgumentException');
         new MysqliAdapter('foo');
     }
 
@@ -134,7 +134,7 @@ class MysqliAdapterTest extends Common
 
     public function testQueryThrowsExceptionOnFailure()
     {
-        $this->setExpectedException('zsql\\Exception');
+        $this->setExpectedException('zsql\\Exception\\RuntimeException');
 
         $database = $this->createMysqliAdapter();
         $database->query('SELECT foo FROM bar');
@@ -173,7 +173,7 @@ class MysqliAdapterTest extends Common
 
     public function testQueryWithLoggerWithFailedQuery()
     {
-        $this->setExpectedException('zsql\\Exception');
+        $this->setExpectedException('zsql\\Exception\\RuntimeException');
         $database = $this->createMysqliAdapter();
         $logger = $this->getMock('Psr\Log\NullLogger', array('debug', 'error'));
         $logger->expects($this->once())
