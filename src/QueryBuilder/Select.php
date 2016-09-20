@@ -2,6 +2,7 @@
 
 namespace zsql\QueryBuilder;
 
+use zsql\Exception\InvalidArgumentException;
 use zsql\Expression;
 use zsql\Result\Result;
 use zsql\Scanner\ScannerGenerator;
@@ -62,7 +63,7 @@ class Select extends ExtendedQuery
      *
      * @param mixed $columns
      * @return $this
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function columns($columns)
     {
@@ -71,7 +72,7 @@ class Select extends ExtendedQuery
             $columns instanceof Expression ) {
             $this->columns = $columns;
         } else {
-            throw new Exception('Invalid columns parameter');
+            throw new InvalidArgumentException('Invalid columns parameter');
         }
         return $this;
     }
@@ -200,6 +201,7 @@ class Select extends ExtendedQuery
      *  - Two args: (tableA.columnA) = (tableB.columnB) (quoted)
      *  - Three args: (tableA.columnA) (operator) (tableB.columnB) (quoted)
      *
+     * @throws InvalidArgumentException
      * @return $this
      */
     public function on()
@@ -219,7 +221,7 @@ class Select extends ExtendedQuery
                     . $this->quoteIdentifier(func_get_arg(2));
                 break;
             default:
-                throw new Exception('Please specify 1-3 arguments to on');
+                throw new InvalidArgumentException('Please specify 1-3 arguments to on');
         }
         return $this;
     }

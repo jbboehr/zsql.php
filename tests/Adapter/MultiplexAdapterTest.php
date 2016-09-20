@@ -113,7 +113,7 @@ class MultiplexAdapterTest extends Common
         $logger->expects($this->once())
             ->method('error');
 
-        $this->setExpectedException('zsql\\Adapter\\Exception');
+        $this->setExpectedException('zsql\\Exception\\RuntimeException');
 
         $reader = $this->createMysqliAdapter();
         $writer = $this->createMysqliAdapter();

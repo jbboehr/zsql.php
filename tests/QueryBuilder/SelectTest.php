@@ -44,8 +44,8 @@ class SelectTest extends Common
 
     public function testColumnsInvalidValueThrowsException()
     {
-        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
-        
+        $this->setExpectedException('zsql\\Exception\\LogicException');
+
         $query = $this->queryFactory();
         $query->columns(false);
     }
@@ -216,8 +216,8 @@ class SelectTest extends Common
 
     public function testJoinThrowsWithInvalidArgNumber()
     {
-        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
-        
+        $this->setExpectedException('zsql\\Exception\\LogicException');
+
         $query = $this->queryFactory();
         $query
             ->from('tableA')
@@ -326,8 +326,8 @@ class SelectTest extends Common
 
     public function testInterpolateThrowsException()
     {
-        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
-        
+        $this->setExpectedException('zsql\\Exception\\LogicException');
+
         $query = $this->queryFactory();
         $query->table('tableName')->where('a', 'b');
         $query->interpolation();
@@ -336,8 +336,8 @@ class SelectTest extends Common
 
     public function testInterpolateThrowsException2()
     {
-        $this->setExpectedException('zsql\\QueryBuilder\\Exception');
-        
+        $this->setExpectedException('zsql\\Exception\\LogicException');
+
         $query = $this->queryFactory();
         $query->table('tableName')->where('a??', 'b');
         $query->setQuoteCallback($this->_getQuoteCallback())->interpolation();

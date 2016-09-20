@@ -24,8 +24,8 @@ class ResultTest extends Common
     public function testFree()
     {
         /** @var MysqliResult $result */
-        $this->setExpectedException('zsql\\Result\\Exception');
-        
+        $this->setExpectedException('zsql\\Exception\\LogicException');
+
         $database = $this->databaseFactory();
         $result = $database->select()->from('fixture1')->query();
         $result->free();
@@ -45,7 +45,7 @@ class ResultTest extends Common
 
     public function testSetResultClassThrowExceptionInvalidClass()
     {
-        $this->setExpectedException('zsql\\Result\\Exception');
+        $this->setExpectedException('zsql\\Exception\\ClassNotFoundException');
 
         $result = new MysqliResult(null);
         $result->setResultClass('InvalidClassNameNoob');
@@ -94,8 +94,8 @@ class ResultTest extends Common
 
     public function testSetResultModeThrowsOnInvalidMode()
     {
-        $this->setExpectedException('zsql\\Result\\Exception');
-        
+        $this->setExpectedException('zsql\\Exception\\InvalidArgumentException');
+
         $result = new MysqliResult(null);
         $result->setResultMode(9001);
     }

@@ -7,7 +7,9 @@ use mysqli_result;
 use Psr\Log\LoggerInterface;
 
 use zsql\Connection\MysqliFactoryInterface;
+use zsql\Exception\RuntimeException;
 use zsql\Expression;
+use zsql\Exception\InvalidArgumentException;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Query;
@@ -40,7 +42,7 @@ class MysqliAdapter extends AbstractAdapter
             $this->connectionFactory = $connection;
             $this->connection = $connection->createMysqli();
         } else {
-            throw new \InvalidArgumentException('Argument must be instance of mysqli or MysqliFactoryInterface');
+            throw new InvalidArgumentException('Argument must be instance of mysqli or MysqliFactoryInterface');
         }
     }
 
@@ -167,7 +169,7 @@ class MysqliAdapter extends AbstractAdapter
                 $this->logger->error($message);
             }
             // Query failed, throw exception
-            throw new Exception($message);
+            throw new RuntimeException($message);
         }
     }
 

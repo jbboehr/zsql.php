@@ -38,7 +38,7 @@ class NullAdapterTest extends Common
 
     public function testQuote()
     {
-        $this->setExpectedException('Exception');
+        $this->setExpectedException('zsql\\Exception\\RuntimeException');
         $database = new NullAdapter();
         $database->quote('meh');
     }
