@@ -4,6 +4,7 @@ namespace zsql\Result;
 
 use zsql\Exception\ClassNotFoundException;
 use zsql\Exception\InvalidArgumentException;
+use zsql\Result;
 
 abstract class AbstractResult implements Result
 {

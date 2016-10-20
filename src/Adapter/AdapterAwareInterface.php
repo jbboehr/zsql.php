@@ -2,6 +2,8 @@
 
 namespace zsql\Adapter;
 
+use zsql\Adapter;
+
 interface AdapterAwareInterface
 {
     /**
