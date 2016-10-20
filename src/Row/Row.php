@@ -1,11 +1,3 @@
 <?php
 
-namespace zsql\Row;
-
-/**
- * Interface Row
- * @package zsql\Row
- */
-interface Row {
-
-}
+class_alias('zsql\\Row', 'zsql\\Row\\Row');

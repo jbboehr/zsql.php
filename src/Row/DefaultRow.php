@@ -3,6 +3,7 @@
 namespace zsql\Row;
 
 use stdClass;
+use zsql\Row;
 
 /**
  * Class DefaultRow
