@@ -2,19 +2,19 @@
 
 namespace zsql\Adapter;
 
-use zsql\Adapter;
+use zsql\Adapter as AdapterInterface;
 use zsql\QueryBuilder\Query;
 use zsql\QueryBuilder\Select;
 
 class MultiplexAdapter extends AbstractAdapter
 {
     /**
-     * @param Adapter
+     * @param AdapterInterface
      */
     protected $reader;
 
     /**
-     * @param Adapter
+     * @param AdapterInterface
      */
     protected $writer;
 
@@ -24,10 +24,10 @@ class MultiplexAdapter extends AbstractAdapter
     protected $forceWriter = false;
 
     /**
-     * @param Adapter $reader
-     * @param Adapter $writer
+     * @param AdapterInterface $reader
+     * @param AdapterInterface $writer
      */
-    public function __construct(Adapter $reader, Adapter $writer = null)
+    public function __construct(AdapterInterface $reader, AdapterInterface $writer = null)
     {
         $this->reader = $reader;
         $this->writer = $writer;
@@ -146,7 +146,7 @@ class MultiplexAdapter extends AbstractAdapter
     /**
      * Returns the reader mysqli object
      *
-     * @return Adapter
+     * @return AdapterInterface
      */
     public function getWriter()
     {
@@ -154,20 +154,20 @@ class MultiplexAdapter extends AbstractAdapter
     }
 
     /**
-     * @param Adapter $reader
+     * @param AdapterInterface $reader
      * @return $this
      */
-    public function setReader(Adapter $reader)
+    public function setReader(AdapterInterface $reader)
     {
         $this->reader = $reader;
         return $this;
     }
 
     /**
-     * @param Adapter $writer
+     * @param AdapterInterface $writer
      * @return $this;
      */
-    public function setWriter(Adapter $writer = null)
+    public function setWriter(AdapterInterface $writer = null)
     {
         $this->writer = $writer;
         return $this;

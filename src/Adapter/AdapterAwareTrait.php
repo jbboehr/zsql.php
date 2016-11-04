@@ -2,7 +2,7 @@
 
 namespace zsql\Adapter;
 
-use zsql\Adapter;
+use zsql\Adapter as AdapterInterface;
 
 trait AdapterAwareTrait
 {
@@ -12,10 +12,10 @@ trait AdapterAwareTrait
     protected $database;
 
     /**
-     * @param Adapter $database
+     * @param AdapterInterface $database
      * @return $this
      */
-    public function setDatabase(Adapter $database)
+    public function setDatabase(AdapterInterface $database)
     {
         $this->database = $database;
         return $this;

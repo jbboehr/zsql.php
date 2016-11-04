@@ -2,13 +2,13 @@
 
 namespace zsql\Adapter;
 
-use zsql\Adapter;
+use zsql\Adapter as AdapterInterface;
 
 interface AdapterAwareInterface
 {
     /**
-     * @param Adapter $adapter
+     * @param AdapterInterface $adapter
      * @return $this
      */
-    public function setDatabase(Adapter $adapter);
+    public function setDatabase(AdapterInterface $adapter);
 }

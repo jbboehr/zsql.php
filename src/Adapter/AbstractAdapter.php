@@ -4,13 +4,13 @@ namespace zsql\Adapter;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
-use zsql\Adapter;
+use zsql\Adapter as AdapterInterface;
 use zsql\QueryBuilder\Select;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Update;
 use zsql\QueryBuilder\Delete;
 
-abstract class AbstractAdapter implements Adapter, LoggerAwareInterface
+abstract class AbstractAdapter implements AdapterInterface, LoggerAwareInterface
 {
     /**
      * @var integer
