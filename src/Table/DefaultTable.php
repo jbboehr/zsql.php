@@ -2,7 +2,7 @@
 
 namespace zsql\Table;
 
-use zsql\Adapter\Adapter;
+use zsql\Adapter;
 use zsql\Exception\LogicException;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
