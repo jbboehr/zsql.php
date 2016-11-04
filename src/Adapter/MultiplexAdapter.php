@@ -2,6 +2,7 @@
 
 namespace zsql\Adapter;
 
+use zsql\Adapter;
 use zsql\QueryBuilder\Query;
 use zsql\QueryBuilder\Select;
 

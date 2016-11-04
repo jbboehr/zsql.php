@@ -4,6 +4,7 @@ namespace zsql\Adapter;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
+use zsql\Adapter;
 use zsql\QueryBuilder\Select;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Update;

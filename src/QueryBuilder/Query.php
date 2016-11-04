@@ -2,18 +2,19 @@
 
 namespace zsql\QueryBuilder;
 
+use zsql\Adapter;
 use zsql\Exception\InvalidArgumentException;
 use zsql\Exception\LogicException;
 use zsql\Expression;
-use zsql\Adapter\Adapter;
 use zsql\Result\Result;
+use zsql\Query as QueryInterface;
 
 /**
  * Class Query
  * Base query builder
  * @package zsql\QueryBuilder
  */
-abstract class Query
+abstract class Query implements QueryInterface
 {
     const ASC = 'ASC';
     const DESC = 'DESC';

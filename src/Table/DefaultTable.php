@@ -2,19 +2,20 @@
 
 namespace zsql\Table;
 
-use zsql\Adapter\Adapter;
+use zsql\Adapter;
 use zsql\Exception\LogicException;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Select;
 use zsql\QueryBuilder\Update;
 use zsql\Row\Row;
+use zsql\Table as TableInterface;
 
 /**
  * Class DefaultTable
  * @package zsql\Table
  */
-class DefaultTable implements Table
+class DefaultTable implements TableInterface
 {
     /**
      * @var Adapter
