@@ -6,7 +6,7 @@ use zsql\Adapter;
 use zsql\Exception\InvalidArgumentException;
 use zsql\Exception\LogicException;
 use zsql\Expression;
-use zsql\Result\Result;
+use zsql\Result;
 use zsql\Query as QueryInterface;
 
 /**
