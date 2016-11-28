@@ -7,7 +7,7 @@ use zsql\Adapter as AdapterInterface;
 trait AdapterAwareTrait
 {
     /**
-     * @var Adapter
+     * @var AdapterInterface
      */
     protected $database;
 
