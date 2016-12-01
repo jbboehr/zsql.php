@@ -91,7 +91,13 @@ class SimpleSelect implements Select, AdapterAwareInterface
     {
         $where = array();
         foreach( $this->where as $k => $v ) {
-            $where[] = $this->database->quoteIdentifier($k) . ' = ' . $this->database->quote($v);
+            if( is_array($v) ) {
+                $where[] = $this->database->quoteIdentifier($k) . ' IN(' . array_map(function($v) {
+                    return $this->database->quote($v);
+                }, $v) . ')';
+            } else {
+                $where[] = $this->database->quoteIdentifier($k) . ' = ' . $this->database->quote($v);
+            }
         }
         $q = 'SELECT * '
             . 'FROM ' . $this->database->quoteIdentifier($this->table) . ' '
