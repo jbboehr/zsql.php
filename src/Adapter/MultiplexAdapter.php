@@ -136,7 +136,7 @@ class MultiplexAdapter extends AbstractAdapter
     /**
      * Returns the reader mysqli object
      *
-     * @return Adapter
+     * @return AdapterInterface
      */
     public function getReader()
     {

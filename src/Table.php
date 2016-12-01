@@ -15,21 +15,6 @@ use zsql\QueryBuilder\Update;
 interface Table extends AdapterAwareInterface
 {
     /**
-     * Getter method for the database adapter
-     *
-     * @return Adapter
-     */
-    public function getDatabase();
-
-    /**
-     * Setter method for the database adapter
-     *
-     * @param Adapter $database
-     * @return $this
-     */
-    public function setDatabase(Adapter $database);
-
-    /**
      * Getter method for the $tableName property.
      *
      * @return string

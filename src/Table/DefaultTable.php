@@ -8,7 +8,7 @@ use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Select;
 use zsql\QueryBuilder\Update;
-use zsql\Row\Row;
+use zsql\Row;
 use zsql\Table as TableInterface;
 
 /**
@@ -47,28 +47,6 @@ class DefaultTable implements TableInterface
      * @var string
      */
     protected $tableName;
-
-    /**
-     * @param Adapter $database
-     */
-    public function __construct(Adapter $database = null)
-    {
-        if( $database ) {
-            $this->setDatabase($database);
-        }
-        $this->init();
-    }
-
-    /**
-     * Post initialization hook
-     *
-     * @deprecated
-     * @return void
-     */
-    public function init()
-    {
-
-    }
 
     /**
      * Find a record by primary key

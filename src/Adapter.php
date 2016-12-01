@@ -2,13 +2,11 @@
 
 namespace zsql;
 
-use zsql\Expression;
 use zsql\QueryBuilder\Query;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Select;
 use zsql\QueryBuilder\Update;
-use zsql\Result\Result;
 
 interface Adapter
 {

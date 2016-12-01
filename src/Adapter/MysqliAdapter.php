@@ -4,7 +4,6 @@ namespace zsql\Adapter;
 
 use mysqli;
 use mysqli_result;
-use Psr\Log\LoggerInterface;
 
 use zsql\Connection\MysqliFactoryInterface;
 use zsql\Exception\RuntimeException;
@@ -13,7 +12,6 @@ use zsql\Exception\InvalidArgumentException;
 use zsql\QueryBuilder\Delete;
 use zsql\QueryBuilder\Insert;
 use zsql\QueryBuilder\Query;
-use zsql\QueryBuilder\Select;
 use zsql\QueryBuilder\Update;
 use zsql\Result\MysqliResult as Result;
 
@@ -108,7 +106,7 @@ class MysqliAdapter extends AbstractAdapter
      *
      * @param string|Query $query
      * @return Result|integer|boolean
-     * @throws Exception
+     * @throws RuntimeException
      */
     public function query($query)
     {

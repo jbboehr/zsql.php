@@ -4,7 +4,7 @@ namespace zsql\QueryBuilder;
 
 use zsql\Exception\InvalidArgumentException;
 use zsql\Expression;
-use zsql\Result\Result;
+use zsql\Result;
 use zsql\Scanner\ScannerGenerator;
 use zsql\Scanner\ScannerIterator;
 
