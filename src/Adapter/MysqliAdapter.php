@@ -46,16 +46,6 @@ class MysqliAdapter extends AbstractAdapter
     }
 
     /**
-     * Close the mysql connection on destruct
-     */
-    public function __destruct()
-    {
-        if( $this->getConnection() ) {
-            $this->getConnection()->close();
-        }
-    }
-
-    /**
      * Exposes the local connection object
      *
      * @return mysqli
