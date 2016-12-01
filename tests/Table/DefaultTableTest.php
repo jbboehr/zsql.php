@@ -22,7 +22,8 @@ class DefaultTableTest extends Common
     {
         $this->setExpectedException('zsql\\Exception\\LogicException');
 
-        $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
+        $model = new ModelWithoutTableOrPrimaryKey();
+        $model->setDatabase($this->databaseFactory());
         $model->find(1);
     }
 
@@ -39,7 +40,8 @@ class DefaultTableTest extends Common
     {
         $this->setExpectedException('zsql\\Exception\\LogicException');
 
-        $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
+        $model = new ModelWithoutTableOrPrimaryKey();
+        $model->setDatabase($this->createMysqliAdapter());
         $model->findMany(array(1));
     }
 
@@ -114,7 +116,8 @@ class DefaultTableTest extends Common
 
     public function testSelectWithResultClass()
     {
-        $model = new ModelWithResultClass($this->databaseFactory());
+        $model = new ModelWithResultClass();
+        $model->setDatabase($this->databaseFactory());
 
         $row = $model->select()
             ->limit(1)
@@ -126,7 +129,8 @@ class DefaultTableTest extends Common
 
     public function testSelectWithResultClassAndParams()
     {
-        $model = new ModelWithResultClassAndParams($this->databaseFactory());
+        $model = new ModelWithResultClassAndParams();
+        $model->setDatabase($this->databaseFactory());
         $row = $model->select()
             ->limit(1)
             ->query()
@@ -138,7 +142,8 @@ class DefaultTableTest extends Common
     {
         $this->setExpectedException('zsql\\Exception\\LogicException');
 
-        $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
+        $model = new ModelWithoutTableOrPrimaryKey();
+        $model->setDatabase($this->databaseFactory());
         $model->select();
     }
 
@@ -157,7 +162,8 @@ class DefaultTableTest extends Common
     {
         $this->setExpectedException('zsql\\Exception\\LogicException');
 
-        $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
+        $model = new ModelWithoutTableOrPrimaryKey();
+        $model->setDatabase($this->databaseFactory());
         $model->insert();
     }
 
@@ -176,7 +182,8 @@ class DefaultTableTest extends Common
     {
         $this->setExpectedException('zsql\\Exception\\LogicException');
 
-        $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
+        $model = new ModelWithoutTableOrPrimaryKey();
+        $model->setDatabase($this->databaseFactory());
         $model->update();
     }
 
@@ -195,7 +202,8 @@ class DefaultTableTest extends Common
     {
         $this->setExpectedException('zsql\\Exception\\LogicException');
 
-        $model = new ModelWithoutTableOrPrimaryKey($this->databaseFactory());
+        $model = new ModelWithoutTableOrPrimaryKey();
+        $model->setDatabase($this->databaseFactory());
         $model->delete();
     }
 }

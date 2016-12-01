@@ -32,7 +32,9 @@ class Common extends PHPUnit_Framework_TestCase
 
     protected function fixtureModelOneFactory()
     {
-        return new Fixture\BasicModel($this->createMysqliAdapter());
+        $model = new Fixture\BasicModel();
+        $model->setDatabase($this->createMysqliAdapter());
+        return $model;
     }
 
     /**
