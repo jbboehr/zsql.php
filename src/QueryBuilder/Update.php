@@ -3,13 +3,14 @@
 namespace zsql\QueryBuilder;
 
 use zsql\Expression;
+use zsql\Query\Update as UpdateInterface;
 
 /**
  * Class Update
  * Update query builder
  * @package zsql\QueryBuilder
  */
-class Update extends ExtendedQuery
+class Update extends ExtendedQuery implements UpdateInterface
 {
     /**
      * Values

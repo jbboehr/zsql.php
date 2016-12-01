@@ -9,10 +9,10 @@ use zsql\Connection\MysqliFactoryInterface;
 use zsql\Exception\RuntimeException;
 use zsql\Expression;
 use zsql\Exception\InvalidArgumentException;
-use zsql\QueryBuilder\Delete;
-use zsql\QueryBuilder\Insert;
-use zsql\QueryBuilder\Query;
-use zsql\QueryBuilder\Update;
+use zsql\Query;
+use zsql\Query\Delete;
+use zsql\Query\Insert;
+use zsql\Query\Update;
 use zsql\Result\MysqliResult as Result;
 
 class MysqliAdapter extends AbstractAdapter

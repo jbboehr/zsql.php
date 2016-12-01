@@ -7,13 +7,14 @@ use zsql\Expression;
 use zsql\Result;
 use zsql\Scanner\ScannerGenerator;
 use zsql\Scanner\ScannerIterator;
+use zsql\Query\Select as SelectInterface;
 
 /**
  * Class Select
  * Select query builder
  * @package zsql\QueryBuilder
  */
-class Select extends ExtendedQuery
+class Select extends ExtendedQuery implements SelectInterface
 {
     /**
      * Columns clause

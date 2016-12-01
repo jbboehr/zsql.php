@@ -5,10 +5,7 @@ namespace zsql\Adapter;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 use zsql\Adapter as AdapterInterface;
-use zsql\QueryBuilder\Select;
-use zsql\QueryBuilder\Insert;
-use zsql\QueryBuilder\Update;
-use zsql\QueryBuilder\Delete;
+use zsql\QueryBuilder;
 
 abstract class AbstractAdapter implements AdapterInterface, LoggerAwareInterface
 {
@@ -97,40 +94,40 @@ abstract class AbstractAdapter implements AdapterInterface, LoggerAwareInterface
     /**
      * Wrapper for Select
      *
-     * @return Select
+     * @return QueryBuilder\Select
      */
     public function select()
     {
-        return new Select($this);
+        return new QueryBuilder\Select($this);
     }
 
     /**
      * Wrapper for Insert
      *
-     * @return Insert
+     * @return QueryBuilder\Insert
      */
     public function insert()
     {
-        return new Insert($this);
+        return new QueryBuilder\Insert($this);
     }
 
     /**
      * Wrapper for Update
      *
-     * @return Update
+     * @return QueryBuilder\Update
      */
     public function update()
     {
-        return new Update($this);
+        return new QueryBuilder\Update($this);
     }
 
     /**
      * Wrapper for Delete
      *
-     * @return Delete
+     * @return QueryBuilder\Delete
      */
     public function delete()
     {
-        return new Delete($this);
+        return new QueryBuilder\Delete($this);
     }
 }

@@ -3,8 +3,8 @@
 namespace zsql\Adapter;
 
 use zsql\Adapter as AdapterInterface;
-use zsql\QueryBuilder\Query;
-use zsql\QueryBuilder\Select;
+use zsql\Query;
+use zsql\Query\Select;
 
 class MultiplexAdapter extends AbstractAdapter
 {

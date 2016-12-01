@@ -3,13 +3,14 @@
 namespace zsql\QueryBuilder;
 
 use zsql\Expression;
+use zsql\Query\Insert as InsertInterface;
 
 /**
  * Class Insert
  * Insert query builder
  * @package zsql\QueryBuilder
  */
-class Insert extends Query
+class Insert extends Query implements InsertInterface
 {
     /**
      * Set delayed clause

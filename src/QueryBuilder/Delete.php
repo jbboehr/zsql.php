@@ -2,12 +2,14 @@
 
 namespace zsql\QueryBuilder;
 
+use zsql\Query\Delete as DeleteInterface;
+
 /**
  * Class Delete
  * Delete query builder
  * @package zsql\QueryBuilder
  */
-class Delete extends ExtendedQuery
+class Delete extends ExtendedQuery implements DeleteInterface
 {
     /**
      * Assemble parts
