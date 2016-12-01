@@ -22,27 +22,11 @@ interface Table extends AdapterAwareInterface
     public function getTableName();
 
     /**
-     * Setter method for the $tableName property.
-     *
-     * @param string $table
-     * @return $this
-     */
-    public function setTableName($table);
-
-    /**
      * Getter method for the $primaryKey property
      *
      * @return string
      */
     public function getPrimaryKey();
-
-    /**
-     * Setter method for the $primaryKey property
-     *
-     * @param string $primaryKey
-     * @return $this
-     */
-    public function setPrimaryKey($primaryKey);
 
     /**
      * Helper function the provides the select object with the table name
