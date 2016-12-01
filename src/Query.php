@@ -4,7 +4,7 @@ namespace zsql;
 
 interface Query
 {
-     public function __toString();
-     public function toString();
-     public function params();
+     public function __toString() : string;
+     public function toString() : string;
+     public function params() : array;
 }

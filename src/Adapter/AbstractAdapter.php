@@ -130,43 +130,4 @@ abstract class AbstractAdapter implements AdapterInterface, LoggerAwareInterface
     {
         return new QueryBuilder\Delete($this);
     }
-
-    public function insertQuery(string $table, array $values)
-    {
-        return $this->insert()
-            ->table($table)
-            ->values($values)
-            ->query();
-    }
-
-    public function updateQuery(string $table, array $values, array $where)
-    {
-        $q = $this->update()
-            ->table($table)
-            ->values($values);
-        foreach( $where as $k => $v ) {
-            $q->where($k, $v);
-        }
-        return $q->query();
-    }
-
-    public function deleteQuery(string $table, array $where)
-    {
-        $q = $this->delete()
-            ->table($table);
-        foreach( $where as $k => $v ) {
-            $q->where($k, $v);
-        }
-        return $q->query();
-    }
-
-    public function selectQuery(string $table, array $where)
-    {
-        $q = $this->select()
-            ->table($table);
-        foreach( $where as $k => $v ) {
-            $q->where($k, $v);
-        }
-        return $q->query();
-    }
 }

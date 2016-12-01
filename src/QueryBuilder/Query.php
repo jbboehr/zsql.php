@@ -125,7 +125,7 @@ abstract class Query implements QueryInterface
      *
      * @return string
      */
-    public function __toString()
+    public function __toString() : string
     {
         try {
             return $this->toString();
@@ -220,7 +220,7 @@ abstract class Query implements QueryInterface
      *
      * @return array
      */
-    public function params()
+    public function params() : array
     {
         return (array) $this->params;
     }
@@ -397,7 +397,7 @@ abstract class Query implements QueryInterface
      *
      * @return string
      */
-    public function toString()
+    public function toString() : string
     {
         $this->parts = array();
         $this->params = array();

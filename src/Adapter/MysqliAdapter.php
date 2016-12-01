@@ -13,6 +13,7 @@ use zsql\Query;
 use zsql\Query\Delete;
 use zsql\Query\Insert;
 use zsql\Query\Update;
+use zsql\Query\Select;
 use zsql\Result\MysqliResult as Result;
 
 class MysqliAdapter extends AbstractAdapter
@@ -146,13 +147,20 @@ class MysqliAdapter extends AbstractAdapter
 
         // Handle result
         if( $ret !== false ) {
-            if( $ret instanceof mysqli_result ) {
-                return new Result($ret);
+            if( $query instanceof Select ) {
+                $ret = new Result($ret);
+                if( null !== ($resultClass = $query->getResultClass()) ) {
+                    $ret->setResultClass($resultClass);
+                }
+                return $ret;
             } else if( $query instanceof Insert ) {
                 return $this->getInsertId();
             } else if( $query instanceof Update ||
                 $query instanceof Delete ) {
                 return $this->getAffectedRows();
+            } else if( $ret instanceof mysqli_result ) {
+                // this generally shouldn't happen
+                return new Result($ret);
             }
             return $ret;
         } else {

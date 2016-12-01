@@ -88,9 +88,4 @@ interface Adapter
      * @return boolean
      */
     public function ping();
-
-    public function insertQuery(string $table, array $values);
-    public function updateQuery(string $table, array $values, array $where);
-    public function deleteQuery(string $table, array $where);
-    public function selectQuery(string $table, array $where);
 }
