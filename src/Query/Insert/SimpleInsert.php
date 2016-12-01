@@ -54,7 +54,7 @@ class SimpleInsert implements Insert, AdapterAwareInterface
         return 'INSERT '
             . 'INTO ' . $this->database->quoteIdentifier($this->table) . ' '
             . '(' . join(', ', $keys) . ') '
-            . 'VALUES ' . join(', ', $values);
+            . 'VALUES (' . join(', ', $values) . ')';
     }
 
     /**
