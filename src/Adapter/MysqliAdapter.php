@@ -40,7 +40,7 @@ class MysqliAdapter extends AbstractAdapter
             $this->connection = $connection;
         } else if( $connection instanceof MysqliFactoryInterface ) {
             $this->connectionFactory = $connection;
-            $this->connection = $connection->createMysqli();
+            //$this->connection = $connection->createMysqli();
         } else {
             throw new InvalidArgumentException('Argument must be instance of mysqli or MysqliFactoryInterface');
         }
@@ -63,6 +63,9 @@ class MysqliAdapter extends AbstractAdapter
      */
     public function getConnection()
     {
+        if( null === $this->connection && null !== $this->connectionFactory ) {
+            $this->connection = $this->connectionFactory->createMysqli();
+        }
         return $this->connection;
     }
 
@@ -86,7 +89,7 @@ class MysqliAdapter extends AbstractAdapter
 
     public function ping()
     {
-        $ret = $this->connection->ping();
+        $ret = $this->getConnection()->ping();
 
         // Try to reconnect
         if( !$ret && $this->connectionFactory ) {
@@ -192,7 +195,7 @@ class MysqliAdapter extends AbstractAdapter
         } else if( is_float($value) ) {
             return sprintf('%f', $value); // @todo make sure precision is right
         } else {
-            return "'" . $this->connection->real_escape_string($value) . "'";
+            return "'" . $this->getConnection()->real_escape_string($value) . "'";
         }
     }
 }
